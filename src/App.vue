@@ -1,9 +1,9 @@
 <template>
-  <a-locale-provider :locale="locale">
+  <a-config-provider :locale="locale">
     <div id="app">
       <router-view/>
     </div>
-  </a-locale-provider>
+  </a-config-provider>
 </template>
 
 <script>
@@ -22,8 +22,3 @@ export default {
   }
 }
 </script>
-<style>
-  #app {
-    height: 100%;
-  }
-</style>

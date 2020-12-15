@@ -39,6 +39,8 @@ const assetsCDN = {
 
 // vue.config.js
 const vueConfig = {
+  publicPath: '/',
+  outputDir: 'admin',
   configureWebpack: {
     // webpack plugins
     plugins: [

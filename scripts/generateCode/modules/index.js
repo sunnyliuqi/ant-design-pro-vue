@@ -176,7 +176,7 @@ function updateRouterConfig (param, number) {
     // 生成父路由
     router = `{
       path: '${param.fileUrl}',
-      component: PageView,
+      component: RouteView,
       meta: { title: '${param.chinaValue}', static: true },
       children: []
       }`

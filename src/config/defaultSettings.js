@@ -21,10 +21,11 @@ export default {
   fixSiderbar: true, // sticky siderbar
   colorWeak: false,
   menu: {
-    locale: false
+    locale: true
   },
   title: 'Simpo',
   pwa: false,
   iconfontUrl: '',
+  language: 'zh-CN',
   production: process.env.NODE_ENV === 'production' && process.env.VUE_APP_PREVIEW !== 'true'
 }

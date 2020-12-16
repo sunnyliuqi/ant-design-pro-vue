@@ -104,15 +104,54 @@ const vueConfig = {
 
   devServer: {
     // development server port 8000
-    port: 8000
+    port: 8000,
     // If you want to turn on the proxy, please remove the mockjs /src/main.jsL11
-    // proxy: {
-    //   '/api': {
-    //     target: 'https://mock.ihx.me/mock/5baf3052f7da7e07e04a5116/antd-pro',
-    //     ws: false,
-    //     changeOrigin: true
-    //   }
-    // }
+    proxy: {
+      // 前端代码生成
+      '/api/createFile': {
+        target: 'http://localhost:9228',
+        changeOrigin: true,
+        pathRewrite: { '^/api': '' }
+      },
+      // demo服务
+      '/api/demo': {
+        target: 'http://10.110.1.179:67',
+        changeOrigin: true,
+        pathRewrite: { '^/api': '' }
+      },
+      // 流程服务
+      '/api/activiti': {
+        target: 'http://127.0.0.1:61',
+        changeOrigin: true,
+        pathRewrite: { '^/api': '' }
+      },
+      '/activiti': {
+        target: 'http://127.0.0.1:61',
+        changeOrigin: true
+      },
+      // 系统服务
+      '/api/sys': {
+        target: 'http://10.110.1.179:68',
+        changeOrigin: true,
+        pathRewrite: { '^/api': '' }
+      },
+      // 文件上传服务
+      '/api/upload': {
+        target: 'http://10.110.1.179:69',
+        changeOrigin: true,
+        pathRewrite: { '^/api': '' }
+      },
+      // '/api': {
+      //   target: 'http://10.110.1.179:80',
+      //   changeOrigin: true/*,
+      //   pathRewrite: { '^/api': '' } */
+      // },
+      // 文件回显需要在nginx 配置
+      '/uploads': {
+        target: 'http://10.110.1.179',
+        changeOrigin: true
+      }
+    }
   },
 
   // disable source map in production

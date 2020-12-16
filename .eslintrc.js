@@ -8,6 +8,7 @@ module.exports = {
     '@vue/standard'
   ],
   rules: {
+    'no-unused-vars': 'off',
     'no-console': 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'generator-star-spacing': 'off',

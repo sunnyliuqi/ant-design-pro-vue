@@ -18,7 +18,23 @@ function plugin (Vue) {
   if (plugin.installed) {
     return
   }
-
+  /**
+   *  使用v-if="$authorize('xxx')"
+   *  其中xxx为操作码
+   */
+  !Vue.prototype.$authorize && Object.defineProperties(Vue.prototype, {
+    $authorize: {
+      get () {
+        const _this = this
+        return (operationCode) => {
+          /* 用户是否超级管理员 */
+          const { adminFlag } = _this.$store.getters.userInfo
+          const operationCodes = _this.$store.getters.operationCodes
+          return adminFlag === '1' || operationCodes.includes(operationCode)
+        }
+      }
+    }
+  })
   !Vue.prototype.$auth && Object.defineProperties(Vue.prototype, {
     $auth: {
       get () {

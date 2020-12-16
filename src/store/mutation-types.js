@@ -22,3 +22,7 @@ export const NAV_THEME = {
   LIGHT: 'light',
   DARK: 'dark'
 }
+// 不需要登录认证的API
+export const API_NO_AUTHORIZATIONS = [ '/loginjwt', '/loginMobileJwt' ]
+// 会话时间
+export const TOKEN_TIME_OUT = 7

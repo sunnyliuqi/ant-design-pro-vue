@@ -1,24 +1,33 @@
 <template>
   <a-dropdown v-if="currentUser && currentUser.name" placement="bottomRight">
     <span class="ant-pro-account-avatar">
-      <a-avatar size="small" src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png" class="antd-pro-global-header-index-avatar" />
-      <span>{{ currentUser.name }}</span>
+      <a-avatar class="avatar antd-pro-global-header-index-avatar" size="small" :src="avatar()"/>
+      <span>{{ nickname() }}</span>
     </span>
     <template v-slot:overlay>
       <a-menu class="ant-pro-drop-down menu" :selected-keys="[]">
-        <a-menu-item v-if="menu" key="center" @click="handleToCenter">
+        <!--<a-menu-item v-if="menu" key="center" @click="handleToCenter">
           <a-icon type="user" />
           {{ $t('menu.account.center') }}
         </a-menu-item>
         <a-menu-item v-if="menu" key="settings" @click="handleToSettings">
           <a-icon type="setting" />
           {{ $t('menu.account.settings') }}
+        </a-menu-item>-->
+        <a-menu-item v-if="menu" key="personal" @click="handleToPersonal">
+          <a-icon type="user" />
+          {{ $t('menu.account.personal') }}
+        </a-menu-item>
+        <a-menu-item v-if="menu" key="updatePasswd" @click="showUpdatePasswd">
+          <a-icon type="lock" />
+          {{ $t('menu.account.updatePasswd') }}
         </a-menu-item>
         <a-menu-divider v-if="menu" />
         <a-menu-item key="logout" @click="handleLogout">
           <a-icon type="logout" />
           {{ $t('menu.account.logout') }}
         </a-menu-item>
+        <update-passwd ref="updatePasswd" />
       </a-menu>
     </template>
   </a-dropdown>
@@ -29,7 +38,8 @@
 
 <script>
 import { Modal } from 'ant-design-vue'
-
+import UpdatePasswd from '@/components/UpdatePasswd'
+import { mapGetters } from 'vuex'
 export default {
   name: 'AvatarDropdown',
   props: {
@@ -42,7 +52,17 @@ export default {
       default: true
     }
   },
+  components: {
+    UpdatePasswd
+  },
   methods: {
+    ...mapGetters(['nickname', 'avatar']),
+    showUpdatePasswd () {
+      this.$refs.updatePasswd.show()
+    },
+    handleToPersonal () {
+      this.$router.push({ path: '/sys/personal' })
+    },
     handleToCenter () {
       this.$router.push({ path: '/account/center' })
     },

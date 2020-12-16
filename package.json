@@ -10,7 +10,11 @@
     "build:preview": "vue-cli-service build --mode preview",
     "lint:nofix": "vue-cli-service lint --no-fix"
   },
-
+  "husky": {
+    "hooks": {
+      "pre-commit": "vue-cli-service lint"
+    }
+  },
   "dependencies": {
     "@ant-design-vue/pro-layout": "^1.0.7",
     "@antv/data-set": "^0.10.2",

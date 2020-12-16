@@ -56,12 +56,14 @@ import Dialog from '@/components/Dialog'
 import MultiTab from '@/components/MultiTab'
 import PageLoading from '@/components/PageLoading'
 import PermissionHelper from '@/core/permission/permission'
-// import './directives/action'
 import uploader from 'vue-simple-uploader'
+// import './directives/action'
 import './directives/authorize'
 import UUID from 'vue-uuid'
+import draggable from 'vuedraggable'
 Vue.use(UUID)
 Vue.use(uploader)
+Vue.use(draggable)
 Vue.use(ConfigProvider)
 Vue.use(Layout)
 Vue.use(Input)

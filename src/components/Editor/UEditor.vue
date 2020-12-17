@@ -10,7 +10,7 @@
 
 <script>
   import VueUeditorWrap from 'vue-ueditor-wrap'
-  import { UPLOAD_URL, parseFileRespon, FILE_DISPLAY_PREFIX } from '@/api/upload'
+  import { UPLOAD_URL } from '@/api/upload'
   export default {
     name: 'UEditor',
     components: { VueUeditorWrap },

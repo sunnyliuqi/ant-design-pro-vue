@@ -31,7 +31,7 @@ export default {
   data () {
     return {
       editor: null,
-      editorContent: null
+      editorContent: this.initValue
     }
   },
   watch: {
@@ -60,11 +60,12 @@ export default {
       }
       this.editor.customConfig.showLinkImg = false
       this.editor.customConfig.onchange = (html) => {
-        this.editorContent = xss(html)
-        this.$emit('change', this.editorContent)
+        this.editorContent = html
+        this.$emit('change', xss(this.editorContent))
       }
       this.editor.customConfig = Object.assign({}, this.editor.customConfig, this.config)
       this.editor.create()
+      this.editor.txt.html(this.initValue)
     }
   }
 }

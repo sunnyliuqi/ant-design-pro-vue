@@ -41,7 +41,7 @@ export default {
   },
   data () {
     return {
-      content: null,
+      content: this.initValue,
       editorOption: {
         // some quill options
       }

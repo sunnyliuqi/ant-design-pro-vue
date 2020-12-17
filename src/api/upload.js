@@ -51,3 +51,19 @@ export function chunkAbort (identifier) {
     params: { 'identifier': identifier }
   })
 }
+/**
+ * 自定义上传图片
+ * @param file
+ * @returns {AxiosPromise}
+ */
+export function customUploadFile (file) {
+  const data = new FormData()
+  data.append('file', file)
+  return axios({
+    url: path.upload + '/files',
+    method: 'POST',
+    headers: { 'Content-Type': 'multipart/form-data' },
+    timeout: 1800000,
+    data: data
+  })
+}

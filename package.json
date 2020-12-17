@@ -45,7 +45,8 @@
     "vue-uuid": "^1.1.1",
     "vuedraggable": "^2.24.0",
     "vuex": "^3.1.1",
-    "wangeditor": "^3.1.1"
+    "wangeditor": "^3.1.1",
+    "xss": "^1.0.8"
   },
   "devDependencies": {
     "@ant-design/colors": "^3.2.1",

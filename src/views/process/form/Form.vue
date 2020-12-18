@@ -32,7 +32,7 @@
       :data-source="listData">
       <a-list-item slot="renderItem" slot-scope="item">
         <a-card hoverable :style="cardStyle(item)">
-          <p slot="cover" style="height: 100px">
+          <p slot="cover" style="height: 100px" @click="viewForm(item)">
             <a-badge
               :count="'v'+item.version"
               style="float: right; margin: 8px;"
@@ -47,7 +47,7 @@
             </a-popconfirm>
             <a-icon v-if="item.version>1" key="history" type="history" @click="historyForm(item)"/>
           </template>
-          <a-card-meta :title="item.name">
+          <a-card-meta :title="item.name" @click="viewForm(item)">
             <div slot="description">
               <p style="margin-bottom: 0px;">{{ item.description }}</p>
               <p style="margin-bottom: 0px;">{{ item.lastUpdated }}</p>
@@ -58,17 +58,23 @@
     </a-list>
     <add
       ref="addForm"
-      :init-design="initDesign"
-      :clear-design="clearDesign"
       :input-components="inputComponents"
       :select-components="selectComponents"
       :outcomes-components="outcomesComponents"
-      :drawing-list="drawingList"
-      :drawing-button-list="drawingButtonList"
       :record="recordActive"
       :check-key="checkKey"
       :refresh="refresh"
       :save="save"
+    />
+    <edit
+      ref="editForm"
+      :input-components="inputComponents"
+      :select-components="selectComponents"
+      :outcomes-components="outcomesComponents"
+      :record="recordActive"
+      :check-key="checkKey"
+      :refresh="refresh"
+      :update="update"
     />
   </a-card>
 </template>
@@ -77,8 +83,9 @@
 import { queryList, checkKey, save, get, update, del } from '@/api/process/form'
 import { mapGetters } from 'vuex'
 import Add from './components/Add'
+import Edit from './components/Edit'
 import { initSelects, initInputs, initOutcomes, initDrawingList, initDrawingButtonList, initialClone } from '@/components/Activiti/FormDesign/util'
-
+import { input, textarea, number, radio, checkbox, select, datetime, date, outcomes } from '@/core/icons'
 /**
    * 初始化分页
    * @type {{current: number, total: number, pageSize: number}}
@@ -90,7 +97,7 @@ const initPagination = {
 }
 export default {
   name: 'Form',
-  components: { Add },
+  components: { Add, Edit },
   data () {
     return {
       recordActive: {},
@@ -133,15 +140,7 @@ export default {
       /**
          * 选择型组件
          */
-      selectComponents: initSelects,
-      /**
-         * 默认展示的表单
-         */
-      drawingList: initialClone(initDrawingList),
-      /**
-         * 默认展示的操作
-         */
-      drawingButtonList: initialClone(initDrawingButtonList)
+      selectComponents: initSelects
     }
   },
   mounted () {
@@ -152,13 +151,98 @@ export default {
        * 新建表单
        */
     add () {
+      this.recordActive = { drawingList: initialClone(initDrawingList), drawingButtonList: initialClone(initDrawingButtonList) }
       this.$refs.addForm.show()
+    },
+    /**
+     * 查看表单
+     */
+    viewForm (item) {
+      console.info('view：' + item.id)
     },
     /**
        *  修改表单
        */
     editForm (item) {
+      get(item).then(res => {
+        if (res.code === 10000) {
+          this.recordActive = this.parseResult(res.result)
+          this.$refs.editForm.show()
+        }
+      })
       console.info('edit：' + item.id)
+    },
+    /**
+     * 服务端详情数据解析
+     */
+    parseResult (result) {
+      if (result && result.modelEditorJson && result.modelEditorJson !== '') {
+        const modelEditorJson = JSON.parse(result.modelEditorJson)
+        if (modelEditorJson && modelEditorJson instanceof Array) {
+          const _drawingList = []
+          const _drawingButtonList = []
+          modelEditorJson.forEach(f => {
+            const _f = {}
+            _f.fieldType = f.fieldType
+            _f.id = f.id
+            _f.name = f.name
+            if (f.fieldType === 'outcomes') {
+              _f.tagIcon = outcomes
+              _drawingButtonList.push(_f)
+            } else {
+              switch (f.fieldType) {
+                case 'textarea':
+                  _f.tagIcon = textarea
+                  _f.tag = 'a-textarea'
+                  _f.autoSize = {
+                    minRows: 4,
+                    maxRows: 4
+                  }
+                  break
+                case 'input-number':
+                  _f.tagIcon = number
+                  _f.tag = 'a-input-number'
+                  break
+                case 'radio':
+                  _f.tagIcon = radio
+                  _f.tag = 'a-radio-group'
+                  _f.options = f.options
+                  break
+                case 'checkbox':
+                  _f.tagIcon = checkbox
+                  _f.tag = 'a-checkbox-group'
+                  _f.options = f.options
+                  break
+                case 'select':
+                  _f.tagIcon = select
+                  _f.tag = 'a-select'
+                  _f.options = f.options
+                  break
+                case 'date':
+                  _f.tagIcon = date
+                  _f.tag = 'a-date-picker'
+                  break
+                case 'datetime':
+                  _f.tagIcon = datetime
+                  _f.tag = 'a-date-picker'
+                  break
+                default:
+                  _f.tagIcon = input
+                  _f.tag = 'a-input'
+              }
+              _f.value = f.value
+              _f.required = f.required
+              _f.placeholder = f.placeholder
+              _f.disabled = f.disabled
+              _drawingList.push(_f)
+            }
+          })
+          result.modelEditorJson = {}
+          result.drawingList = _drawingList
+          result.drawingButtonList = _drawingButtonList
+        }
+      }
+      return result
     },
     /**
      * 克隆表单
@@ -208,26 +292,6 @@ export default {
     refresh () {
       this.pagination = Object.assign(this.pagination, initPagination)
       this.loadData(this.queryParam)
-    },
-    /**
-       * 初始化设计器
-       */
-    initDesign () {
-      this.inputComponents = initInputs
-      this.selectComponents = initSelects
-      this.outcomesComponents = initOutcomes
-      this.drawingList = initialClone(initDrawingList)
-      this.drawingButtonList = initialClone(initDrawingButtonList)
-    },
-    /**
-     * 清空设计器
-     */
-    clearDesign () {
-      this.inputComponents = []
-      this.selectComponents = []
-      this.outcomesComponents = []
-      this.drawingList = []
-      this.drawingButtonList = []
     }
   }
 

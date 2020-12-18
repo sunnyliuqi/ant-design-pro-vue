@@ -22,7 +22,7 @@ export const inputComponents = [
     required: false,
     placeholder: '请输入',
     disabled: false,
-    autosize: {
+    autoSize: {
       minRows: 4,
       maxRows: 4
     }

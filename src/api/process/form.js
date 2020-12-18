@@ -49,7 +49,7 @@ export function del (data) {
 // 获取详情
 export function get (params) {
   return axios({
-    url: path.sys + '/form/model/' + params.id,
+    url: path.process + '/form/model/' + params.id,
     method: 'GET'
   })
 }

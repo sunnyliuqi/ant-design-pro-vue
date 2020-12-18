@@ -66,7 +66,7 @@ export default {
         /**
          * 多行文本
          */
-        return (<a-textarea disabled={field.disabled} autosize={field.autosize} v-decorator={[`${name}`, { initialValue: this.getInitialValue(field), rules: this.getRules(field) }]} placeholder={`${field.placeholder}${field.name}`}/>)
+        return (<a-textarea disabled={field.disabled} autoSize={field.autoSize} v-decorator={[`${name}`, { initialValue: this.getInitialValue(field), rules: this.getRules(field) }]} placeholder={`${field.placeholder}${field.name}`}/>)
       } else if (type === 'input-number') {
         /**
          * 数字

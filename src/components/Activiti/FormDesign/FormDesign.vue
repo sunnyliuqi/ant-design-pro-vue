@@ -295,13 +295,13 @@ export default {
     drawingList: {
       type: Array,
       default: () => {
-        return initialClone([...this.inputComponents, ...this.selectComponents])
+        return []
       }
     },
     drawingButtonList: {
       type: Array,
       default: () => {
-        return initialClone([...this.outcomesComponents])
+        return []
       }
     }
   },

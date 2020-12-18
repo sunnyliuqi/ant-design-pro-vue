@@ -2,9 +2,9 @@
   <a-drawer
     wrapClassName="custom-drawer custom-drawer-9"
     :maskClosable="false"
-    title="新增表单"
+    title="编辑表单"
     @close="onClose"
-    :visible="addVisible"
+    :visible="visible"
     :wrapStyle="{ overflow: 'auto' }"
   >
     <a-form :form="form">
@@ -17,7 +17,7 @@
                 :labelCol="{ span: 4 }"
                 :wrapperCol="{ span: 8 }">
                 <a-input
-                  v-decorator="['name',{rules:[{required: true, message: '名称不能为空'}]}]"
+                  v-decorator="['name',{initialValue: record.name, rules:[{required: true, message: '名称不能为空'}]}]"
                   placeholder="请输入表单名称"/>
               </a-form-item>
             </a-col>
@@ -27,7 +27,7 @@
                 :labelCol="{ span: 4 }"
                 :wrapperCol="{ span: 8 }">
                 <a-input
-                  v-decorator="['modelKey',{rules:[{required: true, message: 'key不能为空'},{validator: validatorCheckKey}]}]"
+                  v-decorator="['modelKey',{initialValue: record.modelKey, rules:[{required: true, message: 'key不能为空'},{validator: validatorCheckKey}]}]"
                   placeholder="请输入key"/>
               </a-form-item>
             </a-col>
@@ -38,7 +38,7 @@
                 :wrapperCol="{ span: 8 }">
                 <a-textarea
                   :rows="4"
-                  v-decorator="['description',{rules:[]}]"
+                  v-decorator="['description',{initialValue: record.description, rules:[]}]"
                   placeholder="请输入描述"/>
               </a-form-item>
             </a-col>
@@ -46,7 +46,7 @@
         </a-tab-pane>
         <a-tab-pane key="2" tab="设计器" force-render>
           <form-design
-            ref="formDesign"
+            ref="eformDesign"
             :input-components="inputComponents"
             :select-components="selectComponents"
             :outcomes-components="outcomesComponents"
@@ -84,7 +84,7 @@
 import ACol from 'ant-design-vue/es/grid/Col'
 import FormDesign from '@/components/Activiti/FormDesign'
 export default {
-  name: 'FormAdd',
+  name: 'FormEdit',
   components: { ACol, FormDesign },
   props: {
     inputComponents: {
@@ -115,7 +115,7 @@ export default {
       type: Function,
       default: undefined
     },
-    save: {
+    update: {
       type: Function,
       default: undefined
     },
@@ -127,7 +127,7 @@ export default {
   data () {
     return {
       customActiveKey: '1',
-      addVisible: false,
+      visible: false,
       form: this.$form.createForm(this),
       formLoading: false
     }
@@ -139,7 +139,7 @@ export default {
       this.customActiveKey = key
     },
     validatorCheckKey (rule, value, callback) {
-      const params = { modelKey: this.form.getFieldValue('modelKey') }
+      const params = { modelKey: this.form.getFieldValue('modelKey'), id: this.record.id }
       this.checkKey(params).then(res => {
         if (res.code !== 10000) {
           callback(new Error(res.msg))
@@ -150,10 +150,10 @@ export default {
       })
     },
     show () {
-      this.addVisible = true
+      this.visible = true
     },
     onClose () {
-      this.addVisible = false
+      this.visible = false
       this.formLoading = false
       this.form.resetFields()
       this.customActiveKey = '1'
@@ -162,9 +162,9 @@ export default {
       this.formLoading = true
       this.form.validateFields((err, values) => {
         if (!err) {
-          this.$refs.formDesign.generatePicture(pic => {
-            const designValue = { 'base64Thumbnail': pic, 'modelEditorJson': JSON.stringify([...this.record.drawingList, ...this.record.drawingButtonList]) }
-            this.save(Object.assign({}, designValue, values)).then(res => {
+          this.$refs.eformDesign.generatePicture(pic => {
+            const designValue = { id: this.record.id, 'base64Thumbnail': pic, 'modelEditorJson': JSON.stringify([...this.record.drawingList, ...this.record.drawingButtonList]) }
+            this.update(Object.assign({}, designValue, values)).then(res => {
               if (res.code === 10000) {
                 this.$message.info(res.msg)
                 this.refresh()

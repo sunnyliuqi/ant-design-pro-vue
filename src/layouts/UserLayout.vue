@@ -22,7 +22,7 @@
           <a href="_self">条款</a>-->
         </div>
         <div class="copyright">
-          Copyright &copy; 2020 simpo
+          Copyright &copy; 2021 simpo
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@
       <a href="http://www.isimpo.com/" target="_blank">辛普科技</a>
     </template>
     <template v-slot:copyright>
-      <a href="http://www.isimpo.com/" target="_blank">Copyright © 2020 simpo</a>
+      <a href="http://www.isimpo.com/" target="_blank">Copyright © 2021 simpo</a>
     </template>
   </global-footer>
 </template>

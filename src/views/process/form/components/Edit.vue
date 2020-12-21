@@ -42,6 +42,29 @@
                   placeholder="请输入描述"/>
               </a-form-item>
             </a-col>
+            <a-col :span="24">
+              <a-form-item
+                label="新版本"
+                :labelCol="{ span: 4 }"
+                :wrapperCol="{ span: 8 }">
+                <a-checkbox-group @change="changeNewVersion" v-decorator="['newVersion',{initialValue: [false], rules:[]}]">
+                  <a-checkbox :value="true">
+                    保存为新版本可以方便回滚到历史版本
+                  </a-checkbox>
+                </a-checkbox-group>
+              </a-form-item>
+            </a-col>
+            <a-col :span="24" v-if="record.newVersion">
+              <a-form-item
+                label="备注"
+                :labelCol="{ span: 4 }"
+                :wrapperCol="{ span: 8 }">
+                <a-textarea
+                  :rows="4"
+                  v-decorator="['modelComment',{rules:[]}]"
+                  placeholder="请输入备注"/>
+              </a-form-item>
+            </a-col>
           </a-row>
         </a-tab-pane>
         <a-tab-pane key="2" tab="设计器" force-render>
@@ -135,6 +158,16 @@ export default {
   computed: {
   },
   methods: {
+    /**
+     * 新版本标识
+     */
+    changeNewVersion (checkedValue) {
+      if (checkedValue && checkedValue instanceof Array && checkedValue.length > 0) {
+        this.record.newVersion = checkedValue[0]
+      } else {
+        this.record.newVersion = false
+      }
+    },
     callback (key) {
       this.customActiveKey = key
     },
@@ -163,8 +196,8 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           this.$refs.eformDesign.generatePicture(pic => {
-            const designValue = { id: this.record.id, 'base64Thumbnail': pic, 'modelEditorJson': JSON.stringify([...this.record.drawingList, ...this.record.drawingButtonList]) }
-            this.update(Object.assign({}, designValue, values)).then(res => {
+            const designValue = { newVersion: this.record.newVersion, id: this.record.id, 'base64Thumbnail': pic, 'modelEditorJson': JSON.stringify([...this.record.drawingList, ...this.record.drawingButtonList]) }
+            this.update(Object.assign({}, values, designValue)).then(res => {
               if (res.code === 10000) {
                 this.$message.info(res.msg)
                 this.refresh()

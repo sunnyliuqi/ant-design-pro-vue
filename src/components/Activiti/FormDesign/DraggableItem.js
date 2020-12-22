@@ -1,5 +1,6 @@
 import moment from 'moment'
 import draggable from 'vuedraggable'
+import boolean from 'less/lib/less/functions/boolean'
 export default {
   name: 'DraggableItem',
   props: {
@@ -10,6 +11,10 @@ export default {
     activeId: {
       type: String,
       default: ''
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -180,6 +185,7 @@ export default {
       onUpdate={update}
       onRemove={remove}
       onEnd={end}
+      disabled={this.disabled}
       className="drawing-board" list={this.drawingList} animation={340} group="componentsGroup">{this.parseItems()}</draggable>)
   }
 }

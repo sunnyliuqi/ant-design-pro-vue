@@ -17,7 +17,7 @@
         <span class="detail-label">API名称</span><span class="detail-content">{{ record.name }}</span>
       </a-col>
       <a-col :span="24">
-        <span class="detail-label">api响应数据</span><span class="detail-content" style="height: auto;">{{ record.responseData }}</span>
+        <span class="detail-label">api响应数据</span><span class="detail-content" style="height: auto; vertical-align: text-top;">{{ record.responseData }}</span>
       </a-col>
       <a-col :span="24">
         <span class="detail-label">路径</span><span class="detail-content">{{ record.path }}</span>

@@ -1,14 +1,14 @@
 <template>
   <a-row :gutter="16">
     <a-col :lg="24" :md="24">
-      <span class="detail-label">普通</span><span class="detail-content" style="height: auto;"><base-uploader :complete-call-back="customCompleteCallBack" /></span>
+      <span class="detail-label">普通</span><span class="detail-content" style="height: auto; vertical-align: text-top;"><base-uploader :complete-call-back="customCompleteCallBack" /></span>
     </a-col>
     <a-col :lg="24" :md="24">
       <br/>
     </a-col>
     <a-col :lg="24" :md="24">
       <span class="detail-label">自定义</span>
-      <span class="detail-content" style="height: auto;">
+      <span class="detail-content" style="height: auto; vertical-align: text-top;">
         <base-uploader :complete-call-back="customCompleteCallBack">
           <uploader-unsupport></uploader-unsupport>
           <uploader-btn :attrs="attrs">选择视频</uploader-btn>

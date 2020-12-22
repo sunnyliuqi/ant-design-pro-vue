@@ -1,4 +1,5 @@
 import draggable from 'vuedraggable'
+import boolean from 'less/lib/less/functions/boolean'
 export default {
   name: 'DraggableButtonItem',
   props: {
@@ -9,6 +10,10 @@ export default {
     activeId: {
       type: String,
       default: ''
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -45,6 +50,7 @@ export default {
         onUpdate={update}
         onRemove={remove}
         onEnd={end}
+        disabled={this.disabled}
         className="drawing-board" list={this.drawingButtonList} animation={340} group="componentsButtonGroup">{formFields}</draggable>)
     },
     /**

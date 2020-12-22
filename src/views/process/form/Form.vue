@@ -87,6 +87,10 @@
       :refresh="refresh"
       :save="save"
     />
+    <detail
+      ref="detailForm"
+      :record="recordActive"
+    />
   </a-card>
 </template>
 
@@ -96,6 +100,7 @@ import { mapGetters } from 'vuex'
 import Add from './components/Add'
 import Edit from './components/Edit'
 import Clone from './components/Clone'
+import Detail from './components/Detail'
 import { initSelects, initInputs, initOutcomes, initDrawingList, initDrawingButtonList, initialClone } from '@/components/Activiti/FormDesign/util'
 import { input, textarea, number, radio, checkbox, select, datetime, date, outcomes } from '@/core/icons'
 /**
@@ -109,7 +114,7 @@ const initPagination = {
 }
 export default {
   name: 'Form',
-  components: { Add, Edit, Clone },
+  components: { Add, Edit, Clone, Detail },
   data () {
     return {
       recordActive: {},
@@ -170,7 +175,12 @@ export default {
      * 查看表单
      */
     viewForm (item) {
-      console.info('view：' + item.id)
+      get(item).then(res => {
+        if (res.code === 10000) {
+          this.recordActive = this.parseResult(res.result)
+          this.$refs.detailForm.show()
+        }
+      })
     },
     /**
        *  修改表单

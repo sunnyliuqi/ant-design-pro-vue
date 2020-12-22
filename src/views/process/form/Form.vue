@@ -49,6 +49,7 @@
           </template>
           <a-card-meta :title="item.name" @click="viewForm(item)">
             <div slot="description">
+              <p style="margin-bottom: 0px;">{{ item.modelKey }}</p>
               <p style="margin-bottom: 0px;">{{ item.description }}</p>
               <p style="margin-bottom: 0px;">{{ item.lastUpdated }}</p>
             </div>
@@ -76,6 +77,16 @@
       :refresh="refresh"
       :update="update"
     />
+    <clone
+      ref="cloneForm"
+      :input-components="inputComponents"
+      :select-components="selectComponents"
+      :outcomes-components="outcomesComponents"
+      :record="recordActive"
+      :check-key="checkKey"
+      :refresh="refresh"
+      :save="save"
+    />
   </a-card>
 </template>
 
@@ -84,6 +95,7 @@ import { queryList, checkKey, save, get, update, del } from '@/api/process/form'
 import { mapGetters } from 'vuex'
 import Add from './components/Add'
 import Edit from './components/Edit'
+import Clone from './components/Clone'
 import { initSelects, initInputs, initOutcomes, initDrawingList, initDrawingButtonList, initialClone } from '@/components/Activiti/FormDesign/util'
 import { input, textarea, number, radio, checkbox, select, datetime, date, outcomes } from '@/core/icons'
 /**
@@ -97,7 +109,7 @@ const initPagination = {
 }
 export default {
   name: 'Form',
-  components: { Add, Edit },
+  components: { Add, Edit, Clone },
   data () {
     return {
       recordActive: {},
@@ -170,7 +182,29 @@ export default {
           this.$refs.editForm.show()
         }
       })
-      console.info('edit：' + item.id)
+    },
+    /**
+     * 克隆表单
+     */
+    cloneForm (item) {
+      get(item).then(res => {
+        if (res.code === 10000) {
+          this.recordActive = this.parseResult(res.result)
+          this.$refs.cloneForm.show()
+        }
+      })
+    },
+    /**
+     * 历史版本
+     */
+    historyForm (item) {
+      console.info('history：' + item.id)
+    },
+    /**
+       * 删除表单
+       */
+    deleteForm (item) {
+      console.info('delete：' + item.id)
     },
     /**
      * 服务端详情数据解析
@@ -230,7 +264,11 @@ export default {
                   _f.tagIcon = input
                   _f.tag = 'a-input'
               }
-              _f.value = f.value
+              if (f.value && f.value.length > 2 && f.value[0] === '[' && f.value[f.value.length - 1] === ']') {
+                _f.value = JSON.parse(f.value)
+              } else {
+                _f.value = f.value
+              }
               _f.required = f.required
               _f.placeholder = f.placeholder
               _f.disabled = f.disabled
@@ -243,24 +281,6 @@ export default {
         }
       }
       return result
-    },
-    /**
-     * 克隆表单
-     */
-    cloneForm (item) {
-      console.info('clone：' + item.id)
-    },
-    /**
-     * 历史版本
-     */
-    historyForm (item) {
-      console.info('history：' + item.id)
-    },
-    /**
-       * 删除表单
-       */
-    deleteForm (item) {
-      console.info('delete：' + item.id)
     },
     ...mapGetters(['color']),
     /**

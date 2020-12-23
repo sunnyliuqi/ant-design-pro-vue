@@ -41,7 +41,7 @@ export function update (data) {
 // 删除
 export function del (data) {
   return axios({
-    url: path.process + '/form/model',
+    url: path.process + '/form/model/' + data.id,
     method: 'DELETE',
     data: data
   })

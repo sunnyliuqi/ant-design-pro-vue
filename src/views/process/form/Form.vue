@@ -232,7 +232,12 @@ export default {
        * 删除表单
        */
     deleteForm (item) {
-      console.info('delete：' + item.id)
+      del(item).then(res => {
+        if (res.code && res.code === 10000) {
+          this.$message.info(res.msg)
+          this.refresh()
+        }
+      })
     },
     /**
      * 服务端详情数据解析

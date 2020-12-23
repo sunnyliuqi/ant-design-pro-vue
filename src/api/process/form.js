@@ -53,3 +53,28 @@ export function get (params) {
     method: 'GET'
   })
 }
+
+/**
+ * 获取历史
+ * @param params
+ * @returns {AxiosPromise}
+ */
+export function histories (params) {
+  return axios({
+    url: path.process + '/form/model/histories/' + params.id,
+    method: 'GET'
+  })
+}
+
+/**
+ * 回滚版本
+ * @param data
+ * @returns {AxiosPromise}
+ */
+export function rollback (data) {
+  return axios({
+    url: path.process + '/form/model/rollback',
+    method: 'PUT',
+    data: data
+  })
+}

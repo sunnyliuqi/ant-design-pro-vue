@@ -620,7 +620,7 @@
       padding: 8px;
       flex: 0 0 256px !important;
       max-width: 256px !important;
-      max-height: 400px;
+      min-height: 300px;
     }
 
     /deep/ .ant-layout-content {
@@ -628,7 +628,7 @@
       padding: 8px;
       border-left: 1px solid #f1e8e8;
       border-right: 1px solid #f1e8e8;
-      max-height: 400px;
+      min-height: 300px;
     }
 
     /deep/ .active-item {

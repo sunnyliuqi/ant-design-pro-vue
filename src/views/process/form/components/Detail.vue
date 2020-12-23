@@ -74,22 +74,17 @@ export default {
   },
   data () {
     return {
-      customActiveKey: '1',
       visible: false
     }
   },
   computed: {
   },
   methods: {
-    callback (key) {
-      this.customActiveKey = key
-    },
     show () {
       this.visible = true
     },
     onClose () {
       this.visible = false
-      this.customActiveKey = '1'
     }
   }
 }

@@ -91,16 +91,22 @@
       ref="detailForm"
       :record="recordActive"
     />
+    <form-history
+      ref="historyForm"
+      :refresh="refresh"
+      :rollback="rollback"
+      :record="historyForms"/>
   </a-card>
 </template>
 
 <script>
-import { queryList, checkKey, save, get, update, del } from '@/api/process/form'
+import { queryList, checkKey, save, get, update, del, histories, rollback } from '@/api/process/form'
 import { mapGetters } from 'vuex'
 import Add from './components/Add'
 import Edit from './components/Edit'
 import Clone from './components/Clone'
 import Detail from './components/Detail'
+import FormHistory from './components/Histories'
 import { initSelects, initInputs, initOutcomes, initDrawingList, initDrawingButtonList, initialClone } from '@/components/Activiti/FormDesign/util'
 import { input, textarea, number, radio, checkbox, select, datetime, date, outcomes } from '@/core/icons'
 /**
@@ -114,13 +120,15 @@ const initPagination = {
 }
 export default {
   name: 'Form',
-  components: { Add, Edit, Clone, Detail },
+  components: { Add, Edit, Clone, Detail, FormHistory },
   data () {
     return {
+      historyForms: [],
       recordActive: {},
       checkKey: checkKey,
       save: save,
       update: update,
+      rollback: rollback,
       loading: true,
       listData: [],
       loadData: params => {
@@ -208,7 +216,17 @@ export default {
      * 历史版本
      */
     historyForm (item) {
-      console.info('history：' + item.id)
+      histories(item).then(res => {
+        if (res.code === 10000) {
+          if (res.result instanceof Array) {
+            res.result.forEach(item => {
+                this.parseResult(item)
+            })
+            this.historyForms = res.result
+          }
+          this.$refs.historyForm.show()
+        }
+      })
     },
     /**
        * 删除表单

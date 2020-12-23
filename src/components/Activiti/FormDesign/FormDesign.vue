@@ -100,7 +100,7 @@
         </a-row>
       </a-form>
     </a-layout-content>
-    <a-layout-sider style="max-height: 400px; overflow-x: hidden;">
+    <a-layout-sider style="min-height: 300px; overflow-x: hidden;">
       <a-tabs default-active-key="1">
         <a-tab-pane key="1" tab="组件属性">
           <a-form :form="formPanel">
@@ -810,7 +810,7 @@ export default {
       padding: 8px;
       flex: 0 0 256px !important;
       max-width: 256px !important;
-      max-height: 400px;
+      min-height: 300px;
     }
 
     /deep/ .ant-layout-content {
@@ -818,7 +818,7 @@ export default {
       padding: 8px;
       border-left: 1px solid #f1e8e8;
       border-right: 1px solid #f1e8e8;
-      max-height: 400px;
+      min-height: 300px;
     }
 
     /deep/ .active-item {

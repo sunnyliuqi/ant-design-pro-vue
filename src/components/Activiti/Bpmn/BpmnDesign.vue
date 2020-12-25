@@ -3,7 +3,7 @@
   <div class="bpmnDesign">
     <div class="canvas" ref="canvas"></div>
     <div class="toolbar">
-      <a style="color: #3b4249;cursor: default;" title="download">下载</a>
+      <a style="color: #3b4249;cursor: default;" title="下载">下载</a>
       <a @click="saveDiagram" title="download BPMN diagram">BPMN</a>
       <a @click="saveSVG" title="download as SVG image">SVG</a>
     </div>
@@ -12,7 +12,7 @@
 
 <script>
   import BpmnModeler from 'bpmn-js/lib/Modeler'
-  import BpmnData from '@/components/Activiti/Bpmn/BpmnData'
+  import customTranslate from './i18n/customTranslate'
 
   export default {
     name: 'BpmnDesign',
@@ -31,7 +31,25 @@
     data () {
       return {
         bpmnModeler: null,
-        bpmnData: new BpmnData()
+        defaultXml: `
+    <?xml version="1.0" encoding="UTF-8"?>
+      <bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+        <bpmn2:process id="process1567044459787" name="process1567044459787">
+          <bpmn2:documentation>描述</bpmn2:documentation>
+          <bpmn2:startEvent id="StartEvent_1" name="开始"/>
+        </bpmn2:process>
+        <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+          <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="process1567044459787">
+            <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+              <dc:Bounds x="184" y="64" width="36" height="36"/>
+              <bpmndi:BPMNLabel>
+                <dc:Bounds x="191" y="40" width="22" height="14"/>
+              </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+          </bpmndi:BPMNPlane>
+        </bpmndi:BPMNDiagram>
+      </bpmn2:definitions>
+    `
       }
     },
     methods: {
@@ -65,19 +83,9 @@
           this.$message.error('保存xml错误：' + err)
         })
       },
-      // 当图发生改变的时候会调用这个函数，这个data就是图的xml
-      setEncoded (link, name, data) {
-        // 把xml转换为URI，下载要用到的
-        const encodedData = encodeURIComponent(data)
-        if (data) {
-          link.className = 'active'
-          link.href = 'data:application/bpmn20-xml;charset=UTF-8,' + encodedData
-          link.download = name
-        }
-      },
       createNewDiagram () {
         // 将字符串转换成图显示出来
-        const _xml = this.xml || this.bpmnData.defaultXml
+        const _xml = this.xml || this.defaultXml
         this.bpmnModeler.importXML(_xml).then((result) => {
           const { warnings } = result
           console.warn(warnings)
@@ -93,7 +101,7 @@
         const paletteDom = this.$refs.canvas.getElementsByClassName('djs-palette')[0]
         if (paletteDom) {
           paletteDom.classList.replace('two-column', 'one-column')
-          this.resetEntryTitle(paletteDom)
+          this.resetEntry(paletteDom)
         } else {
           this.$message.error('没有找到调色板,请刷新页面')
         }
@@ -102,15 +110,12 @@
        * 重置entry提示语
        * @param paletteDom
        */
-      resetEntryTitle (paletteDom) {
+      resetEntry (paletteDom) {
         const entriesDom = paletteDom.getElementsByClassName('entry')
         if (entriesDom && entriesDom.length > 0) {
           for (let i = 0; i < entriesDom.length; i++) {
             entriesDom[i].classList.add('custom-entry')
-            entriesDom[i].title = this.bpmnData.getControl(entriesDom[i].dataset.action).title
-            entriesDom[i].innerHTML = `<div style='font-size: 14px;font-weight:500;margin-left:15px;'>${
-              entriesDom[i].title
-            }</div>`
+            entriesDom[i].innerHTML = `<div style='font-size: 14px;font-weight:500;margin-left:15px;overflow : hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;'>${entriesDom[i].title}</div>`
           }
         }
       }
@@ -119,7 +124,10 @@
       const canvas = this.$refs.canvas
       // 生成实例
       this.bpmnModeler = new BpmnModeler({
-        container: canvas
+        container: canvas,
+        additionalModules: [{
+          translate: ['value', customTranslate]
+        }]
       })
       // 监听流程图改变事件
       const _this = this

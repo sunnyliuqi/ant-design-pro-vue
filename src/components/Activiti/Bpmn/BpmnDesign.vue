@@ -98,7 +98,7 @@
         }
       },
       /**
-       * 重置entry提示语
+       * 重置entry布局
        * @param paletteDom
        */
       resetEntry (paletteDom) {

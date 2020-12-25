@@ -106,7 +106,7 @@
         if (entriesDom && entriesDom.length > 0) {
           for (let i = 0; i < entriesDom.length; i++) {
             entriesDom[i].classList.add('custom-entry')
-            entriesDom[i].innerHTML = `<div style='font-size: 14px;font-weight:500;margin-left:15px;overflow : hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;'>${entriesDom[i].title}</div>`
+            entriesDom[i].innerHTML = `<div class="custom-entry-content">${entriesDom[i].title}</div>`
           }
         }
       }
@@ -175,6 +175,17 @@
         align-items: center;
         width: 100%;
         padding: 5px;
+      }
+
+      .custom-entry-content {
+        font-size: 14px;
+        font-weight: 500;
+        margin-left: 15px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
       }
     }
 

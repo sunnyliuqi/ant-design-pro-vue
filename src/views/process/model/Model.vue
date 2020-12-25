@@ -1,12 +1,19 @@
 <template>
   <a-card :bordered="false">
-    <p>进阶阶段，开发中...</p>
+    <bpmn-design
+    />
   </a-card>
 </template>
 
 <script>
+  import BpmnDesign from '@/components/Activiti/Bpmn/BpmnDesign'
 export default {
-  name: 'Model'
+  name: 'Model',
+  components: { BpmnDesign },
+  data () {
+    return {
+    }
+  }
 }
 </script>
 

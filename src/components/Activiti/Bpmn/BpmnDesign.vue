@@ -12,7 +12,7 @@
 
 <script>
   import BpmnModeler from 'bpmn-js/lib/Modeler'
-  import BpmData from '@/components/Activiti/Bpmn/BpmData'
+  import BpmnData from '@/components/Activiti/Bpmn/BpmnData'
 
   export default {
     name: 'BpmnDesign',
@@ -31,7 +31,7 @@
     data () {
       return {
         bpmnModeler: null,
-        bpmData: new BpmData()
+        bpmnData: new BpmnData()
       }
     },
     methods: {
@@ -77,7 +77,7 @@
       },
       createNewDiagram () {
         // 将字符串转换成图显示出来
-        const _xml = this.xml || this.bpmData.defaultXml
+        const _xml = this.xml || this.bpmnData.defaultXml
         this.bpmnModeler.importXML(_xml).then((result) => {
           const { warnings } = result
           console.warn(warnings)
@@ -107,7 +107,7 @@
         if (entriesDom && entriesDom.length > 0) {
           for (let i = 0; i < entriesDom.length; i++) {
             entriesDom[i].classList.add('custom-entry')
-            entriesDom[i].title = this.bpmData.getControl(entriesDom[i].dataset.action).title
+            entriesDom[i].title = this.bpmnData.getControl(entriesDom[i].dataset.action).title
             entriesDom[i].innerHTML = `<div style='font-size: 14px;font-weight:500;margin-left:15px;'>${
               entriesDom[i].title
             }</div>`

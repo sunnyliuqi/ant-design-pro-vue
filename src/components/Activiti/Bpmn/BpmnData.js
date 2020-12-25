@@ -1,7 +1,7 @@
 /**
  * 存储流程设计相关参数
  */
-export default class BpmData {
+export default class BpmnData {
   constructor () {
     this.controls = [] // 设计器控件
     this.defaultXml = ''// 默认xml

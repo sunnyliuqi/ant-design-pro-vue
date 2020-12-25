@@ -1,6 +1,7 @@
 export default {
 
   // Labels
+  // 自定义翻译
   'Activate the hand tool': '手动',
   'Activate the lasso tool': '套索',
   'Activate the create/remove space tool': '空间',
@@ -23,6 +24,13 @@ export default {
   'Empty Pool (removes content)': '清空池',
   'Data Store Reference': '数据存储',
   'Data Object Reference': '数据对象',
+  'Append ReceiveTask': '追加接收任务',
+  'Append MessageIntermediateCatchEvent': '追加消息中间捕获事件',
+  'Append TimerIntermediateCatchEvent': '追加定时中间捕获事件',
+  'Append ConditionIntermediateCatchEvent': '追加条件中间捕获事件',
+  'Append SignalIntermediateCatchEvent': '追加信号中间捕获事件',
+
+  // 官方翻译
   'Add Lane above': '添加到通道之上',
   'Divide into two Lanes': '分成两条通道',
   'Divide into three Lanes': '分成三条通道',

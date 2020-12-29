@@ -1,18 +1,25 @@
 <template>
-
-  <div class="bpmnDesign">
-    <div class="canvas" ref="canvas"></div>
-    <div class="toolbar">
-      <a style="color: #3b4249;cursor: default;" title="下载">下载</a>
-      <a @click="saveDiagram" title="download BPMN diagram">BPMN</a>
-      <a @click="saveSVG" title="download as SVG image">SVG</a>
-    </div>
-  </div>
+  <a-layout class="bpmnDesign">
+    <a-layout-content>
+      <div class="canvas" ref="canvas"></div>
+      <div class="toolbar">
+        <a style="color: #3b4249;cursor: default;" title="下载">下载</a>
+        <a @click="saveDiagram" title="download BPMN diagram">BPMN</a>
+        <a @click="saveSVG" title="download as SVG image">SVG</a>
+      </div>
+    </a-layout-content>
+    <a-layout-sider style="min-height: 300px; overflow-x: hidden;">
+      <div class="propertiesPanel" ref="propertiesPanel"></div>
+    </a-layout-sider>
+  </a-layout>
 </template>
 
 <script>
   import BpmnModeler from 'bpmn-js/lib/Modeler'
   import customTranslate from './i18n/customTranslate'
+  import propertiesPanelModule from 'bpmn-js-properties-panel-activiti'
+  import propertiesProviderModule from 'bpmn-js-properties-panel-activiti/lib/provider/activiti'
+  import camundaModdleDescriptor from 'activiti-bpmn-moddle/resources/activiti'
 
   export default {
     name: 'BpmnDesign',
@@ -42,6 +49,9 @@
       </bpmn2:definitions>
     `
       }
+    },
+    mounted () {
+      this.initModeler()
     },
     methods: {
       // 下载为SVG格式,done是个函数，调用的时候传入的
@@ -74,12 +84,15 @@
           this.$message.error('保存xml错误：' + err)
         })
       },
-      createNewDiagram () {
-        // 将字符串转换成图显示出来
-        const _xml = this.xml || this.defaultXml
+      /**
+       * 导入xml流程定义
+       */
+      importDiagram (_xml) {
         this.bpmnModeler.importXML(_xml).then((result) => {
           const { warnings } = result
-          console.warn(warnings)
+          if (warnings && warnings instanceof Array && warnings.less > 0) {
+            console.warn(warnings)
+          }
           this.adjustPalette()
         }).catch(err => {
           this.$message.error('流程文件错误：' + err.message)
@@ -109,28 +122,59 @@
             entriesDom[i].innerHTML = `<div class="custom-entry-content">${entriesDom[i].title}</div>`
           }
         }
-      }
-    },
-    mounted () {
-      const canvas = this.$refs.canvas
-      // 生成实例
-      this.bpmnModeler = new BpmnModeler({
-        container: canvas,
-        additionalModules: [{
-          translate: ['value', customTranslate]
-        }]
-      })
-      // 监听流程图改变事件
-      const _this = this
-      this.bpmnModeler.on('commandStack.changed', function () {
-        _this.bpmnModeler.saveXML({ format: true }).then(result => {
-          const { xml } = result
-          _this.change(xml)
-        }).catch(err => {
-          this.$message.error('更新xml错误：' + err)
+      },
+      /**
+       * 初始化modeler
+       */
+      initModeler () {
+        const canvas = this.$refs.canvas
+        const propertiesPanel = this.$refs.propertiesPanel
+        // 实例化
+        this.bpmnModeler = new BpmnModeler({
+          container: canvas,
+          propertiesPanel: {
+            parent: propertiesPanel
+          },
+          additionalModules: [
+            propertiesPanelModule,
+            propertiesProviderModule,
+            {
+              translate: ['value', customTranslate]
+            }],
+          moddleExtensions: {
+            camunda: camundaModdleDescriptor
+          }
         })
-      })
-      this.createNewDiagram() // 新增流程定义
+        /**
+         * 添加事件监听
+         */
+        this.addEventListener()
+        /**
+         * 导入流程图
+         */
+        this.importDiagram(this.xml || this.defaultXml)
+      },
+      addEventListener () {
+        const that = this
+        const eventBus = this.bpmnModeler.get('eventBus')
+        const events = [
+          {
+          'name': 'commandStack.changed',
+          'priority': 1000,
+          'callback': function () {
+            that.bpmnModeler.saveXML({ format: true }).then(result => {
+              const { xml } = result
+              that.change(xml)
+            }).catch(err => {
+              this.$message.error('更新xml错误：' + err)
+            })
+            }
+          }
+          ]
+        events.forEach(e => {
+          eventBus.on(e.name, e.priority, e.callback)
+        })
+      }
     }
   }
 </script>
@@ -140,10 +184,27 @@
   @import '~bpmn-js/dist/assets/diagram-js.css';
   @import '~bpmn-js/dist/assets/bpmn-font/css/bpmn.css';
   @import '~bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css';
-  @import '~bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css';
+  @import '~bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css';
+  @import '~bpmn-js-properties-panel/dist/assets/bpmn-js-properties-panel.css';
 
   .bpmnDesign {
     width: 100%;
+
+    /deep/ .ant-layout-sider {
+      background-color: white;
+      padding: 8px;
+      flex: 0 0 340px !important;
+      max-width: 340px !important;
+      min-height: 300px;
+    }
+
+    /deep/ .ant-layout-content {
+      background-color: white;
+      padding: 8px;
+      border-left: 1px solid #f1e8e8;
+      border-right: 1px solid #f1e8e8;
+      min-height: 300px;
+    }
 
     .canvas {
       width: 100%;
@@ -192,7 +253,7 @@
     .toolbar {
       position: absolute;
       top: 20px;
-      right: 24px;
+      right: 374px;
 
       a {
         text-decoration: none;

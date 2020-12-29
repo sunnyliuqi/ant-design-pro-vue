@@ -161,7 +161,7 @@
           {
           'name': 'commandStack.changed',
           'priority': 1000,
-          'callback': function () {
+          'callback': e => {
             that.bpmnModeler.saveXML({ format: true }).then(result => {
               const { xml } = result
               that.change(xml)

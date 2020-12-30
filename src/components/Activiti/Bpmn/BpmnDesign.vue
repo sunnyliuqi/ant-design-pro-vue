@@ -1,16 +1,22 @@
 <template>
   <a-layout class="bpmnDesign">
-    <a-layout-content>
-      <div class="canvas" ref="canvas"></div>
-      <div class="toolbar">
-        <a style="color: #3b4249;cursor: default;" title="下载">下载</a>
-        <a @click="saveDiagram" title="download BPMN diagram">BPMN</a>
-        <a @click="saveSVG" title="download as SVG image">SVG</a>
-      </div>
-    </a-layout-content>
+    <a-layout>
+      <a-layout-header>
+        <a-row :gutter="16">
+          <a-col :span="24" class="bpmn-header">
+            <a-button icon="export" @click="saveSVG">svg</a-button>
+            <a-button icon="download" @click="saveDiagram">bpmn</a-button>
+          </a-col>
+        </a-row>
+      </a-layout-header>
+      <a-layout-content>
+        <div class="canvas" ref="canvas"></div>
+      </a-layout-content>
+    </a-layout>
     <a-layout-sider style="min-height: 300px; overflow-x: hidden;">
       <div class="propertiesPanel" ref="propertiesPanel"></div>
     </a-layout-sider>
+
   </a-layout>
 </template>
 
@@ -47,14 +53,14 @@
     methods: {
       // 下载为SVG格式,done是个函数，调用的时候传入的
       saveSVG (e) {
-        const link = e.target
         this.bpmnModeler.saveSVG({}).then(result => {
           const { svg } = result
           if (svg) {
             const encodedData = encodeURIComponent(svg)
-            link.className = 'active'
+            const link = document.createElement('a')
             link.href = 'data:application/bpmn20-xml;charset=UTF-8,' + encodedData
             link.download = 'diagram.svg'
+            link.click()
           }
         }).catch(err => {
           this.$message.error('保存svg错误：' + err)
@@ -62,14 +68,14 @@
       },
       // 下载为SVG格式,done是个函数，调用的时候传入的
       saveDiagram (e) {
-        const link = e.target
         this.bpmnModeler.saveXML({ format: true }).then(result => {
           const { xml } = result
           if (xml) {
             const encodedData = encodeURIComponent(xml)
-            link.className = 'active'
+            const link = document.createElement('a')
             link.href = 'data:application/bpmn20-xml;charset=UTF-8,' + encodedData
             link.download = 'diagram.bpmn'
+            link.click()
           }
         }).catch(err => {
           this.$message.error('保存xml错误：' + err)
@@ -180,77 +186,83 @@
 
   .bpmnDesign {
     width: 100%;
-
-    /deep/ .ant-layout-sider {
-      background-color: white;
-      padding: 8px;
-      flex: 0 0 340px !important;
-      max-width: 340px !important;
-      min-height: 300px;
+    /deep/ .ant-layout-header{
+      padding: 0px;
+      line-height:48px;
+      height: 48px;
+      border-bottom: 2px solid #e4e7ed;
+      .bpmn-header{
+        display: -webkit-flex;
+        display: flex;
+        flex-direction: row-reverse;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+        button {
+          margin: 4px 0px 0px 8px;
+          i svg{
+            min-height: 12px;
+          }
+        }
+      }
     }
-
     /deep/ .ant-layout-content {
       background-color: white;
       padding: 8px;
       border-left: 1px solid #f1e8e8;
       border-right: 1px solid #f1e8e8;
       min-height: 300px;
-    }
+      .canvas {
+        width: 100%;
+        height: 100%;
+        /deep/ svg {
+          min-height: 700px;
+        }
 
-    .canvas {
-      width: 100%;
-      height: 100%;
-    }
+        /deep/ .djs-palette {
+          width: 130px;
 
+          .djs-palette-entries {
+            width: 128px;
+          }
+
+          .entry {
+            width: 128px;
+          }
+
+          .custom-entry {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            padding: 5px;
+          }
+
+          .custom-entry-content {
+            font-size: 14px;
+            font-weight: 500;
+            margin-left: 15px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+          }
+        }
+      }
+    }
+    /deep/ .ant-layout-sider {
+      background-color: white;
+      padding: 0px;
+      flex: 0 0 340px !important;
+      max-width: 340px !important;
+      min-height: 300px;
+      .propertiesPanel{
+        padding: 4px;
+      }
+    }
     /deep/ .bjs-powered-by {
       display: none;
-    }
-
-    /deep/ svg {
-      min-height: 700px;
-    }
-
-    /deep/ .djs-palette {
-      width: 130px;
-
-      .djs-palette-entries {
-        width: 128px;
-      }
-
-      .entry {
-        width: 128px;
-      }
-
-      .custom-entry {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        width: 100%;
-        padding: 5px;
-      }
-
-      .custom-entry-content {
-        font-size: 14px;
-        font-weight: 500;
-        margin-left: 15px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-      }
-    }
-
-    .toolbar {
-      position: absolute;
-      top: 20px;
-      right: 374px;
-
-      a {
-        text-decoration: none;
-        margin: 5px;
-        color: #409eff;
-      }
     }
   }
 </style>

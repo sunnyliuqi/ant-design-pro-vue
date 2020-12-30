@@ -2,7 +2,7 @@ export default {
 
   // Labels
   // 自定义翻译
-  'Activate the hand tool': '手动',
+  'Activate the hand tool': '抓手',
   'Activate the lasso tool': '套索',
   'Activate the create/remove space tool': '空间',
   'Activate the global connect tool': '全局连接',

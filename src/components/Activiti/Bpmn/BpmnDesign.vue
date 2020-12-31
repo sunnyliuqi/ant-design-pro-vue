@@ -23,9 +23,9 @@
 <script>
   import BpmnModeler from 'bpmn-js/lib/Modeler'
   import customTranslate from './i18n/customTranslate'
-  import propertiesPanelModule from 'bpmn-js-properties-panel-activiti'
-  import propertiesProviderModule from 'bpmn-js-properties-panel-activiti/lib/provider/activiti'
-  import camundaModdleDescriptor from 'activiti-bpmn-moddle/resources/activiti'
+  import propertiesPanelModule from './PanelActiviti'
+  import propertiesProviderModule from './PanelActiviti/lib/provider'
+  import activitiDescriptor from './PanelActiviti/lib/moddle/activiti'
   import { emptyBpmn } from './store/defaultBpmn'
   export default {
     name: 'BpmnDesign',
@@ -139,7 +139,7 @@
               translate: ['value', customTranslate]
             }],
           moddleExtensions: {
-            camunda: camundaModdleDescriptor
+            activiti: activitiDescriptor
           }
         })
         /**

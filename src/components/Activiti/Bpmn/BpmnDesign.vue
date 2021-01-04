@@ -14,7 +14,11 @@
       </a-layout-content>
     </a-layout>
     <a-layout-sider style="min-height: 300px; overflow-x: hidden;">
-      <div class="propertiesPanel" ref="propertiesPanel"></div>
+      <!-- <div class="propertiesPanel" ref="propertiesPanel"></div>-->
+      <activiti-panel
+        :element="current"
+        :update-bpmn="updateBpmn"
+      />
     </a-layout-sider>
 
   </a-layout>
@@ -23,12 +27,18 @@
 <script>
   import BpmnModeler from 'bpmn-js/lib/Modeler'
   import customTranslate from './i18n/customTranslate'
-  import propertiesPanelModule from './PanelActiviti'
-  import propertiesProviderModule from './PanelActiviti/lib/provider'
+  import ActivitiPanel from './PanelActiviti/ActivitiPanel'
   import activitiDescriptor from './PanelActiviti/lib/moddle/activiti'
+  import propertiesPanelModule from 'bpmn-js-properties-panel-activiti'
+  // 而这个引入的是右侧属性栏里的内容
+  import propertiesProviderModule from 'bpmn-js-properties-panel-activiti/lib/provider/activiti'
   import { emptyBpmn } from './store/defaultBpmn'
   export default {
     name: 'BpmnDesign',
+    components: { ActivitiPanel },
+    compents: {
+      ActivitiPanel
+    },
     props: {
       xml: {
         type: String,
@@ -44,13 +54,65 @@
     data () {
       return {
         bpmnModeler: null,
-        defaultXml: emptyBpmn
+        defaultXml: emptyBpmn,
+        current: undefined
       }
     },
     mounted () {
       this.initModeler()
     },
     methods: {
+      /**
+       * 初始化modeler
+       */
+      initModeler () {
+        const canvas = this.$refs.canvas
+/*        const propertiesPanel = this.$refs.propertiesPanel */
+        // 实例化
+        this.bpmnModeler = new BpmnModeler({
+          container: canvas,
+/*          propertiesPanel: {
+            parent: propertiesPanel
+          }, */
+          additionalModules: [
+/*            propertiesPanelModule,
+            propertiesProviderModule, */
+            {
+              translate: ['value', customTranslate]
+            }],
+          moddleExtensions: {
+            activiti: activitiDescriptor
+          }
+        })
+        /**
+         * 添加事件监听
+         */
+        this.addEventListener()
+        /**
+         * 导入流程图
+         */
+        this.importDiagram(this.xml || this.defaultXml)
+      },
+      /**
+       * 操作bpmn动态激活panel
+       */
+      ActivePanel (element) {
+        const current = this.current
+
+        if (typeof element === 'undefined') {
+          element = this.getCanvas().getRootElement()
+        }
+        if (current !== element) {
+          this.current = element
+        }
+      },
+      /**
+       * 从panel修改值更新到bpmn
+       */
+      updateBpmn (element, fields) {
+        console.info(element)
+        console.info(fields)
+      },
       // 下载为SVG格式,done是个函数，调用的时候传入的
       saveSVG (e) {
         this.bpmnModeler.saveSVG({}).then(result => {
@@ -121,35 +183,31 @@
         }
       },
       /**
-       * 初始化modeler
+       * 画布
        */
-      initModeler () {
-        const canvas = this.$refs.canvas
-        const propertiesPanel = this.$refs.propertiesPanel
-        // 实例化
-        this.bpmnModeler = new BpmnModeler({
-          container: canvas,
-          propertiesPanel: {
-            parent: propertiesPanel
-          },
-          additionalModules: [
-            propertiesPanelModule,
-            propertiesProviderModule,
-            {
-              translate: ['value', customTranslate]
-            }],
-          moddleExtensions: {
-            activiti: activitiDescriptor
-          }
-        })
-        /**
-         * 添加事件监听
-         */
-        this.addEventListener()
-        /**
-         * 导入流程图
-         */
-        this.importDiagram(this.xml || this.defaultXml)
+      getCanvas () {
+        return this.bpmnModeler.get('canvas')
+      },
+      /**
+       * 消息中心
+       */
+      getEventBus () {
+        return this.bpmnModeler.get('eventBus')
+      },
+      /**
+       * 模型
+       */
+      getModeling () {
+        return this.bpmnModeler.get('modeling')
+      },
+      /**
+       * 命令栈
+       */
+      getCommandStack () {
+        return this.bpmnModeler.get('commandStack')
+      },
+      isImplicitRoot (element) {
+        return element.id === '__implicitroot'
       },
       addEventListener () {
         const that = this
@@ -163,8 +221,65 @@
               const { xml } = result
               that.change(xml)
             }).catch(err => {
-              this.$message.error('更新xml错误：' + err)
+              that.$message.error('更新xml错误：' + err)
             })
+            }
+          },
+          {
+            'name': 'root.added',
+            'priority': 1000,
+            'callback': e => {
+              const element = e.element
+              if (that.isImplicitRoot(element)) {
+                return
+              }
+              that.ActivePanel(element)
+            }
+          },
+          {
+            'name': 'selection.changed',
+            'priority': 1000,
+            'callback': e => {
+              const newElement = e.newSelection[0]
+
+              const rootElement = that.getCanvas() && that.getCanvas().getRootElement()
+
+              if (that.isImplicitRoot(rootElement)) {
+                return
+              }
+
+              that.ActivePanel(newElement)
+            }
+          },
+          {
+            'name': 'elements.changed',
+            'priority': 1000,
+            'callback': e => {
+              const element = that.current
+
+              if (element) {
+                if (e.elements.indexOf(element) !== -1) {
+                  that.ActivePanel(element)
+                }
+              }
+            }
+          },
+          {
+            'name': 'elementTemplates.changed',
+            'priority': 1000,
+            'callback': e => {
+              const element = that.current
+              if (element) {
+                that.ActivePanel(element)
+              }
+            }
+          },
+          {
+            'name': 'diagram.destroy',
+            'priority': 1000,
+            'callback': e => {
+              console.info('diagram.destroy->')
+              console.info(e)
             }
           }
           ]
@@ -183,7 +298,6 @@
   @import '~bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css';
   @import '~bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css';
   @import '~bpmn-js-properties-panel/dist/assets/bpmn-js-properties-panel.css';
-
   .bpmnDesign {
     width: 100%;
     /deep/ .ant-layout-header{
@@ -257,9 +371,6 @@
       flex: 0 0 340px !important;
       max-width: 340px !important;
       min-height: 300px;
-      .propertiesPanel{
-        padding: 4px;
-      }
     }
     /deep/ .bjs-powered-by {
       display: none;

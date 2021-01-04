@@ -1,5 +1,6 @@
 export default {
-
+  // panel props
+  'General': '通用',
   // Labels
   // 自定义翻译
   'Activate the hand tool': '抓手',

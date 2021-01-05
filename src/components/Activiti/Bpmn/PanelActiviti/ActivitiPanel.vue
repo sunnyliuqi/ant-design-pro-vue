@@ -201,6 +201,7 @@
           this.processElement = val
           this.tabKey = '2'
         }
+        this.formPanel.resetFields()
       }
     },
     methods: {
@@ -213,7 +214,14 @@
       },
       onPanelFieldsChange (props, fields) {
         if (this.updateBpmn) {
-          this.updateBpmn(this.element, fields)
+          const fieldKeys = Object.keys(fields)
+          if (fieldKeys && fieldKeys.length > 0) {
+            const properties = {}
+            fieldKeys.forEach(key => {
+              properties[key] = fields[key].value
+            })
+            this.updateBpmn(this.element, properties)
+          }
         }
       }
     }

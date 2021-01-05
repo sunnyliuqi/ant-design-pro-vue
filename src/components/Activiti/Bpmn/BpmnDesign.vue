@@ -14,7 +14,6 @@
       </a-layout-content>
     </a-layout>
     <a-layout-sider style="min-height: 300px; overflow-x: hidden;">
-      <!-- <div class="propertiesPanel" ref="propertiesPanel"></div>-->
       <activiti-panel
         :element="current"
         :update-bpmn="updateBpmn"
@@ -28,10 +27,6 @@
   import BpmnModeler from 'bpmn-js/lib/Modeler'
   import customTranslate from './i18n/customTranslate'
   import ActivitiPanel from './PanelActiviti/ActivitiPanel'
-  import activitiDescriptor from './PanelActiviti/lib/moddle/activiti'
-  import propertiesPanelModule from 'bpmn-js-properties-panel-activiti'
-  // 而这个引入的是右侧属性栏里的内容
-  import propertiesProviderModule from 'bpmn-js-properties-panel-activiti/lib/provider/activiti'
   import { emptyBpmn } from './store/defaultBpmn'
   export default {
     name: 'BpmnDesign',
@@ -67,22 +62,13 @@
        */
       initModeler () {
         const canvas = this.$refs.canvas
-/*        const propertiesPanel = this.$refs.propertiesPanel */
         // 实例化
         this.bpmnModeler = new BpmnModeler({
           container: canvas,
-/*          propertiesPanel: {
-            parent: propertiesPanel
-          }, */
           additionalModules: [
-/*            propertiesPanelModule,
-            propertiesProviderModule, */
             {
               translate: ['value', customTranslate]
-            }],
-          moddleExtensions: {
-            activiti: activitiDescriptor
-          }
+            }]
         })
         /**
          * 添加事件监听
@@ -109,9 +95,10 @@
       /**
        * 从panel修改值更新到bpmn
        */
-      updateBpmn (element, fields) {
-        console.info(element)
-        console.info(fields)
+      updateBpmn (element, properties) {
+        if (properties && Object.keys(properties).length > 0) {
+          this.getModeling().updateProperties(element, properties)
+        }
       },
       // 下载为SVG格式,done是个函数，调用的时候传入的
       saveSVG (e) {

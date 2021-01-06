@@ -53,7 +53,7 @@
               :wrapperCol="{ span: 16 }">
               <a-input
                 v-decorator="[
-                  'processName',
+                  'processname',
                   {initialValue: processElement.businessObject&&processElement.businessObject.name,}
                 ]"
                 placeholder="请输入流程名称"/>
@@ -66,7 +66,7 @@
               :wrapperCol="{ span: 16 }">
               <a-textarea
                 v-decorator="[
-                  'processDocumentation',
+                  'processdocumentation',
                   {initialValue: processElement.documentation,}
                 ]"
                 placeholder="请输入流程描述"/>
@@ -79,7 +79,7 @@
               :wrapperCol="{ span: 16 }">
               <a-input
                 v-decorator="[
-                  'processNamespace',
+                  'processnamespace',
                   {initialValue: processElement.namespace||'http://www.activiti.org/processdef',}
                 ]"
                 placeholder="请输入流程命名空间"/>
@@ -92,7 +92,7 @@
               :wrapperCol="{ span: 16 }">
               <a-input
                 v-decorator="[
-                  'processAuthor',
+                  'processauthor',
                   {initialValue: processElement.author,}
                 ]"
                 placeholder="请输入流程作者"/>
@@ -105,7 +105,7 @@
               :wrapperCol="{ span: 16 }">
               <a-input
                 v-decorator="[
-                  'processVersion',
+                  'processversion',
                   {initialValue: processElement.version,}
                 ]"
                 placeholder="请输入流程版本"/>
@@ -118,7 +118,7 @@
               :wrapperCol="{ span: 16 }">
               <a-textarea
                 v-decorator="[
-                  'executionlisteners',
+                  'processexecutionlisteners',
                   {initialValue: processElement.executionlisteners,}
                 ]"
                 placeholder="请选择流程执行监听todo"/>
@@ -131,7 +131,7 @@
               :wrapperCol="{ span: 16 }">
               <a-textarea
                 v-decorator="[
-                  'eventlisteners',
+                  'processeventlisteners',
                   {initialValue: processElement.eventlisteners,}
                 ]"
                 placeholder="请选择流程事件监听todo"/>
@@ -144,7 +144,7 @@
               :wrapperCol="{ span: 16 }">
               <a-textarea
                 v-decorator="[
-                  'signaldefinitions',
+                  'processsignaldefinitions',
                   {initialValue: processElement.signaldefinitions,}
                 ]"
                 placeholder="请选择流程信号定义todo"/>
@@ -157,7 +157,7 @@
               :wrapperCol="{ span: 16 }">
               <a-textarea
                 v-decorator="[
-                  'messagedefinitions',
+                  'processmessagedefinitions',
                   {initialValue: processElement.messagedefinitions,}
                 ]"
                 placeholder="请选择流程消息定义todo"/>
@@ -218,7 +218,7 @@
           if (fieldKeys && fieldKeys.length > 0) {
             const properties = {}
             fieldKeys.forEach(key => {
-              properties[key] = fields[key].value
+              properties[key.replace('process', '')] = fields[key].value
             })
             this.updateBpmn(this.element, properties)
           }

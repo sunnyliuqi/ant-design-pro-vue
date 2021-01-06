@@ -14,6 +14,7 @@
       </a-layout-content>
     </a-layout>
     <a-layout-sider style="min-height: 300px; overflow-x: hidden;">
+      <div class="propertiesPanel" ref="propertiesPanel"></div>
       <activiti-panel
         :element="current"
         :update-bpmn="updateBpmn"
@@ -27,7 +28,13 @@
   import BpmnModeler from 'bpmn-js/lib/Modeler'
   import customTranslate from './i18n/customTranslate'
   import ActivitiPanel from './PanelActiviti/ActivitiPanel'
+  import activitiDescriptor from './PanelActiviti/lib/moddle/activiti'
+  import getProperties from './PanelActiviti/helper/PropertyHelper'
   import { emptyBpmn } from './store/defaultBpmn'
+  import propertiesPanelModule from 'bpmn-js-properties-panel-activiti'
+  // 而这个引入的是右侧属性栏里的内容
+  import propertiesProviderModule from 'bpmn-js-properties-panel-activiti/lib/provider/activiti'
+
   export default {
     name: 'BpmnDesign',
     components: { ActivitiPanel },
@@ -62,13 +69,22 @@
        */
       initModeler () {
         const canvas = this.$refs.canvas
+        const propertiesPanel = this.$refs.propertiesPanel
         // 实例化
         this.bpmnModeler = new BpmnModeler({
           container: canvas,
+          propertiesPanel: {
+            parent: propertiesPanel
+          },
           additionalModules: [
+            propertiesPanelModule,
+            propertiesProviderModule,
             {
               translate: ['value', customTranslate]
-            }]
+            }],
+          moddleExtensions: {
+            activiti: activitiDescriptor
+          }
         })
         /**
          * 添加事件监听
@@ -97,7 +113,7 @@
        */
       updateBpmn (element, properties) {
         if (properties && Object.keys(properties).length > 0) {
-          this.getModeling().updateProperties(element, properties)
+          this.getModeling().updateProperties(element, getProperties(element, properties, this.getBpmnFactory()))
         }
       },
       // 下载为SVG格式,done是个函数，调用的时候传入的
@@ -186,6 +202,12 @@
        */
       getModeling () {
         return this.bpmnModeler.get('modeling')
+      },
+      /**
+       * bpmn工厂
+       */
+      getBpmnFactory () {
+        return this.bpmnModeler.get('bpmnFactory')
       },
       /**
        * 命令栈

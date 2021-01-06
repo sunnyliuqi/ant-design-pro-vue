@@ -9,6 +9,7 @@
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
               <a-input
+                :disabled="true"
                 v-decorator="[
                   'id',
                   {initialValue: element.id,}
@@ -29,6 +30,19 @@
                 placeholder="请输入名称"/>
             </a-form-item>
           </a-col>
+          <a-col :span="24">
+            <a-form-item
+              label="描述"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-textarea
+                v-decorator="[
+                  'documentation',
+                  {initialValue: getDocumentation(element)}
+                ]"
+                placeholder="描述"/>
+            </a-form-item>
+          </a-col>
         </a-row>
       </a-tab-pane>
       <a-tab-pane key="2" tab="流程属性">
@@ -39,6 +53,7 @@
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
               <a-input
+                :disabled="true"
                 v-decorator="[
                   'processId',
                   {initialValue: processElement.id,}
@@ -67,7 +82,7 @@
               <a-textarea
                 v-decorator="[
                   'processdocumentation',
-                  {initialValue: processElement.documentation,}
+                  {initialValue: getDocumentation(processElement)}
                 ]"
                 placeholder="请输入流程描述"/>
             </a-form-item>
@@ -205,6 +220,9 @@
       }
     },
     methods: {
+      getDocumentation (element) {
+        return element.businessObject && element.businessObject.documentation && element.businessObject.documentation[0] && element.businessObject.documentation[0].text
+      },
       changeActiveTab (key) {
         if (this.element && this.element.type && this.element.type !== 'bpmn:Process') {
             this.tabKey = key

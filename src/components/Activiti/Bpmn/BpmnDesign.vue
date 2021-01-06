@@ -14,7 +14,6 @@
       </a-layout-content>
     </a-layout>
     <a-layout-sider style="min-height: 300px; overflow-x: hidden;">
-      <div class="propertiesPanel" ref="propertiesPanel"></div>
       <activiti-panel
         :element="current"
         :update-bpmn="updateBpmn"
@@ -31,9 +30,6 @@
   import activitiDescriptor from './PanelActiviti/lib/moddle/activiti'
   import getProperties from './PanelActiviti/helper/PropertyHelper'
   import { emptyBpmn } from './store/defaultBpmn'
-  import propertiesPanelModule from 'bpmn-js-properties-panel-activiti'
-  // 而这个引入的是右侧属性栏里的内容
-  import propertiesProviderModule from 'bpmn-js-properties-panel-activiti/lib/provider/activiti'
 
   export default {
     name: 'BpmnDesign',
@@ -69,16 +65,10 @@
        */
       initModeler () {
         const canvas = this.$refs.canvas
-        const propertiesPanel = this.$refs.propertiesPanel
         // 实例化
         this.bpmnModeler = new BpmnModeler({
           container: canvas,
-          propertiesPanel: {
-            parent: propertiesPanel
-          },
           additionalModules: [
-            propertiesPanelModule,
-            propertiesProviderModule,
             {
               translate: ['value', customTranslate]
             }],

@@ -55,18 +55,21 @@ function setExecutionListeners (_properties, propertyValue, element, factory) {
  * @param factory
  */
 function pushElementExecutionListeners (extensionElements, propertyValue, element, factory) {
+  if (typeof (propertyValue) === 'string' && (propertyValue === '' || propertyValue.trim() === '')) {
+      return
+  }
   try {
     if (!(propertyValue instanceof Array)) {
       propertyValue = JSON.parse(propertyValue)
     }
+  } catch (e) {
+    throw new Error('执行监听器内容格式不正确，请重新输入')
+  }
     if (propertyValue && propertyValue.length > 0) {
       propertyValue.forEach(execution => {
         extensionElements.values.push(createElementExecutionListener(extensionElements, execution, element, factory))
       })
     }
-  } catch (e) {
-    throw new Error('执行监听器内容格式不正确，请重新输入')
-  }
 }
 
 /**
@@ -116,19 +119,19 @@ function createElementField (field, parentElement, factory) {
   if (field.stringValue) {
     property.stringValue = field.stringValue
   }
-  const fieldElement = createElement('activiti:field', property, parentElement, factory)
-  if (field.string) {
+  const fieldElement = createElement('activiti:Field', property, parentElement, factory)
+  /* if (field.string) {
     if (!fieldElement.values) {
       fieldElement.values = []
     }
-    fieldElement.values.push(createElement('activiti:string', { text: field.string }, fieldElement, factory))
+    fieldElement.values.push(createElement('activiti:String', { text: field.string }, fieldElement, factory))
   }
   if (field.expression) {
     if (!fieldElement.values) {
       fieldElement.values = []
     }
-    fieldElement.values.push(createElement('activiti:expression', { text: field.string }, fieldElement, factory))
-  }
+    fieldElement.values.push(createElement('activiti:Expression', { text: field.string }, fieldElement, factory))
+  } */
   return fieldElement
 }
 function getExtensionElements (element, factory) {

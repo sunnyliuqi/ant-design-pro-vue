@@ -89,19 +89,6 @@
           </a-col>
           <a-col :span="24">
             <a-form-item
-              label="流程命名空间"
-              :labelCol="{ span: 8 }"
-              :wrapperCol="{ span: 16 }">
-              <a-input
-                v-decorator="[
-                  'processnamespace',
-                  {initialValue: processElement.namespace||'http://www.activiti.org/processdef',}
-                ]"
-                placeholder="请输入流程命名空间"/>
-            </a-form-item>
-          </a-col>
-          <a-col :span="24">
-            <a-form-item
               label="流程作者"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">

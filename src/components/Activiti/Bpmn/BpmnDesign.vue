@@ -188,6 +188,12 @@
         return this.bpmnModeler.get('eventBus')
       },
       /**
+       * 流程定义
+       */
+      getDefinitions () {
+        return this.bpmnModeler._definitions
+      },
+      /**
        * 模型
        */
       getModeling () {

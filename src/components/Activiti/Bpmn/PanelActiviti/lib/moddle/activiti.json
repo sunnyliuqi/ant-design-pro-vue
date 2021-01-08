@@ -1074,7 +1074,36 @@
         "type": "String"
       }
     ]
-  }
-],
+  },
+    {
+      "name": "string",
+      "superClass": [ "Element" ]
+    },
+    {
+      "name": "expression",
+      "superClass": [ "Element" ]
+    },
+    {
+      "name": "field",
+      "superClass": [ "Element" ],
+      "meta": {
+        "allowedIn": [
+          "activiti:ExecutionListener"
+        ]
+      },
+      "properties": [
+        {
+          "name": "name",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "stringValue",
+          "type": "String",
+          "isAttr": true
+        }
+      ]
+    }
+  ],
   "emumerations": [ ]
 }

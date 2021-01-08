@@ -7,14 +7,20 @@
  * @param factory
  */
 export default function getProperties (element, properties, factory) {
-  const propertyNames = properties && Object.keys(properties)
-  const _properties = {}
-  if (propertyNames && propertyNames.length > 0) {
-      propertyNames.forEach(propertyName => {
-        setProperty(_properties, propertyName, properties[propertyName], element, factory)
-      })
-  }
-  return _properties
+  return new Promise((resolve, reject) => {
+    try {
+      const propertyNames = properties && Object.keys(properties)
+      const _properties = {}
+      if (propertyNames && propertyNames.length > 0) {
+        propertyNames.forEach(propertyName => {
+          setProperty(_properties, propertyName, properties[propertyName], element, factory)
+        })
+      }
+      return resolve(_properties)
+    } catch (e) {
+      return reject(e.message)
+    }
+  })
 }
 /**
  * 获取bpmn property
@@ -27,11 +33,118 @@ export default function getProperties (element, properties, factory) {
 function setProperty (_properties, propertyName, propertyValue, element, factory) {
   if (propertyName === 'documentation') {
     setPropertyDocumentation(_properties, propertyValue, element, factory)
+  } else if (propertyName === 'executionlisteners') {
+      setExecutionListeners(_properties, propertyValue, element, factory)
   } else {
     _properties[propertyName] = propertyValue
   }
 }
 
+function setExecutionListeners (_properties, propertyValue, element, factory) {
+  const extensionElements = getExtensionElements(element, factory)
+  extensionElements.values = removeByType(extensionElements.values, 'activiti:ExecutionListener')
+  pushElementExecutionListeners(extensionElements, propertyValue, element, factory)
+  _properties.extensionElements = extensionElements
+}
+
+/**
+ *
+ * @param extensionElements
+ * @param propertyValue [{event:'start',delegateExpression:'${delegateExpression}',class:'',expression:'',fields:[{name:'',stringValue:'',string:'',expression:''}] }]
+ * @param element
+ * @param factory
+ */
+function pushElementExecutionListeners (extensionElements, propertyValue, element, factory) {
+  try {
+    if (!(propertyValue instanceof Array)) {
+      propertyValue = JSON.parse(propertyValue)
+    }
+    if (propertyValue && propertyValue.length > 0) {
+      propertyValue.forEach(execution => {
+        extensionElements.values.push(createElementExecutionListener(extensionElements, execution, element, factory))
+      })
+    }
+  } catch (e) {
+    throw new Error('执行监听器内容格式不正确，请重新输入')
+  }
+}
+
+/**
+ *
+ * @param execution {event:'start',delegateExpression:'${delegateExpression}',class:'',expression:'',fields:[{name:'',stringValue:'',string:'',expression:''}] }
+ * @param element
+ * @param factory
+ */
+function createElementExecutionListener (extensionElements, execution, element, factory) {
+    const property = {}
+    if (execution.event) {
+      property.event = execution.event
+    }
+  if (execution.class) {
+    property.class = execution.class
+  }
+  if (execution.expression) {
+    property.expression = execution.expression
+  }
+  if (execution.delegateExpression) {
+    property.delegateExpression = execution.delegateExpression
+  }
+  const executionListenerElement = createElement('activiti:ExecutionListener', property, extensionElements, factory)
+  if (execution.fields && execution.fields.length > 0) {
+    executionListenerElement.values = []
+    executionListenerElement.values.push(createElementFields(execution.fields, executionListenerElement, factory))
+  }
+  return executionListenerElement
+}
+function createElementFields (fields, parentElement, factory) {
+    return fields.map(field => {
+        return createElementField(field, parentElement, factory)
+    })
+}
+
+/**
+ *
+ * @param field {name:'',stringValue:'',string:'',expression:''}
+ * @param parentElement
+ * @param factory
+ */
+function createElementField (field, parentElement, factory) {
+  const property = {}
+  if (field.name) {
+    property.name = field.name
+  }
+  if (field.stringValue) {
+    property.stringValue = field.stringValue
+  }
+  const fieldElement = createElement('activiti:field', property, parentElement, factory)
+  if (field.string) {
+    if (!fieldElement.values) {
+      fieldElement.values = []
+    }
+    fieldElement.values.push(createElement('activiti:string', { text: field.string }, fieldElement, factory))
+  }
+  if (field.expression) {
+    if (!fieldElement.values) {
+      fieldElement.values = []
+    }
+    fieldElement.values.push(createElement('activiti:expression', { text: field.string }, fieldElement, factory))
+  }
+  return fieldElement
+}
+function getExtensionElements (element, factory) {
+  let extensionElements = getBusinessObject(element).extensionElements
+  if (!extensionElements) {
+    extensionElements = createElement('bpmn:ExtensionElements', { values: [] }, element, factory)
+  }
+  return extensionElements
+}
+function removeByType (values, type) {
+  if (values && values.length > 0) {
+    return values.filter(c => type !== c.$type)
+  } else {
+    return []
+  }
+}
 /**
  * 更新Documentation
  * @param text
@@ -45,9 +158,9 @@ function setPropertyDocumentation (_properties, text, element, factory) {
     documentation = documentations[0]
     documentation.text = text
   } else {
-    documentation = createElement('bpmn:Documentation', { text: text }, element, factory)
+    documentations.values.push(createElement('bpmn:Documentation', { text: text }, element, factory))
   }
-   _properties.documentation = [documentation]
+   _properties.documentation = documentations
 }
 
 export function getBusinessObject (element) {

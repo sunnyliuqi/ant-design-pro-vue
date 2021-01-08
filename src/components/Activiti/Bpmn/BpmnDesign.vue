@@ -103,7 +103,11 @@
        */
       updateBpmn (element, properties) {
         if (properties && Object.keys(properties).length > 0) {
-          this.getModeling().updateProperties(element, getProperties(element, properties, this.getBpmnFactory()))
+          getProperties(element, properties, this.getBpmnFactory()).then(props => {
+            this.getModeling().updateProperties(element, props)
+          }).catch(msg => {
+            console.warn(msg)
+          })
         }
       },
       // 下载为SVG格式,done是个函数，调用的时候传入的

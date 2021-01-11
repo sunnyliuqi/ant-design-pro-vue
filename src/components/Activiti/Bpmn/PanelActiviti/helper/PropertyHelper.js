@@ -92,16 +92,18 @@ function createElementExecutionListener (extensionElements, execution, element, 
   if (execution.delegateExpression) {
     property.delegateExpression = execution.delegateExpression
   }
+  if (execution.fields && execution.fields.length > 0) {
+    property.fields = []
+  }
   const executionListenerElement = createElement('activiti:ExecutionListener', property, extensionElements, factory)
   if (execution.fields && execution.fields.length > 0) {
-    executionListenerElement.values = []
-    executionListenerElement.values.push(createElementFields(execution.fields, executionListenerElement, factory))
+    createElementFields(execution.fields, executionListenerElement, factory)
   }
   return executionListenerElement
 }
 function createElementFields (fields, parentElement, factory) {
-    return fields.map(field => {
-        return createElementField(field, parentElement, factory)
+  fields.forEach(field => {
+      parentElement.fields.push(createElementField(field, parentElement, factory))
     })
 }
 
@@ -119,19 +121,13 @@ function createElementField (field, parentElement, factory) {
   if (field.stringValue) {
     property.stringValue = field.stringValue
   }
-  const fieldElement = createElement('activiti:Field', property, parentElement, factory)
-  /* if (field.string) {
-    if (!fieldElement.values) {
-      fieldElement.values = []
-    }
-    fieldElement.values.push(createElement('activiti:String', { text: field.string }, fieldElement, factory))
+  if (field.string) {
+    property.string = field.string
   }
   if (field.expression) {
-    if (!fieldElement.values) {
-      fieldElement.values = []
-    }
-    fieldElement.values.push(createElement('activiti:Expression', { text: field.string }, fieldElement, factory))
-  } */
+    property.expression = field.expression
+  }
+  const fieldElement = createElement('activiti:Field', property, parentElement, factory)
   return fieldElement
 }
 function getExtensionElements (element, factory) {

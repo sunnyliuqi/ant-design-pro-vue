@@ -1074,7 +1074,58 @@
         "type": "String"
       }
     ]
-  }
+  },
+    {
+      "name": "EventListener",
+      "superClass": [ "Element" ],
+      "meta": {
+        "allowedIn": [
+          "bpmn:Process"
+        ]
+      },
+      "properties": [
+        {
+          "name": "events",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "throwEvent",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "signalName",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "errorCode",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "messageName",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "class",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "delegateExpression",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "entityType",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    }
   ],
   "emumerations": [ ]
 }

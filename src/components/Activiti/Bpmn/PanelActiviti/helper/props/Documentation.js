@@ -14,7 +14,7 @@ export default function setDocumentation (_properties, text, element, factory) {
     documentation = documentations[0]
     documentation.text = text
   } else {
-    documentations.values.push(createElement('bpmn:Documentation', { text: text }, element, factory))
+    documentations.push(createElement('bpmn:Documentation', { text: text }, element, factory))
   }
   _properties.documentation = documentations
 }

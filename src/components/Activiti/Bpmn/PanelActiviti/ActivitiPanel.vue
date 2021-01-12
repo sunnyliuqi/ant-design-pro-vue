@@ -56,7 +56,7 @@
                 placeholder="请选择执行监听器"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24">
+          <a-col :span="24" v-if="showInitiator(element)">
             <a-form-item
               label="发起人"
               :labelCol="{ span: 8 }"
@@ -69,7 +69,7 @@
                 placeholder="请选择发起人"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24">
+          <a-col :span="24" v-if="showFormKey">
             <a-form-item
               label="外置表单"
               :labelCol="{ span: 8 }"
@@ -82,7 +82,7 @@
                 placeholder="请选择外置表单"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24">
+          <a-col :span="24" v-if="showFormProperties">
             <a-form-item
               label="动态表单字段"
               :labelCol="{ span: 8 }"
@@ -263,6 +263,41 @@
       }
     },
     methods: {
+      showInitiator (element) {
+        if (element.type === 'bpmn:StartEvent' && this.getStartEventType(element) === 'none') {
+          return true
+        }
+        return false
+      },
+      showFormKey (element) {
+        if (element.type === 'bpmn:StartEvent' && this.getStartEventType(element) === 'none') {
+          return true
+        }
+        return false
+      },
+      showFormProperties (element) {
+        if (element.type === 'bpmn:StartEvent' && this.getStartEventType(element) === 'none') {
+          return true
+        }
+        return false
+      },
+      getStartEventType (element) {
+        if (element.businessObject && element.businessObject.eventDefinitions && element.businessObject.eventDefinitions.length > 0) {
+          const moddleElement = element.businessObject.eventDefinitions[0]
+          if (moddleElement) {
+            if (moddleElement.$type === 'bpmn:MessageEventDefinition') {
+              return 'message'
+            } else if (moddleElement.$type === 'bpmn:TimerEventDefinition') {
+              return 'timer'
+            } else if (moddleElement.$type === 'bpmn:ConditionalEventDefinition') {
+              return 'conditional'
+            } else if (moddleElement.$type === 'bpmn:SignalEventDefinition') {
+              return 'signal'
+            }
+          }
+        }
+        return 'none'
+      },
       showExecutionListeners (element) {
         if (element.type === 'bpmn:StartEvent') {
           return true

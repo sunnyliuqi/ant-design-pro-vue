@@ -56,27 +56,6 @@ function setProperty (_properties, propertyName, propertyValue, element, factory
 }
 
 /**
- * 根据属性判断当前更新的元素
- * @param element
- * @param properties
- * @returns {*}
- */
-export function getElement (element, properties) {
-  const propertyNames = properties && Object.keys(properties)
-  if (propertyNames && propertyNames.length > 0) {
-    let isParent = false
-    propertyNames.forEach(propertyName => {
-      if (!isParent && propertyName === 'signaldefinitions') {
-        isParent = true
-      }
-    })
-    if (isParent) {
-      return getRoot(element.businessObject)
-    }
-  }
-  return element
-}
-/**
  * 获取扩展标签
  * @param element
  * @param factory

@@ -28,7 +28,7 @@
   import customTranslate from './i18n/customTranslate'
   import ActivitiPanel from './PanelActiviti/ActivitiPanel'
   import activitiDescriptor from './PanelActiviti/lib/moddle/activiti'
-  import { getProperties, getRoot } from './PanelActiviti/helper/PropertyHelper'
+  import { getProperties } from './PanelActiviti/helper/PropertyHelper'
   import { emptyBpmn } from './store/defaultBpmn'
 
   export default {

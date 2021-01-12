@@ -1,14 +1,20 @@
 'use strict'
+import { isEmpty } from '@/utils/common'
 import setDocumentation from './props/Documentation'
 import setExecutionListeners from './props/ExecutionListeners'
 import setEventListeners from './props/EventListeners'
+import setSignalDefinitions from './props/SignalDefinitions'
+import setMessageDefinitions from './props/MessageDefinitions'
+
 /**
  * 根据传入的表单properties获取对应bpmn properties
  * @param element
  * @param properties
  * @param factory
+ * @param updateProperties
+ * @returns {Promise<unknown>}
  */
-export default function getProperties (element, properties, factory) {
+export function getProperties (element, properties, factory, updateProperties) {
   return new Promise((resolve, reject) => {
     try {
       const propertyNames = properties && Object.keys(properties)
@@ -18,6 +24,7 @@ export default function getProperties (element, properties, factory) {
           setProperty(_properties, propertyName, properties[propertyName], element, factory)
         })
       }
+      updateProperties(element, _properties)
       return resolve(_properties)
     } catch (e) {
       return reject(e.message)
@@ -39,11 +46,36 @@ function setProperty (_properties, propertyName, propertyValue, element, factory
     setExecutionListeners(_properties, propertyValue, element, factory)
   } else if (propertyName === 'eventlisteners') {
     setEventListeners(_properties, propertyValue, element, factory)
+  } else if (propertyName === 'signaldefinitions') {
+    setSignalDefinitions(_properties, propertyValue, element, factory)
+  } else if (propertyName === 'messagedefinitions') {
+    setMessageDefinitions(_properties, propertyValue, element, factory)
   } else {
-    _properties[propertyName] = propertyValue
+    _properties[propertyName] = getPropertyValue(propertyValue)
   }
 }
 
+/**
+ * 根据属性判断当前更新的元素
+ * @param element
+ * @param properties
+ * @returns {*}
+ */
+export function getElement (element, properties) {
+  const propertyNames = properties && Object.keys(properties)
+  if (propertyNames && propertyNames.length > 0) {
+    let isParent = false
+    propertyNames.forEach(propertyName => {
+      if (!isParent && propertyName === 'signaldefinitions') {
+        isParent = true
+      }
+    })
+    if (isParent) {
+      return getRoot(element.businessObject)
+    }
+  }
+  return element
+}
 /**
  * 获取扩展标签
  * @param element
@@ -79,6 +111,32 @@ export function removeByType (values, type) {
  */
 export function getBusinessObject (element) {
   return (element && element.businessObject) || element
+}
+
+/**
+ * 获取属性值
+ * @param property
+ * @returns {undefined|*}
+ */
+export function getPropertyValue (property) {
+  if (isEmpty(property)) {
+    return undefined
+  } else {
+    return property
+  }
+}
+
+/**
+ * 获取到根节点
+ * @param businessObject
+ * @returns {*}
+ */
+export function getRoot (businessObject) {
+  var parent = businessObject
+  while (parent.$parent) {
+    parent = parent.$parent
+  }
+  return parent
 }
 /**
  * 创建元素

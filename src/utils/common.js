@@ -84,6 +84,8 @@ export function isEmpty (o) {
       return false
     case 'number':
       return false
+    case 'string':
+      return o.trim().length < 1
     case 'object':
       if (o === null) {
         return true

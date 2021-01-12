@@ -1,9 +1,10 @@
 import {
   createElement,
   getExtensionElements,
-  removeByType
+  removeByType,
+  getPropertyValue
 } from '../PropertyHelper'
-
+import { isEmpty } from '@/utils/common'
 /**
  * 设置EventListeners
  * @param _properties
@@ -14,14 +15,17 @@ import {
 export default function setEventListeners (_properties, propertyValue, element, factory) {
   const extensionElements = getExtensionElements(element, factory)
   extensionElements.values = removeByType(extensionElements.values, 'activiti:EventListener')
-  pushElementEventListeners(propertyValue, extensionElements, factory)
-  _properties.extensionElements = extensionElements
+  if (!isEmpty(propertyValue)) {
+    pushElementEventListeners(propertyValue, extensionElements, factory)
+  }
+  if (!extensionElements.values || extensionElements.values.length < 1) {
+    _properties.extensionElements = null
+  } else {
+    _properties.extensionElements = extensionElements
+  }
 }
 
 function pushElementEventListeners (propertyValue, extensionElements, factory) {
-  if (typeof (propertyValue) === 'string' && (propertyValue === '' || propertyValue.trim() === '')) {
-    return
-  }
   try {
     if (!(propertyValue instanceof Array)) {
       propertyValue = JSON.parse(propertyValue)
@@ -45,29 +49,13 @@ function pushElementEventListeners (propertyValue, extensionElements, factory) {
  */
 function createElementEventListener (event, element, factory) {
   const property = {}
-  if (event.events) {
-    property.events = event.events
-  }
-  if (event.throwEvent) {
-    property.throwEvent = event.throwEvent
-  }
-  if (event.signalName) {
-    property.signalName = event.signalName
-  }
-  if (event.errorCode) {
-    property.errorCode = event.errorCode
-  }
-  if (event.messageName) {
-    property.messageName = event.messageName
-  }
-  if (event.class) {
-    property.class = event.class
-  }
-  if (event.delegateExpression) {
-    property.delegateExpression = event.delegateExpression
-  }
-  if (event.entityType) {
-    property.entityType = event.entityType
-  }
+  property.events = getPropertyValue(event.events)
+  property.throwEvent = getPropertyValue(event.throwEvent)
+  property.signalName = getPropertyValue(event.signalName)
+  property.errorCode = getPropertyValue(event.errorCode)
+  property.messageName = getPropertyValue(event.messageName)
+  property.class = getPropertyValue(event.class)
+  property.delegateExpression = getPropertyValue(event.delegateExpression)
+  property.entityType = getPropertyValue(event.entityType)
   return createElement('activiti:EventListener', property, element, factory)
 }

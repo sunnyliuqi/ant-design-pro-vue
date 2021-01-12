@@ -28,7 +28,7 @@
   import customTranslate from './i18n/customTranslate'
   import ActivitiPanel from './PanelActiviti/ActivitiPanel'
   import activitiDescriptor from './PanelActiviti/lib/moddle/activiti'
-  import getProperties from './PanelActiviti/helper/PropertyHelper'
+  import { getProperties, getRoot } from './PanelActiviti/helper/PropertyHelper'
   import { emptyBpmn } from './store/defaultBpmn'
 
   export default {
@@ -103,12 +103,13 @@
        */
       updateBpmn (element, properties) {
         if (properties && Object.keys(properties).length > 0) {
-          getProperties(element, properties, this.getBpmnFactory()).then(props => {
-            this.getModeling().updateProperties(element, props)
-          }).catch(msg => {
+          getProperties(element, properties, this.getBpmnFactory(), this.updateProperties).catch(msg => {
             console.warn(msg)
           })
         }
+      },
+      updateProperties (element, props) {
+        this.getModeling().updateProperties(element, props)
       },
       // 下载为SVG格式,done是个函数，调用的时候传入的
       saveSVG (e) {

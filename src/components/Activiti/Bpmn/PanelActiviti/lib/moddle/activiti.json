@@ -109,7 +109,7 @@
   },
   {
     "name": "Signal",
-    "isAbstract": true,
+    "superClass": [ "Element" ],
     "extends": [
       "bpmn:Signal"
     ],
@@ -1123,6 +1123,27 @@
           "name": "entityType",
           "isAttr": true,
           "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "Process",
+      "superClass": [
+        "Element"
+      ],
+      "extends": [
+        "bpmn:Process"
+      ],
+      "properties": [
+        {
+          "name": "signals",
+          "type": "Signal",
+          "isMany": true
+        },
+        {
+          "name": "messages",
+          "type": "Message",
+          "isMany": true
         }
       ]
     }

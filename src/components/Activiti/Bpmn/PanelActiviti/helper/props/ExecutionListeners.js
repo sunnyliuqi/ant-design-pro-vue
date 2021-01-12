@@ -1,5 +1,6 @@
-import { createElement, getExtensionElements, removeByType } from '../PropertyHelper'
+import { createElement, getExtensionElements, getPropertyValue, removeByType } from '../PropertyHelper'
 import setFields from './Fields'
+import { isEmpty } from '@/utils/common'
 
 /**
  * 设置ExecutionListeners
@@ -11,8 +12,14 @@ import setFields from './Fields'
 export default function setExecutionListeners (_properties, propertyValue, element, factory) {
   const extensionElements = getExtensionElements(element, factory)
   extensionElements.values = removeByType(extensionElements.values, 'activiti:ExecutionListener')
-  pushElementExecutionListeners(propertyValue, extensionElements, factory)
-  _properties.extensionElements = extensionElements
+  if (!isEmpty(propertyValue)) {
+    pushElementExecutionListeners(propertyValue, extensionElements, factory)
+  }
+  if (!extensionElements.values || extensionElements.values.length < 1) {
+    _properties.extensionElements = null
+  } else {
+    _properties.extensionElements = extensionElements
+  }
 }
 
 /**
@@ -22,9 +29,6 @@ export default function setExecutionListeners (_properties, propertyValue, eleme
  * @param factory
  */
 function pushElementExecutionListeners (propertyValue, element, factory) {
-  if (typeof (propertyValue) === 'string' && (propertyValue === '' || propertyValue.trim() === '')) {
-    return
-  }
   try {
     if (!(propertyValue instanceof Array)) {
       propertyValue = JSON.parse(propertyValue)
@@ -47,20 +51,14 @@ function pushElementExecutionListeners (propertyValue, element, factory) {
  */
 function createElementExecutionListener (execution, element, factory) {
   const property = {}
-  if (execution.event) {
-    property.event = execution.event
-  }
-  if (execution.class) {
-    property.class = execution.class
-  }
-  if (execution.expression) {
-    property.expression = execution.expression
-  }
-  if (execution.delegateExpression) {
-    property.delegateExpression = execution.delegateExpression
-  }
+  property.event = getPropertyValue(execution.event)
+  property.class = getPropertyValue(execution.class)
+  property.expression = getPropertyValue(execution.expression)
+  property.delegateExpression = getPropertyValue(execution.delegateExpression)
   if (execution.fields && execution.fields.length > 0) {
     property.fields = []
+  } else {
+    property.fields = null
   }
   const executionListenerElement = createElement('activiti:ExecutionListener', property, element, factory)
   if (execution.fields && execution.fields.length > 0) {

@@ -1,4 +1,5 @@
 import { createElement, getBusinessObject } from '../PropertyHelper'
+import { isEmpty } from '@/utils/common'
 
 /**
  * 设置/创建 Documentation 元素
@@ -8,12 +9,16 @@ import { createElement, getBusinessObject } from '../PropertyHelper'
  * @param factory
  */
 export default function setDocumentation (_properties, text, element, factory) {
-  const documentations = getBusinessObject(element).documentation
-  let documentation
+  if (isEmpty(text)) {
+    _properties.documentation = null
+    return
+  }
+  let documentations = getBusinessObject(element).documentation
   if (documentations && documentations.length > 0) {
-    documentation = documentations[0]
+    const documentation = documentations[0]
     documentation.text = text
   } else {
+    documentations = []
     documentations.push(createElement('bpmn:Documentation', { text: text }, element, factory))
   }
   _properties.documentation = documentations

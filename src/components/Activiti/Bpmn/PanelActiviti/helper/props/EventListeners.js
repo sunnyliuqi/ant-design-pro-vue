@@ -1,8 +1,8 @@
 import {
   createElement,
   getExtensionElements,
-  removeByType,
-  getPropertyValue
+  removeByType, filterByType,
+  getPropertyValue, getBusinessObject
 } from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 /**
@@ -12,7 +12,7 @@ import { isEmpty } from '@/utils/common'
  * @param element
  * @param factory
  */
-export default function setEventListeners (_properties, propertyValue, element, factory) {
+export function setEventListeners (_properties, propertyValue, element, factory) {
   const extensionElements = getExtensionElements(element, factory)
   extensionElements.values = removeByType(extensionElements.values, 'activiti:EventListener')
   if (!isEmpty(propertyValue)) {
@@ -24,7 +24,6 @@ export default function setEventListeners (_properties, propertyValue, element, 
     _properties.extensionElements = extensionElements
   }
 }
-
 function pushElementEventListeners (propertyValue, extensionElements, factory) {
   try {
     if (!(propertyValue instanceof Array)) {
@@ -58,4 +57,47 @@ function createElementEventListener (event, element, factory) {
   property.delegateExpression = getPropertyValue(event.delegateExpression)
   property.entityType = getPropertyValue(event.entityType)
   return createElement('activiti:EventListener', property, element, factory)
+}
+/**
+ * 获取
+ * @param element
+ */
+export function getEventListeners (element) {
+  const extensionElements = getBusinessObject(element).extensionElements
+  if (extensionElements) {
+    const eventListenerElements = filterByType(extensionElements.values, 'activiti:EventListener')
+    if (eventListenerElements && eventListenerElements.length > 0) {
+      const eventListeners = []
+      eventListenerElements.forEach(property => {
+        const event = {}
+        if (property.events) {
+          event.events = property.events
+        }
+        if (property.throwEvent) {
+          event.throwEvent = property.throwEvent
+        }
+        if (property.signalName) {
+          event.signalName = property.signalName
+        }
+        if (property.errorCode) {
+          event.errorCode = property.errorCode
+        }
+        if (property.messageName) {
+          event.messageName = property.messageName
+        }
+        if (property.class) {
+          event.class = property.class
+        }
+        if (property.delegateExpression) {
+          event.delegateExpression = property.delegateExpression
+        }
+        if (property.entityType) {
+          event.entityType = property.entityType
+        }
+        eventListeners.push(event)
+      })
+      return JSON.stringify(eventListeners)
+    }
+  }
+  return undefined
 }

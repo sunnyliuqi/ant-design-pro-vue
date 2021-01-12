@@ -17,6 +17,7 @@
       <activiti-panel
         :element="current"
         :update-bpmn="updateBpmn"
+        :get-values="getValues"
       />
     </a-layout-sider>
 
@@ -28,7 +29,7 @@
   import customTranslate from './i18n/customTranslate'
   import ActivitiPanel from './PanelActiviti/ActivitiPanel'
   import activitiDescriptor from './PanelActiviti/lib/moddle/activiti'
-  import { getProperties } from './PanelActiviti/helper/PropertyHelper'
+  import { getProperties, getValues } from './PanelActiviti/helper/PropertyHelper'
   import { emptyBpmn } from './store/defaultBpmn'
 
   export default {
@@ -52,6 +53,7 @@
     data () {
       return {
         bpmnModeler: null,
+        getValues: getValues,
         defaultXml: emptyBpmn,
         current: undefined
       }

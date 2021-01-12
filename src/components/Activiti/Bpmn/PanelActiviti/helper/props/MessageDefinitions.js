@@ -1,4 +1,4 @@
-import { createElement, getBusinessObject, getPropertyValue, removeByType } from '../PropertyHelper'
+import { createElement, getBusinessObject, getPropertyValue } from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 /**
  * 设置/创建 MessageDefinitions 元素
@@ -7,7 +7,7 @@ import { isEmpty } from '@/utils/common'
  * @param element
  * @param factory
  */
-export default function setMessageDefinitions (_properties, propertyValue, element, factory) {
+export function setMessageDefinitions (_properties, propertyValue, element, factory) {
   if (isEmpty(propertyValue)) {
     _properties.messages = null
     return
@@ -33,5 +33,31 @@ function createElementSignal (message, element, factory) {
   property.id = getPropertyValue(message.id)
   property.name = getPropertyValue(message.name)
   property.itemRef = getPropertyValue(message.itemRef)
-  return createElement('bpmn:Message', property, element, factory)
+  return createElement('activiti:Message', property, element, factory)
+}
+/**
+ * 获取
+ * @param element
+ */
+export function getMessageDefinitions (element) {
+  const messageElements = getBusinessObject(element).messages
+  if (messageElements && messageElements.length > 0) {
+    const messages = []
+    messageElements.forEach(property => {
+      const message = {}
+      if (property.$attrs.id) {
+        message.id = property.$attrs.id
+      }
+      if (property.$attrs.name) {
+        message.name = property.$attrs.name
+      }
+      if (property.$attrs.itemRef) {
+        message.itemRef = property.$attrs.itemRef
+      }
+      messages.push(message)
+    })
+    return JSON.stringify(messages)
+  }
+
+  return undefined
 }

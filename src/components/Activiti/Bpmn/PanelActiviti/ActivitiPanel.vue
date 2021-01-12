@@ -25,7 +25,7 @@
               <a-input
                 v-decorator="[
                   'name',
-                  {initialValue: element.businessObject&&element.businessObject.name,}
+                  {initialValue: getValues('name',element)}
                 ]"
                 placeholder="请输入名称"/>
             </a-form-item>
@@ -38,9 +38,22 @@
               <a-textarea
                 v-decorator="[
                   'documentation',
-                  {initialValue: getDocumentation(element)}
+                  {initialValue: getValues('documentation',element)}
                 ]"
-                placeholder="描述"/>
+                placeholder="请输入描述"/>
+            </a-form-item>
+          </a-col>
+          <a-col :span="24" v-if="showExecutionListeners(element)">
+            <a-form-item
+              label="执行监听器"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-textarea
+                v-decorator="[
+                  'executionlisteners',
+                  {initialValue: getValues('executionlisteners',element)}
+                ]"
+                placeholder="请选择执行监听器"/>
             </a-form-item>
           </a-col>
         </a-row>
@@ -69,7 +82,7 @@
               <a-input
                 v-decorator="[
                   'processname',
-                  {initialValue: processElement.businessObject&&processElement.businessObject.name,}
+                  {initialValue: getValues('name',processElement)}
                 ]"
                 placeholder="请输入流程名称"/>
             </a-form-item>
@@ -82,7 +95,7 @@
               <a-textarea
                 v-decorator="[
                   'processdocumentation',
-                  {initialValue: getDocumentation(processElement)}
+                  {initialValue: getValues('documentation',processElement)}
                 ]"
                 placeholder="请输入流程描述"/>
             </a-form-item>
@@ -95,7 +108,7 @@
               <a-input
                 v-decorator="[
                   'processauthor',
-                  {initialValue: processElement.author,}
+                  {initialValue: getValues('author',processElement)}
                 ]"
                 placeholder="请输入流程作者"/>
             </a-form-item>
@@ -108,22 +121,22 @@
               <a-input
                 v-decorator="[
                   'processversion',
-                  {initialValue: processElement.version,}
+                  {initialValue: getValues('version',processElement)}
                 ]"
                 placeholder="请输入流程版本"/>
             </a-form-item>
           </a-col>
           <a-col :span="24">
             <a-form-item
-              label="流程执行监听"
+              label="流程执行监听器"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
               <a-textarea
                 v-decorator="[
                   'processexecutionlisteners',
-                  {initialValue: processElement.executionlisteners,}
+                  {initialValue: getValues('executionlisteners',processElement)}
                 ]"
-                placeholder="请选择流程执行监听todo"/>
+                placeholder="请选择流程执行监听器"/>
             </a-form-item>
           </a-col>
           <a-col :span="24">
@@ -134,9 +147,9 @@
               <a-textarea
                 v-decorator="[
                   'processeventlisteners',
-                  {initialValue: processElement.eventlisteners,}
+                  {initialValue: getValues('eventlisteners',processElement)}
                 ]"
-                placeholder="请选择流程事件监听todo"/>
+                placeholder="请选择流程事件监听"/>
             </a-form-item>
           </a-col>
           <a-col :span="24">
@@ -147,9 +160,9 @@
               <a-textarea
                 v-decorator="[
                   'processsignaldefinitions',
-                  {initialValue: processElement.signaldefinitions,}
+                  {initialValue: getValues('signaldefinitions',processElement)}
                 ]"
-                placeholder="请选择流程信号定义todo"/>
+                placeholder="请选择流程信号定义"/>
             </a-form-item>
           </a-col>
           <a-col :span="24">
@@ -160,9 +173,9 @@
               <a-textarea
                 v-decorator="[
                   'processmessagedefinitions',
-                  {initialValue: processElement.messagedefinitions,}
+                  {initialValue: getValues('messagedefinitions',processElement)}
                 ]"
-                placeholder="请选择流程消息定义todo"/>
+                placeholder="请选择流程消息定义"/>
             </a-form-item>
           </a-col>
         </a-row>
@@ -176,6 +189,10 @@
     name: 'ActivitiPanel',
     props: {
       updateBpmn: {
+        type: Function,
+        default: undefined
+      },
+      getValues: {
         type: Function,
         default: undefined
       },
@@ -207,8 +224,11 @@
       }
     },
     methods: {
-      getDocumentation (element) {
-        return element.businessObject && element.businessObject.documentation && element.businessObject.documentation[0] && element.businessObject.documentation[0].text
+      showExecutionListeners (element) {
+        if (element.type === 'bpmn:StartEvent') {
+          return true
+        }
+        return false
       },
       changeActiveTab (key) {
         if (this.element && this.element.type && this.element.type !== 'bpmn:Process') {

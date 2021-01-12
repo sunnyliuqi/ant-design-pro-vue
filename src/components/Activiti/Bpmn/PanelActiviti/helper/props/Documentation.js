@@ -8,7 +8,7 @@ import { isEmpty } from '@/utils/common'
  * @param element
  * @param factory
  */
-export default function setDocumentation (_properties, text, element, factory) {
+export function setDocumentation (_properties, text, element, factory) {
   if (isEmpty(text)) {
     _properties.documentation = null
     return
@@ -22,4 +22,8 @@ export default function setDocumentation (_properties, text, element, factory) {
     documentations.push(createElement('bpmn:Documentation', { text: text }, element, factory))
   }
   _properties.documentation = documentations
+}
+
+export function getDocumentation (element) {
+  return element.businessObject && element.businessObject.documentation && element.businessObject.documentation[0] && element.businessObject.documentation[0].text
 }

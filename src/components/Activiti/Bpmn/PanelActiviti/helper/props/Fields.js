@@ -8,7 +8,7 @@ import { isEmpty } from '@/utils/common'
  * @param element
  * @param factory
  */
-export default function setFields (_properties, propertyValue, element, factory) {
+export function setFields (_properties, propertyValue, element, factory) {
   if (isEmpty(propertyValue)) {
     _properties.fields = null
     return
@@ -32,4 +32,31 @@ function createElementField (field, parentElement, factory) {
   property.string = getPropertyValue(field.string)
   property.expression = getPropertyValue(field.expression)
   return createElement('activiti:Field', property, parentElement, factory)
+}
+/**
+ * 获取
+ * @param element
+ */
+export function getFields (element) {
+  if (element && element.length > 0) {
+    const fields = []
+    element.forEach(property => {
+      const field = {}
+      if (property.name) {
+        field.name = property.name
+      }
+      if (property.stringValue) {
+        field.stringValue = property.stringValue
+      }
+      if (property.string) {
+        field.string = property.string
+      }
+      if (property.expression) {
+        field.expression = property.expression
+      }
+      fields.push(field)
+    })
+    return fields
+  }
+  return undefined
 }

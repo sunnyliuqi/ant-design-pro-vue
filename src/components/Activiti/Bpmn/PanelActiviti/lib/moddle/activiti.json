@@ -1146,6 +1146,13 @@
           "isMany": true
         }
       ]
+    },
+    {
+      "name": "Message",
+      "superClass": [ "Element" ],
+      "extends": [
+        "bpmn:Message"
+      ]
     }
   ],
   "emumerations": [ ]

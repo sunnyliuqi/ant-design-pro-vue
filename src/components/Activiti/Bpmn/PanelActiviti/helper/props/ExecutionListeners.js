@@ -1,5 +1,12 @@
-import { createElement, getExtensionElements, getPropertyValue, removeByType } from '../PropertyHelper'
-import setFields from './Fields'
+import {
+  createElement,
+  getExtensionElements,
+  getPropertyValue,
+  removeByType,
+  filterByType,
+  getBusinessObject
+} from '../PropertyHelper'
+import { setFields, getFields } from './Fields'
 import { isEmpty } from '@/utils/common'
 
 /**
@@ -9,7 +16,7 @@ import { isEmpty } from '@/utils/common'
  * @param element
  * @param factory
  */
-export default function setExecutionListeners (_properties, propertyValue, element, factory) {
+export function setExecutionListeners (_properties, propertyValue, element, factory) {
   const extensionElements = getExtensionElements(element, factory)
   extensionElements.values = removeByType(extensionElements.values, 'activiti:ExecutionListener')
   if (!isEmpty(propertyValue)) {
@@ -65,4 +72,38 @@ function createElementExecutionListener (execution, element, factory) {
     setFields(executionListenerElement, execution.fields, executionListenerElement, factory)
   }
   return executionListenerElement
+}
+/**
+ * 获取
+ * @param element
+ */
+export function getExecutionListeners (element) {
+  const extensionElements = getBusinessObject(element).extensionElements
+  if (extensionElements) {
+    const executionListenerElements = filterByType(extensionElements.values, 'activiti:ExecutionListener')
+    if (executionListenerElements && executionListenerElements.length > 0) {
+      const executionListeners = []
+      executionListenerElements.forEach(property => {
+        const execution = {}
+        if (property.event) {
+          execution.event = property.event
+        }
+        if (property.class) {
+          execution.class = property.class
+        }
+        if (property.expression) {
+          execution.expression = property.expression
+        }
+        if (property.delegateExpression) {
+          execution.delegateExpression = property.delegateExpression
+        }
+        if (property.fields && property.fields.length > 0) {
+          execution.fields = getFields(property.fields)
+        }
+        executionListeners.push(execution)
+      })
+      return JSON.stringify(executionListeners)
+    }
+  }
+  return undefined
 }

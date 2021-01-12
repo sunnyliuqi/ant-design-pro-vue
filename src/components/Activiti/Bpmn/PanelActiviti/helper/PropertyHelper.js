@@ -1,10 +1,10 @@
 'use strict'
 import { isEmpty } from '@/utils/common'
-import setDocumentation from './props/Documentation'
-import setExecutionListeners from './props/ExecutionListeners'
-import setEventListeners from './props/EventListeners'
-import setSignalDefinitions from './props/SignalDefinitions'
-import setMessageDefinitions from './props/MessageDefinitions'
+import { setDocumentation, getDocumentation } from './props/Documentation'
+import { setExecutionListeners, getExecutionListeners } from './props/ExecutionListeners'
+import { setEventListeners, getEventListeners } from './props/EventListeners'
+import { setSignalDefinitions, getSignalDefinitions } from './props/SignalDefinitions'
+import { setMessageDefinitions, getMessageDefinitions } from './props/MessageDefinitions'
 
 /**
  * 根据传入的表单properties获取对应bpmn properties
@@ -30,6 +30,26 @@ export function getProperties (element, properties, factory, updateProperties) {
       return reject(e.message)
     }
   })
+}
+export function getValues (type, element) {
+  if (type === 'name') {
+    return element.businessObject && element.businessObject.name
+  } else if (type === 'author') {
+    return element.businessObject && element.businessObject.$attrs && element.businessObject.$attrs.author
+  } else if (type === 'version') {
+    return element.businessObject && element.businessObject.$attrs && element.businessObject.$attrs.version
+  } else if (type === 'executionlisteners') {
+    return getExecutionListeners(element)
+  } else if (type === 'eventlisteners') {
+    return getEventListeners(element)
+  } else if (type === 'signaldefinitions') {
+    return getSignalDefinitions(element)
+  } else if (type === 'messagedefinitions') {
+    return getMessageDefinitions(element)
+  } else if (type === 'documentation') {
+    return getDocumentation(element)
+  }
+  return undefined
 }
 /**
  * 获取bpmn property
@@ -83,6 +103,18 @@ export function removeByType (values, type) {
   }
 }
 
+/**
+ * 过滤指定类型元素
+ * @param values
+ * @param type
+ * @returns {*[]|*}
+ */
+export function filterByType (values, type) {
+  if (values && values.length > 0) {
+    return values.filter(c => type === c.$type)
+  }
+  return undefined
+}
 /**
  * 获取业务节点
  * @param element

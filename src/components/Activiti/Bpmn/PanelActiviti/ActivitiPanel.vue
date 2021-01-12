@@ -56,6 +56,45 @@
                 placeholder="请选择执行监听器"/>
             </a-form-item>
           </a-col>
+          <a-col :span="24">
+            <a-form-item
+              label="发起人"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-input
+                v-decorator="[
+                  'initiator',
+                  {initialValue: getValues('initiator',element)}
+                ]"
+                placeholder="请选择发起人"/>
+            </a-form-item>
+          </a-col>
+          <a-col :span="24">
+            <a-form-item
+              label="外置表单"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-input
+                v-decorator="[
+                  'formKey',
+                  {initialValue: getValues('formKey',element)}
+                ]"
+                placeholder="请选择外置表单"/>
+            </a-form-item>
+          </a-col>
+          <a-col :span="24">
+            <a-form-item
+              label="动态表单字段"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-textarea
+                v-decorator="[
+                  'formProperties',
+                  {initialValue: getValues('formProperties',element)}
+                ]"
+                placeholder="请设置动态表单字段"/>
+            </a-form-item>
+          </a-col>
         </a-row>
       </a-tab-pane>
       <a-tab-pane key="2" tab="流程属性">

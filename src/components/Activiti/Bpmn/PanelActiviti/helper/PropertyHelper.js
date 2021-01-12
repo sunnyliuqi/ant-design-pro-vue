@@ -5,6 +5,9 @@ import { setExecutionListeners, getExecutionListeners } from './props/ExecutionL
 import { setEventListeners, getEventListeners } from './props/EventListeners'
 import { setSignalDefinitions, getSignalDefinitions } from './props/SignalDefinitions'
 import { setMessageDefinitions, getMessageDefinitions } from './props/MessageDefinitions'
+import { setInitiator, getInitiator } from './props/Initiator'
+import { getFormKey, setFormKey } from './props/FormKey'
+import { setFormProperties, getFormProperties } from './props/FormProperties'
 
 /**
  * 根据传入的表单properties获取对应bpmn properties
@@ -46,6 +49,12 @@ export function getValues (type, element) {
     return getSignalDefinitions(element)
   } else if (type === 'messagedefinitions') {
     return getMessageDefinitions(element)
+  } else if (type === 'initiator') {
+    return getInitiator(element)
+  } else if (type === 'formKey') {
+    return getFormKey(element)
+  } else if (type === 'formProperties') {
+    return getFormProperties(element)
   } else if (type === 'documentation') {
     return getDocumentation(element)
   }
@@ -70,6 +79,12 @@ function setProperty (_properties, propertyName, propertyValue, element, factory
     setSignalDefinitions(_properties, propertyValue, element, factory)
   } else if (propertyName === 'messagedefinitions') {
     setMessageDefinitions(_properties, propertyValue, element, factory)
+  } else if (propertyName === 'initiator') {
+    setInitiator(_properties, propertyValue, element, factory)
+  } else if (propertyName === 'formKey') {
+    setFormKey(_properties, propertyValue, element, factory)
+  } else if (propertyName === 'formProperties') {
+    setFormProperties(_properties, propertyValue, element, factory)
   } else {
     _properties[propertyName] = getPropertyValue(propertyValue)
   }

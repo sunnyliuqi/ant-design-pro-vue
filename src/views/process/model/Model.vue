@@ -26,7 +26,7 @@ export default {
       </activiti:executionListener>
       <activiti:eventListener events="ENTITY_DELETE" throwEvent="signal" signalName="theSignal" errorCode="123" messageName="theMessage" class="org.test.TestClass" delegateExpression="myListener" entityType="job" />
     </bpmn2:extensionElements>
-    <bpmn2:startEvent id="Event_12q4srm" name="开始">
+    <bpmn2:startEvent id="Event_12q4srm" name="开始" activiti:initiator="1121" activiti:formKey="2232">
       <bpmn2:documentation>77</bpmn2:documentation>
       <bpmn2:extensionElements>
       <activiti:executionListener expression="s2" class="s2" delegateExpression="s2" event="start">
@@ -35,6 +35,10 @@ export default {
           <activiti:string>sc</activiti:string>
         </activiti:field>
       </activiti:executionListener>
+      <activiti:formProperty id="fid" name="2" type="long" required="true" readable="true" writable="true" variable="fvariable" expression="fexpression" datePattern="yyyy-HH-mm" default="2021-01-12">
+          <activiti:value id="v1" name="v11">v111</activiti:value>
+          <activiti:value id="v2" name="v22">v222</activiti:value>
+        </activiti:formProperty>
     </bpmn2:extensionElements>
     </bpmn2:startEvent>
     <activiti:signal id="theSignal" name="The Signal" scop="processInstance" />

@@ -40,6 +40,9 @@ export default {
           <activiti:value id="v2" name="v22">v222</activiti:value>
         </activiti:formProperty>
     </bpmn2:extensionElements>
+    <bpmn2:conditionalEventDefinition id="ConditionalEventDefinition_0nukzpg">
+        <bpmn2:condition xsi:type="bpmn2:tFormalExpression">the Condition2</bpmn2:condition>
+      </bpmn2:conditionalEventDefinition>
     </bpmn2:startEvent>
     <activiti:signal id="theSignal" name="The Signal" scop="processInstance" />
     <activiti:signal id="theSignal2" name="The Signal2" scop="processInstance2" />

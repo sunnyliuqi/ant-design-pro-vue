@@ -69,7 +69,7 @@
                 placeholder="请选择发起人"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="showFormKey">
+          <a-col :span="24" v-if="showFormKey(element)">
             <a-form-item
               label="外置表单"
               :labelCol="{ span: 8 }"
@@ -82,7 +82,7 @@
                 placeholder="请选择外置表单"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="showFormProperties">
+          <a-col :span="24" v-if="showFormProperties(element)">
             <a-form-item
               label="动态表单字段"
               :labelCol="{ span: 8 }"
@@ -93,6 +93,58 @@
                   {initialValue: getValues('formProperties',element)}
                 ]"
                 placeholder="请设置动态表单字段"/>
+            </a-form-item>
+          </a-col>
+          <a-col :span="24" v-if="showMessageEventDefinition(element)">
+            <a-form-item
+              label="消息事件"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-textarea
+                v-decorator="[
+                  'messageEventDefinition',
+                  {initialValue: getValues('messageEventDefinition',element)}
+                ]"
+                placeholder="请选择消息事件"/>
+            </a-form-item>
+          </a-col>
+          <a-col :span="24" v-if="showConditionalEventDefinition(element)">
+            <a-form-item
+              label="条件事件"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-textarea
+                v-decorator="[
+                  'conditionalEventDefinition',
+                  {initialValue: getValues('conditionalEventDefinition',element)}
+                ]"
+                placeholder="请输入条件事件"/>
+            </a-form-item>
+          </a-col>
+          <a-col :span="24" v-if="showSignalEventDefinition(element)">
+            <a-form-item
+              label="信号事件"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-textarea
+                v-decorator="[
+                  'signalEventDefinition',
+                  {initialValue: getValues('signalEventDefinition',element)}
+                ]"
+                placeholder="请选择信号事件"/>
+            </a-form-item>
+          </a-col>
+          <a-col :span="24" v-if="showTimerEventDefinition(element)">
+            <a-form-item
+              label="定时事件"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-textarea
+                v-decorator="[
+                  'timerEventDefinition',
+                  {initialValue: getValues('timerEventDefinition',element)}
+                ]"
+                placeholder="请输入定时事件"/>
             </a-form-item>
           </a-col>
         </a-row>
@@ -277,6 +329,30 @@
       },
       showFormProperties (element) {
         if (element.type === 'bpmn:StartEvent' && this.getStartEventType(element) === 'none') {
+          return true
+        }
+        return false
+      },
+      showMessageEventDefinition (element) {
+        if (element.type === 'bpmn:StartEvent' && this.getStartEventType(element) === 'message') {
+          return true
+        }
+        return false
+      },
+      showConditionalEventDefinition (element) {
+        if (element.type === 'bpmn:StartEvent' && this.getStartEventType(element) === 'conditional') {
+          return true
+        }
+        return false
+      },
+      showSignalEventDefinition (element) {
+        if (element.type === 'bpmn:StartEvent' && this.getStartEventType(element) === 'signal') {
+          return true
+        }
+        return false
+      },
+      showTimerEventDefinition (element) {
+        if (element.type === 'bpmn:StartEvent' && this.getStartEventType(element) === 'timer') {
           return true
         }
         return false

@@ -8,7 +8,19 @@ import { setMessageDefinitions, getMessageDefinitions } from './props/MessageDef
 import { setInitiator, getInitiator } from './props/Initiator'
 import { getFormKey, setFormKey } from './props/FormKey'
 import { setFormProperties, getFormProperties } from './props/FormProperties'
-
+import { setMessageEventDefinition, getMessageEventDefinition } from './props/MessageEventDefinition'
+import {
+  getConditionalEventDefinition,
+  setConditionalEventDefinition
+} from './props/ConditionalEventDefinition'
+import {
+  getSignalEventDefinition,
+  setSignalEventDefinition
+} from './props/SignalEventDefinition'
+import {
+  getTimerEventDefinition,
+  setTimerEventDefinition
+} from './props/TimerEventDefinition'
 /**
  * 根据传入的表单properties获取对应bpmn properties
  * @param element
@@ -55,6 +67,14 @@ export function getValues (type, element) {
     return getFormKey(element)
   } else if (type === 'formProperties') {
     return getFormProperties(element)
+  } else if (type === 'messageEventDefinition') {
+    return getMessageEventDefinition(element)
+  } else if (type === 'conditionalEventDefinition') {
+    return getConditionalEventDefinition(element)
+  } else if (type === 'signalEventDefinition') {
+    return getSignalEventDefinition(element)
+  } else if (type === 'timerEventDefinition') {
+    return getTimerEventDefinition(element)
   } else if (type === 'documentation') {
     return getDocumentation(element)
   }
@@ -85,6 +105,14 @@ function setProperty (_properties, propertyName, propertyValue, element, factory
     setFormKey(_properties, propertyValue, element, factory)
   } else if (propertyName === 'formProperties') {
     setFormProperties(_properties, propertyValue, element, factory)
+  } else if (propertyName === 'messageEventDefinition') {
+    setMessageEventDefinition(_properties, propertyValue, element, factory)
+  } else if (propertyName === 'conditionalEventDefinition') {
+    setConditionalEventDefinition(_properties, propertyValue, element, factory)
+  } else if (propertyName === 'signalEventDefinition') {
+    setSignalEventDefinition(_properties, propertyValue, element, factory)
+  } else if (propertyName === 'timerEventDefinition') {
+    setTimerEventDefinition(_properties, propertyValue, element, factory)
   } else {
     _properties[propertyName] = getPropertyValue(propertyValue)
   }

@@ -1153,6 +1153,40 @@
       "extends": [
         "bpmn:Message"
       ]
+    },
+    {
+      "name": "MessageEventDefinition",
+      "superClass": [
+        "bpmn:EventDefinition"
+      ],
+      "extends": [
+        "bpmn:MessageEventDefinition"
+      ],
+      "properties": [
+        {
+          "name": "messageRef",
+          "type": "String",
+          "isAttr": true,
+          "redefines": "bpmn:MessageEventDefinition#messageRef"
+        }
+      ]
+    },
+    {
+      "name": "SignalEventDefinition",
+      "superClass": [
+        "bpmn:EventDefinition"
+      ],
+      "extends": [
+        "bpmn:SignalEventDefinition"
+      ],
+      "properties": [
+        {
+          "name": "signalRef",
+          "type": "String",
+          "isAttr": true,
+          "redefines": "bpmn:SignalEventDefinition#signalRef"
+        }
+      ]
     }
   ],
   "emumerations": [ ]

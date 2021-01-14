@@ -73,17 +73,34 @@ export function getValues (type, element) {
     return getConditionalEventDefinition(element)
   } else if (type === 'signalEventDefinition') {
     return getSignalEventDefinition(element)
-  } else if (type === 'timerDate') {
-    const timerEventDefinition = getTimerEventDefinition(element)
-    return timerEventDefinition && timerEventDefinition.timerDate
-  } else if (type === 'timerCycle') {
-    const timerEventDefinition = getTimerEventDefinition(element)
-    return timerEventDefinition && timerEventDefinition.timerCycle
-  } else if (type === 'timerDuration') {
-    const timerEventDefinition = getTimerEventDefinition(element)
-    return timerEventDefinition && timerEventDefinition.timerDuration
+  } else if (type === 'timeDate') {
+    const timerEventDefinition = Parse(getTimerEventDefinition(element))
+    return timerEventDefinition && timerEventDefinition.timeDate
+  } else if (type === 'timeCycle') {
+    const timerEventDefinition = Parse(getTimerEventDefinition(element))
+    return timerEventDefinition && timerEventDefinition.timeCycle
+  } else if (type === 'timeDuration') {
+    const timerEventDefinition = Parse(getTimerEventDefinition(element))
+    return timerEventDefinition && timerEventDefinition.timeDuration
   } else if (type === 'documentation') {
     return getDocumentation(element)
+  }
+  return undefined
+}
+
+/**
+ * 字符串转对象
+ * @param s
+ * @returns {undefined|any}
+ * @constructor
+ */
+function Parse (s) {
+  if (!isEmpty(s)) {
+    try {
+      return JSON.parse(s)
+    } catch (e) {
+      console.warn('解析对象异常，请检查对象: ' + s)
+    }
   }
   return undefined
 }

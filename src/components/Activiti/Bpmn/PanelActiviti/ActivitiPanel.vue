@@ -136,15 +136,41 @@
           </a-col>
           <a-col :span="24" v-if="showTimerEventDefinition(element)">
             <a-form-item
-              label="定时事件"
+              label="定时周期"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
               <a-textarea
                 v-decorator="[
-                  'timerEventDefinition',
-                  {initialValue: getValues('timerEventDefinition',element)}
+                  'timeCycle',
+                  {initialValue: getValues('timeCycle',element)}
                 ]"
-                placeholder="请输入定时事件"/>
+                placeholder="请输入定时周期"/>
+            </a-form-item>
+          </a-col>
+          <a-col :span="24" v-if="showTimerEventDefinition(element)">
+            <a-form-item
+              label="定时时间"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-textarea
+                v-decorator="[
+                  'timeDate',
+                  {initialValue: getValues('timeDate',element)}
+                ]"
+                placeholder="请输入定时时间"/>
+            </a-form-item>
+          </a-col>
+          <a-col :span="24" v-if="showTimerEventDefinition(element)">
+            <a-form-item
+              label="定时期间"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-textarea
+                v-decorator="[
+                  'timeDuration',
+                  {initialValue: getValues('timeDuration',element)}
+                ]"
+                placeholder="请输入定时期间"/>
             </a-form-item>
           </a-col>
         </a-row>

@@ -1,4 +1,10 @@
-import { createElement, filterByType, getBusinessObject, getPropertyValue } from '../PropertyHelper'
+import {
+  createElement,
+  filterByType,
+  getBusinessObject,
+  getExtensionElements,
+  getPropertyValue, removeByType
+} from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 import { setFormalExpression, getFormalExpression } from './FormalExpression'
 /**
@@ -13,19 +19,19 @@ export function setTimerEventDefinition (_properties, propertyValue, element, fa
     _properties.eventDefinitions = null
     return
   }
-    try {
-      if (!(propertyValue instanceof Object)) {
-        propertyValue = JSON.parse(propertyValue)
-      }
-    } catch (e) {
-      throw new Error('时间输入内容格式不正确，请重新输入')
+  try {
+    if (!(propertyValue instanceof Object)) {
+      propertyValue = JSON.parse(propertyValue)
     }
-    if (propertyValue) {
-      _properties.eventDefinitions = []
-      _properties.eventDefinitions.push(createElementTimerEventDefinition(propertyValue, element, factory))
-    } else {
-      _properties.eventDefinitions = null
-    }
+  } catch (e) {
+    throw new Error('时间输入内容格式不正确，请重新输入')
+  }
+  const oldTimerEventDefinition = getTimerEventDefinition(element)
+  if (!isEmpty(oldTimerEventDefinition)) {
+    propertyValue = Object.assign({}, JSON.parse(oldTimerEventDefinition), propertyValue)
+  }
+  _properties.eventDefinitions = []
+  _properties.eventDefinitions.push(createElementTimerEventDefinition(propertyValue, element, factory))
 }
 function createElementTimerEventDefinition (timer, element, factory) {
   const property = {}

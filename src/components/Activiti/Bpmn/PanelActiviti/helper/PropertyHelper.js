@@ -73,8 +73,15 @@ export function getValues (type, element) {
     return getConditionalEventDefinition(element)
   } else if (type === 'signalEventDefinition') {
     return getSignalEventDefinition(element)
-  } else if (type === 'timerEventDefinition') {
-    return getTimerEventDefinition(element)
+  } else if (type === 'timerDate') {
+    const timerEventDefinition = getTimerEventDefinition(element)
+    return timerEventDefinition && timerEventDefinition.timerDate
+  } else if (type === 'timerCycle') {
+    const timerEventDefinition = getTimerEventDefinition(element)
+    return timerEventDefinition && timerEventDefinition.timerCycle
+  } else if (type === 'timerDuration') {
+    const timerEventDefinition = getTimerEventDefinition(element)
+    return timerEventDefinition && timerEventDefinition.timerDuration
   } else if (type === 'documentation') {
     return getDocumentation(element)
   }
@@ -111,8 +118,15 @@ function setProperty (_properties, propertyName, propertyValue, element, factory
     setConditionalEventDefinition(_properties, propertyValue, element, factory)
   } else if (propertyName === 'signalEventDefinition') {
     setSignalEventDefinition(_properties, propertyValue, element, factory)
-  } else if (propertyName === 'timerEventDefinition') {
-    setTimerEventDefinition(_properties, propertyValue, element, factory)
+  } else if (propertyName === 'timeDate') {
+    const propertyTimeDate = { timeDate: propertyValue }
+    setTimerEventDefinition(_properties, propertyTimeDate, element, factory)
+  } else if (propertyName === 'timeCycle') {
+    const propertyTimeCycle = { timeCycle: propertyValue }
+    setTimerEventDefinition(_properties, propertyTimeCycle, element, factory)
+  } else if (propertyName === 'timeDuration') {
+    const propertyTimeDuration = { timeDuration: propertyValue }
+    setTimerEventDefinition(_properties, propertyTimeDuration, element, factory)
   } else {
     _properties[propertyName] = getPropertyValue(propertyValue)
   }

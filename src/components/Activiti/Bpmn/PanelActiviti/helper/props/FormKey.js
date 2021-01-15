@@ -1,4 +1,5 @@
 import { isEmpty } from '@/utils/common'
+import { getStartEventType } from '../SupportPropertyHelper'
 
 /**
  * 设置/创建 FormKey 属性
@@ -15,6 +16,23 @@ export function setFormKey (_properties, propertyValue, element, factory) {
   _properties.formKey = propertyValue
 }
 
+/**
+ * 获取
+ * @param element
+ * @returns {*|null}
+ */
 export function getFormKey (element) {
   return element.businessObject && element.businessObject.formKey
+}
+
+/**
+ * 是否支持
+ * @param element
+ * @returns {boolean}
+ */
+export function isSupportFormKey (element) {
+  if (element.type === 'bpmn:StartEvent' && getStartEventType(element) === 'none') {
+    return true
+  }
+  return false
 }

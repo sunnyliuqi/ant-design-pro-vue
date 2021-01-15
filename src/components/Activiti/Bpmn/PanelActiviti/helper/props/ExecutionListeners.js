@@ -8,6 +8,10 @@ import {
 } from '../PropertyHelper'
 import { setFields, getFields } from './Fields'
 import { isEmpty } from '@/utils/common'
+import {
+  getIntermediateEventDefinitionType,
+  getIntermediateEventType
+} from '../SupportPropertyHelper'
 
 /**
  * 设置ExecutionListeners
@@ -106,4 +110,20 @@ export function getExecutionListeners (element) {
     }
   }
   return undefined
+}
+
+/**
+ * 是否支持
+ * @param element
+ * @returns {boolean}
+ */
+export function isSupportExecutionListeners (element) {
+  if (element.type === 'bpmn:StartEvent') {
+    return true
+  }
+  const intermediateCatchEventType = getIntermediateEventDefinitionType(element)
+  if (getIntermediateEventType(element) && intermediateCatchEventType === 'none' || intermediateCatchEventType === 'message' || intermediateCatchEventType === 'timer') {
+    return true
+  }
+  return false
 }

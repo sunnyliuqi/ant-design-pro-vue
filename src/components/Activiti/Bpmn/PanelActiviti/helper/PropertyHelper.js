@@ -136,13 +136,22 @@ function setProperty (_properties, propertyName, propertyValue, element, factory
   } else if (propertyName === 'signalEventDefinition') {
     setSignalEventDefinition(_properties, propertyValue, element, factory)
   } else if (propertyName === 'timeDate') {
-    const propertyTimeDate = { timeDate: propertyValue }
+    let propertyTimeDate
+    if (!isEmpty(propertyValue)) {
+      propertyTimeDate = { timeDate: propertyValue }
+    }
     setTimerEventDefinition(_properties, propertyTimeDate, element, factory)
   } else if (propertyName === 'timeCycle') {
-    const propertyTimeCycle = { timeCycle: propertyValue }
+    let propertyTimeCycle
+    if (!isEmpty(propertyValue)) {
+      propertyTimeCycle = { timeCycle: propertyValue }
+    }
     setTimerEventDefinition(_properties, propertyTimeCycle, element, factory)
   } else if (propertyName === 'timeDuration') {
-    const propertyTimeDuration = { timeDuration: propertyValue }
+    let propertyTimeDuration
+    if (!isEmpty(propertyValue)) {
+       propertyTimeDuration = { timeDuration: propertyValue }
+    }
     setTimerEventDefinition(_properties, propertyTimeDuration, element, factory)
   } else {
     _properties[propertyName] = getPropertyValue(propertyValue)

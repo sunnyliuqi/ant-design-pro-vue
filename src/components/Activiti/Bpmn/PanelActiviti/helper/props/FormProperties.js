@@ -6,6 +6,7 @@ import {
 } from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 import { setValues, getValues } from './Values'
+import { getStartEventType } from '../SupportPropertyHelper'
 /**
  * 设置 FormProperties
  * @param _properties
@@ -121,4 +122,16 @@ export function getFormProperties (element) {
     }
   }
   return undefined
+}
+
+/**
+ * 是否支持
+ * @param element
+ * @returns {boolean}
+ */
+export function isSupportFormProperties (element) {
+  if (element.type === 'bpmn:StartEvent' && getStartEventType(element) === 'none') {
+    return true
+  }
+  return false
 }

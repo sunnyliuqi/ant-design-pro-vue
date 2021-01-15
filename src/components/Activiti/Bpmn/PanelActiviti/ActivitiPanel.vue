@@ -43,7 +43,7 @@
                 placeholder="请输入描述"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="supportExecutionListeners(element, updateProperties, getFactory())">
+          <a-col :span="24" v-show="supportExecutionListeners(element)">
             <a-form-item
               label="执行监听器"
               :labelCol="{ span: 8 }"
@@ -56,7 +56,7 @@
                 placeholder="请选择执行监听器"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="supportInitiator(element, updateProperties, getFactory())">
+          <a-col :span="24" v-show="supportInitiator(element)">
             <a-form-item
               label="发起人"
               :labelCol="{ span: 8 }"
@@ -69,7 +69,7 @@
                 placeholder="请选择发起人"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="supportFormKey(element, updateProperties, getFactory())">
+          <a-col :span="24" v-show="supportFormKey(element)">
             <a-form-item
               label="外置表单"
               :labelCol="{ span: 8 }"
@@ -82,7 +82,7 @@
                 placeholder="请选择外置表单"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="supportFormProperties(element, updateProperties, getFactory())">
+          <a-col :span="24" v-show="supportFormProperties(element)">
             <a-form-item
               label="动态表单字段"
               :labelCol="{ span: 8 }"
@@ -95,7 +95,7 @@
                 placeholder="请设置动态表单字段"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="supportMessageEventDefinition(element, updateProperties, getFactory())">
+          <a-col :span="24" v-show="supportMessageEventDefinition(element)">
             <a-form-item
               label="消息事件"
               :labelCol="{ span: 8 }"
@@ -108,7 +108,7 @@
                 placeholder="请选择消息事件"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="supportConditionalEventDefinition(element, updateProperties, getFactory())">
+          <a-col :span="24" v-show="supportConditionalEventDefinition(element)">
             <a-form-item
               label="条件事件"
               :labelCol="{ span: 8 }"
@@ -121,7 +121,7 @@
                 placeholder="请输入条件事件"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="supportSignalEventDefinition(element, updateProperties, getFactory())">
+          <a-col :span="24" v-show="supportSignalEventDefinition(element)">
             <a-form-item
               label="信号事件"
               :labelCol="{ span: 8 }"
@@ -134,7 +134,7 @@
                 placeholder="请选择信号事件"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="supportTimerEventDefinition(element, updateProperties, getFactory())">
+          <a-col :span="24" v-show="supportTimerEventDefinition(element)">
             <a-form-item
               label="定时周期"
               :labelCol="{ span: 8 }"
@@ -147,7 +147,7 @@
                 placeholder="请输入定时周期"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="supportTimerEventDefinition(element, updateProperties, getFactory())">
+          <a-col :span="24" v-show="supportTimerEventDefinition(element)">
             <a-form-item
               label="定时时间"
               :labelCol="{ span: 8 }"
@@ -160,7 +160,7 @@
                 placeholder="请输入定时时间"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="supportTimerEventDefinition(element, updateProperties, getFactory())">
+          <a-col :span="24" v-show="supportTimerEventDefinition(element)">
             <a-form-item
               label="定时期间"
               :labelCol="{ span: 8 }"
@@ -314,14 +314,6 @@
         type: Function,
         default: undefined
       },
-      updateProperties: {
-        type: Function,
-        default: undefined
-      },
-      getFactory: {
-        type: Function,
-        default: undefined
-      },
       element: {
         type: Object,
         default: undefined
@@ -329,7 +321,7 @@
     },
     data () {
       return {
-        formPanel: this.$form.createForm(this, { onFieldsChange: this.onPanelFieldsChange }),
+        formPanel: this.$form.createForm(this, { onValuesChange: this.onPanelValuesChange }),
         tabKey: '2',
         processElement: {},
         supportExecutionListeners,
@@ -353,7 +345,7 @@
           this.processElement = val
           this.tabKey = '2'
         }
-        this.formPanel.resetFields()
+        this.formPanel.resetFields(val)
       }
     },
     methods: {
@@ -364,13 +356,13 @@
           this.$message.info('没有选中的节点')
         }
       },
-      onPanelFieldsChange (props, fields) {
+      onPanelValuesChange (fields, values) {
         if (this.updateBpmn) {
-          const fieldKeys = Object.keys(fields)
+          const fieldKeys = Object.keys(values)
           if (fieldKeys && fieldKeys.length > 0) {
             const properties = {}
             fieldKeys.forEach(key => {
-              properties[key.replace('process', '')] = fields[key].value
+              properties[key.replace('process', '')] = values[key]
             })
             this.updateBpmn(this.element, properties)
           }

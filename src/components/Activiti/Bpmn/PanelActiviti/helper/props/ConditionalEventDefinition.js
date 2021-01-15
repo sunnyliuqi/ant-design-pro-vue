@@ -1,6 +1,11 @@
 import { createElement, filterByType, getBusinessObject, getPropertyValue } from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 import { setFormalExpression, getFormalExpression } from './FormalExpression'
+import {
+  getIntermediateEventDefinitionType,
+  getIntermediateEventType,
+  getStartEventType
+} from '../SupportPropertyHelper'
 /**
  * 设置/创建 ConditionalEventDefinition 元素
  * @param _properties
@@ -9,7 +14,7 @@ import { setFormalExpression, getFormalExpression } from './FormalExpression'
  * @param factory
  */
 export function setConditionalEventDefinition (_properties, propertyValue, element, factory) {
-  if (isEmpty(propertyValue)) {
+  if (isEmpty(propertyValue) || isSupportConditionalEventDefinition(element) === false) {
     _properties.eventDefinitions = null
     return
   }
@@ -55,4 +60,19 @@ export function getConditionalEventDefinition (element) {
     }
   }
   return undefined
+}
+
+/**
+ * 是否支持
+ * @param element
+ * @returns {boolean}
+ */
+export function isSupportConditionalEventDefinition (element) {
+  if (element.type === 'bpmn:StartEvent' && getStartEventType(element) === 'conditional') {
+    return true
+  }
+  if (getIntermediateEventType(element) && getIntermediateEventDefinitionType(element) === 'conditional') {
+    return true
+  }
+  return false
 }

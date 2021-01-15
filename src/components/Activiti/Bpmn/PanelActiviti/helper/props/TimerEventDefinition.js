@@ -7,6 +7,11 @@ import {
 } from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 import { setFormalExpression, getFormalExpression } from './FormalExpression'
+import {
+  getIntermediateEventDefinitionType,
+  getIntermediateEventType,
+  getStartEventType
+} from '../SupportPropertyHelper'
 /**
  * 设置/创建 TimerEventDefinition 元素
  * @param _properties
@@ -80,4 +85,19 @@ export function getTimerEventDefinition (element) {
     }
   }
   return undefined
+}
+
+/**
+ * 是否支持
+ * @param element
+ * @returns {boolean}
+ */
+export function isSupportTimerEventDefinition (element) {
+  if (element.type === 'bpmn:StartEvent' && getStartEventType(element) === 'timer') {
+    return true
+  }
+  if (getIntermediateEventType(element) && getIntermediateEventDefinitionType(element) === 'timer') {
+    return true
+  }
+  return false
 }

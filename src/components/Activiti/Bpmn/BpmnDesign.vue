@@ -18,8 +18,6 @@
         :element="current"
         :update-bpmn="updateBpmn"
         :get-values="getValues"
-        :update-properties="updateProperties"
-        :get-factory="getBpmnFactory"
       />
     </a-layout-sider>
 
@@ -94,7 +92,6 @@
        */
       ActivePanel (element) {
         const current = this.current
-
         if (typeof element === 'undefined') {
           element = this.getCanvas().getRootElement()
         }

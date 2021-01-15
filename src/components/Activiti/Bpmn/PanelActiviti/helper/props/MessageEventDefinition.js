@@ -1,5 +1,10 @@
 import { createElement, filterByType, getBusinessObject, getPropertyValue } from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
+import {
+  getIntermediateEventDefinitionType,
+  getIntermediateEventType,
+  getStartEventType
+} from '../SupportPropertyHelper'
 /**
  * 设置/创建 MessageEventDefinition 元素
  * @param _properties
@@ -49,4 +54,19 @@ export function getMessageEventDefinition (element) {
     }
   }
   return undefined
+}
+
+/**
+ * 是否支持
+ * @param element
+ * @returns {boolean}
+ */
+export function isSupportMessageEventDefinition (element) {
+  if (element.type === 'bpmn:StartEvent' && getStartEventType(element) === 'message') {
+    return true
+  }
+  if (getIntermediateEventType(element) && getIntermediateEventDefinitionType(element) === 'message') {
+    return true
+  }
+  return false
 }

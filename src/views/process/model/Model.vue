@@ -17,7 +17,7 @@ export default {
 <bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:activiti="http://activiti.org/bpmn" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
   <bpmn2:process id="process1567044459787" name="process15670444597879" author="111" version="1111">
     <bpmn2:documentation>663</bpmn2:documentation>
-    <bpmn2:startEvent id="Event_12q4srm" name="开始" activiti:initiator="1121" activiti:formKey="2232">
+    <bpmn2:startEvent id="Event_12q4srm" name="开始">
       <bpmn2:documentation>77</bpmn2:documentation>
       <bpmn2:extensionElements>
       <activiti:executionListener expression="s2" class="s2" delegateExpression="s2" event="start">

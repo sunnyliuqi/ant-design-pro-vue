@@ -17,15 +17,6 @@ export default {
 <bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:activiti="http://activiti.org/bpmn" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
   <bpmn2:process id="process1567044459787" name="process15670444597879" author="111" version="1111">
     <bpmn2:documentation>663</bpmn2:documentation>
-    <bpmn2:extensionElements>
-      <activiti:executionListener expression="2" class="2" delegateExpression="2" event="start">
-        <activiti:field name="1" stringValue="2">
-          <activiti:expression>d</activiti:expression>
-          <activiti:string>c</activiti:string>
-        </activiti:field>
-      </activiti:executionListener>
-      <activiti:eventListener events="ENTITY_DELETE" throwEvent="signal" signalName="theSignal" errorCode="123" messageName="theMessage" class="org.test.TestClass" delegateExpression="myListener" entityType="job" />
-    </bpmn2:extensionElements>
     <bpmn2:startEvent id="Event_12q4srm" name="开始" activiti:initiator="1121" activiti:formKey="2232">
       <bpmn2:documentation>77</bpmn2:documentation>
       <bpmn2:extensionElements>
@@ -40,11 +31,7 @@ export default {
           <activiti:value id="v2" name="v22">v222</activiti:value>
         </activiti:formProperty>
     </bpmn2:extensionElements>
-      <bpmn2:timerEventDefinition id="TimerEventDefinition_0vdokss">
-        <bpmn2:timeDate xsi:type="bpmn2:tFormalExpression">2</bpmn2:timeDate>
-        <bpmn2:timeCycle xsi:type="bpmn2:tFormalExpression">1</bpmn2:timeCycle>
-        <bpmn2:timeDuration xsi:type="bpmn2:tFormalExpression">3</bpmn2:timeDuration>
-      </bpmn2:timerEventDefinition>
+    <bpmn2:messageEventDefinition id="MessageEventDefinition_1qce8us" activiti:messageRef="myMessage" />
     </bpmn2:startEvent>
     <activiti:signal id="theSignal" name="The Signal" scop="processInstance" />
     <activiti:signal id="theSignal2" name="The Signal2" scop="processInstance2" />

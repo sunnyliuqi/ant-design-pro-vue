@@ -18,6 +18,8 @@
         :element="current"
         :update-bpmn="updateBpmn"
         :get-values="getValues"
+        :update-properties="updateProperties"
+        :get-factory="getBpmnFactory"
       />
     </a-layout-sider>
 

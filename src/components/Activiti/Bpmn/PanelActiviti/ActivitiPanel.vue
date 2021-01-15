@@ -43,7 +43,7 @@
                 placeholder="请输入描述"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="showExecutionListeners(element)">
+          <a-col :span="24" v-if="supportExecutionListeners(element, updateProperties, getFactory())">
             <a-form-item
               label="执行监听器"
               :labelCol="{ span: 8 }"
@@ -56,7 +56,7 @@
                 placeholder="请选择执行监听器"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="showInitiator(element)">
+          <a-col :span="24" v-if="supportInitiator(element, updateProperties, getFactory())">
             <a-form-item
               label="发起人"
               :labelCol="{ span: 8 }"
@@ -69,7 +69,7 @@
                 placeholder="请选择发起人"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="showFormKey(element)">
+          <a-col :span="24" v-if="supportFormKey(element, updateProperties, getFactory())">
             <a-form-item
               label="外置表单"
               :labelCol="{ span: 8 }"
@@ -82,7 +82,7 @@
                 placeholder="请选择外置表单"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="showFormProperties(element)">
+          <a-col :span="24" v-if="supportFormProperties(element, updateProperties, getFactory())">
             <a-form-item
               label="动态表单字段"
               :labelCol="{ span: 8 }"
@@ -95,7 +95,7 @@
                 placeholder="请设置动态表单字段"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="showMessageEventDefinition(element)">
+          <a-col :span="24" v-if="supportMessageEventDefinition(element, updateProperties, getFactory())">
             <a-form-item
               label="消息事件"
               :labelCol="{ span: 8 }"
@@ -108,7 +108,7 @@
                 placeholder="请选择消息事件"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="showConditionalEventDefinition(element)">
+          <a-col :span="24" v-if="supportConditionalEventDefinition(element, updateProperties, getFactory())">
             <a-form-item
               label="条件事件"
               :labelCol="{ span: 8 }"
@@ -121,7 +121,7 @@
                 placeholder="请输入条件事件"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="showSignalEventDefinition(element)">
+          <a-col :span="24" v-if="supportSignalEventDefinition(element, updateProperties, getFactory())">
             <a-form-item
               label="信号事件"
               :labelCol="{ span: 8 }"
@@ -134,7 +134,7 @@
                 placeholder="请选择信号事件"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="showTimerEventDefinition(element)">
+          <a-col :span="24" v-if="supportTimerEventDefinition(element, updateProperties, getFactory())">
             <a-form-item
               label="定时周期"
               :labelCol="{ span: 8 }"
@@ -147,7 +147,7 @@
                 placeholder="请输入定时周期"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="showTimerEventDefinition(element)">
+          <a-col :span="24" v-if="supportTimerEventDefinition(element, updateProperties, getFactory())">
             <a-form-item
               label="定时时间"
               :labelCol="{ span: 8 }"
@@ -160,7 +160,7 @@
                 placeholder="请输入定时时间"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="showTimerEventDefinition(element)">
+          <a-col :span="24" v-if="supportTimerEventDefinition(element, updateProperties, getFactory())">
             <a-form-item
               label="定时期间"
               :labelCol="{ span: 8 }"
@@ -302,6 +302,7 @@
 </template>
 
 <script>
+  import { supportExecutionListeners, supportConditionalEventDefinition, supportFormKey, supportFormProperties, supportInitiator, supportMessageEventDefinition, supportSignalEventDefinition, supportTimerEventDefinition } from './helper/SupportPropertyHelper'
   export default {
     name: 'ActivitiPanel',
     props: {
@@ -310,6 +311,14 @@
         default: undefined
       },
       getValues: {
+        type: Function,
+        default: undefined
+      },
+      updateProperties: {
+        type: Function,
+        default: undefined
+      },
+      getFactory: {
         type: Function,
         default: undefined
       },
@@ -322,13 +331,20 @@
       return {
         formPanel: this.$form.createForm(this, { onFieldsChange: this.onPanelFieldsChange }),
         tabKey: '2',
-        processElement: { }
+        processElement: {},
+        supportExecutionListeners,
+        supportConditionalEventDefinition,
+        supportFormKey,
+        supportFormProperties,
+        supportInitiator,
+        supportMessageEventDefinition,
+        supportSignalEventDefinition,
+        supportTimerEventDefinition
       }
     },
     mounted () {
     },
-    computed: {
-    },
+    computed: {},
     watch: {
       element: function (val) {
         if (val && val.type && val.type !== 'bpmn:Process') {
@@ -341,74 +357,9 @@
       }
     },
     methods: {
-      showInitiator (element) {
-        if (element.type === 'bpmn:StartEvent' && this.getStartEventType(element) === 'none') {
-          return true
-        }
-        return false
-      },
-      showFormKey (element) {
-        if (element.type === 'bpmn:StartEvent' && this.getStartEventType(element) === 'none') {
-          return true
-        }
-        return false
-      },
-      showFormProperties (element) {
-        if (element.type === 'bpmn:StartEvent' && this.getStartEventType(element) === 'none') {
-          return true
-        }
-        return false
-      },
-      showMessageEventDefinition (element) {
-        if (element.type === 'bpmn:StartEvent' && this.getStartEventType(element) === 'message') {
-          return true
-        }
-        return false
-      },
-      showConditionalEventDefinition (element) {
-        if (element.type === 'bpmn:StartEvent' && this.getStartEventType(element) === 'conditional') {
-          return true
-        }
-        return false
-      },
-      showSignalEventDefinition (element) {
-        if (element.type === 'bpmn:StartEvent' && this.getStartEventType(element) === 'signal') {
-          return true
-        }
-        return false
-      },
-      showTimerEventDefinition (element) {
-        if (element.type === 'bpmn:StartEvent' && this.getStartEventType(element) === 'timer') {
-          return true
-        }
-        return false
-      },
-      getStartEventType (element) {
-        if (element.businessObject && element.businessObject.eventDefinitions && element.businessObject.eventDefinitions.length > 0) {
-          const moddleElement = element.businessObject.eventDefinitions[0]
-          if (moddleElement) {
-            if (moddleElement.$type === 'bpmn:MessageEventDefinition') {
-              return 'message'
-            } else if (moddleElement.$type === 'bpmn:TimerEventDefinition') {
-              return 'timer'
-            } else if (moddleElement.$type === 'bpmn:ConditionalEventDefinition') {
-              return 'conditional'
-            } else if (moddleElement.$type === 'bpmn:SignalEventDefinition') {
-              return 'signal'
-            }
-          }
-        }
-        return 'none'
-      },
-      showExecutionListeners (element) {
-        if (element.type === 'bpmn:StartEvent') {
-          return true
-        }
-        return false
-      },
       changeActiveTab (key) {
         if (this.element && this.element.type && this.element.type !== 'bpmn:Process') {
-            this.tabKey = key
+          this.tabKey = key
         } else {
           this.$message.info('没有选中的节点')
         }
@@ -430,7 +381,7 @@
 </script>
 
 <style scoped lang="less">
-.panelProperties{
-  padding: 4px;
-}
+  .panelProperties {
+    padding: 4px;
+  }
 </style>

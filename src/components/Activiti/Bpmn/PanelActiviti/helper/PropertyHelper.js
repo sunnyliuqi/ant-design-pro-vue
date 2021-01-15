@@ -21,6 +21,7 @@ import {
   getTimerEventDefinition,
   setTimerEventDefinition
 } from './props/TimerEventDefinition'
+import { supportExecutionListeners } from '@/components/Activiti/Bpmn/PanelActiviti/helper/SupportPropertyHelper'
 /**
  * 根据传入的表单properties获取对应bpmn properties
  * @param element
@@ -45,64 +46,6 @@ export function getProperties (element, properties, factory, updateProperties) {
       return reject(e.message)
     }
   })
-}
-export function getValues (type, element) {
-  if (type === 'name') {
-    return element.businessObject && element.businessObject.name
-  } else if (type === 'author') {
-    return element.businessObject && element.businessObject.$attrs && element.businessObject.$attrs.author
-  } else if (type === 'version') {
-    return element.businessObject && element.businessObject.$attrs && element.businessObject.$attrs.version
-  } else if (type === 'executionlisteners') {
-    return getExecutionListeners(element)
-  } else if (type === 'eventlisteners') {
-    return getEventListeners(element)
-  } else if (type === 'signaldefinitions') {
-    return getSignalDefinitions(element)
-  } else if (type === 'messagedefinitions') {
-    return getMessageDefinitions(element)
-  } else if (type === 'initiator') {
-    return getInitiator(element)
-  } else if (type === 'formKey') {
-    return getFormKey(element)
-  } else if (type === 'formProperties') {
-    return getFormProperties(element)
-  } else if (type === 'messageEventDefinition') {
-    return getMessageEventDefinition(element)
-  } else if (type === 'conditionalEventDefinition') {
-    return getConditionalEventDefinition(element)
-  } else if (type === 'signalEventDefinition') {
-    return getSignalEventDefinition(element)
-  } else if (type === 'timeDate') {
-    const timerEventDefinition = Parse(getTimerEventDefinition(element))
-    return timerEventDefinition && timerEventDefinition.timeDate
-  } else if (type === 'timeCycle') {
-    const timerEventDefinition = Parse(getTimerEventDefinition(element))
-    return timerEventDefinition && timerEventDefinition.timeCycle
-  } else if (type === 'timeDuration') {
-    const timerEventDefinition = Parse(getTimerEventDefinition(element))
-    return timerEventDefinition && timerEventDefinition.timeDuration
-  } else if (type === 'documentation') {
-    return getDocumentation(element)
-  }
-  return undefined
-}
-
-/**
- * 字符串转对象
- * @param s
- * @returns {undefined|any}
- * @constructor
- */
-function Parse (s) {
-  if (!isEmpty(s)) {
-    try {
-      return JSON.parse(s)
-    } catch (e) {
-      console.warn('解析对象异常，请检查对象: ' + s)
-    }
-  }
-  return undefined
 }
 /**
  * 获取bpmn property
@@ -150,12 +93,92 @@ function setProperty (_properties, propertyName, propertyValue, element, factory
   } else if (propertyName === 'timeDuration') {
     let propertyTimeDuration
     if (!isEmpty(propertyValue)) {
-       propertyTimeDuration = { timeDuration: propertyValue }
+      propertyTimeDuration = { timeDuration: propertyValue }
     }
     setTimerEventDefinition(_properties, propertyTimeDuration, element, factory)
   } else {
     _properties[propertyName] = getPropertyValue(propertyValue)
   }
+}
+
+/**
+ * 节点转字符串值
+ * @param type
+ * @param element
+ * @returns {string|null|*|Record<string, string>|{handler(*=): void, deep: boolean}|{handler: function(*=): void, deep: boolean}|{handler: function(*=): void, deep: boolean}|undefined}
+ */
+export function getValues (type, element) {
+  if (type === 'name') {
+    return element.businessObject && element.businessObject.name
+  } else if (type === 'author') {
+    return element.businessObject && element.businessObject.$attrs && element.businessObject.$attrs.author
+  } else if (type === 'version') {
+    return element.businessObject && element.businessObject.$attrs && element.businessObject.$attrs.version
+  } else if (type === 'executionlisteners') {
+    return getExecutionListeners(element)
+  } else if (type === 'eventlisteners') {
+    return getEventListeners(element)
+  } else if (type === 'signaldefinitions') {
+    return getSignalDefinitions(element)
+  } else if (type === 'messagedefinitions') {
+    return getMessageDefinitions(element)
+  } else if (type === 'initiator') {
+    return getInitiator(element)
+  } else if (type === 'formKey') {
+    return getFormKey(element)
+  } else if (type === 'formProperties') {
+    return getFormProperties(element)
+  } else if (type === 'messageEventDefinition') {
+    return getMessageEventDefinition(element)
+  } else if (type === 'conditionalEventDefinition') {
+    return getConditionalEventDefinition(element)
+  } else if (type === 'signalEventDefinition') {
+    return getSignalEventDefinition(element)
+  } else if (type === 'timeDate') {
+    const timerEventDefinition = Parse(getTimerEventDefinition(element))
+    return timerEventDefinition && timerEventDefinition.timeDate
+  } else if (type === 'timeCycle') {
+    const timerEventDefinition = Parse(getTimerEventDefinition(element))
+    return timerEventDefinition && timerEventDefinition.timeCycle
+  } else if (type === 'timeDuration') {
+    const timerEventDefinition = Parse(getTimerEventDefinition(element))
+    return timerEventDefinition && timerEventDefinition.timeDuration
+  } else if (type === 'documentation') {
+    return getDocumentation(element)
+  }
+  return undefined
+}
+
+/**
+ * 移除节点多余的bo
+ * @param element
+ * @returns {*}
+ */
+export function removeBusinessObject (element, factory, updateProperties) {
+  if (element) {
+    if (!supportExecutionListeners(element)) {
+      const _properties = {}
+      setExecutionListeners(_properties, undefined, element, factory)
+      updateProperties(element, _properties)
+    }
+  }
+  return element
+}
+/**
+ * 字符串转对象
+ * @param s
+ * @returns {undefined|any}
+ * @constructor
+ */
+function Parse (s) {
+  if (!isEmpty(s)) {
+    try {
+      return JSON.parse(s)
+    } catch (e) {
+      console.warn('解析对象异常，请检查对象: ' + s)
+    }
+  }
+  return undefined
 }
 
 /**

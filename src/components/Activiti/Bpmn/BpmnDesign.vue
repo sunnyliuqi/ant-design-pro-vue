@@ -29,9 +29,8 @@
   import customTranslate from './i18n/customTranslate'
   import ActivitiPanel from './PanelActiviti/ActivitiPanel'
   import activitiDescriptor from './PanelActiviti/lib/moddle/activiti'
-  import { getProperties, getValues } from './PanelActiviti/helper/PropertyHelper'
+  import { getProperties, getValues, removeBusinessObject } from './PanelActiviti/helper/PropertyHelper'
   import { emptyBpmn } from './store/defaultBpmn'
-
   export default {
     name: 'BpmnDesign',
     components: { ActivitiPanel },
@@ -253,7 +252,7 @@
                 return
               }
 
-              that.ActivePanel(newElement)
+              that.ActivePanel(removeBusinessObject(newElement, that.getBpmnFactory(), that.updateProperties))
             }
           },
           {
@@ -261,7 +260,6 @@
             'priority': 1000,
             'callback': e => {
               const element = that.current
-
               if (element) {
                 if (e.elements.indexOf(element) !== -1) {
                   that.ActivePanel(element)
@@ -302,7 +300,6 @@
   @import '~bpmn-js/dist/assets/bpmn-font/css/bpmn.css';
   @import '~bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css';
   @import '~bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css';
-  @import '~bpmn-js-properties-panel/dist/assets/bpmn-js-properties-panel.css';
   .bpmnDesign {
     width: 100%;
     /deep/ .ant-layout-header{

@@ -10,7 +10,7 @@ import { getStartEventType } from '../SupportPropertyHelper'
  */
 export function setInitiator (_properties, propertyValue, element, factory) {
   if (isEmpty(propertyValue)) {
-    _properties.initiator = null
+    _properties.initiator = undefined
     return
   }
   _properties.initiator = propertyValue

@@ -14,8 +14,9 @@ import {
  * @param factory
  */
 export function setConditionalEventDefinition (_properties, propertyValue, element, factory) {
-  if (isEmpty(propertyValue) || isSupportConditionalEventDefinition(element) === false) {
+  if (isEmpty(propertyValue)) {
     _properties.eventDefinitions = null
+    _properties.documentation = null
     return
   }
     try {

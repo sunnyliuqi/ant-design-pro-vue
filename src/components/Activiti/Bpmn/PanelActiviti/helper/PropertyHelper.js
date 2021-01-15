@@ -21,7 +21,11 @@ import {
   getTimerEventDefinition,
   setTimerEventDefinition
 } from './props/TimerEventDefinition'
-import { supportExecutionListeners } from '@/components/Activiti/Bpmn/PanelActiviti/helper/SupportPropertyHelper'
+import {
+  supportConditionalEventDefinition,
+  supportExecutionListeners, supportFormKey, supportFormProperties,
+  supportInitiator, supportMessageEventDefinition, supportSignalEventDefinition, supportTimerEventDefinition
+} from './SupportPropertyHelper'
 /**
  * 根据传入的表单properties获取对应bpmn properties
  * @param element
@@ -157,10 +161,45 @@ export function getValues (type, element) {
 export function removeBusinessObject (element, factory, updateProperties) {
   if (element) {
     if (!supportExecutionListeners(element)) {
-      const _properties = {}
-      setExecutionListeners(_properties, undefined, element, factory)
-      updateProperties(element, _properties)
+      const props = {}
+      setExecutionListeners(props, undefined, element, factory)
+      updateProperties(element, props)
     }
+    if (!supportInitiator(element)) {
+      const props = {}
+      setInitiator(props, undefined, element, factory)
+      updateProperties(element, props)
+    }
+    if (!supportFormKey(element)) {
+      const props = {}
+      setFormKey(props, undefined, element, factory)
+      updateProperties(element, props)
+    }
+    /* if (!supportFormProperties(element)) {
+     const props = {}
+     setFormProperties(props, undefined, element, factory)
+     updateProperties(element, props)
+   }
+   if (!supportMessageEventDefinition(element)) {
+     const props = {}
+     setMessageEventDefinition(props, undefined, element, factory)
+     updateProperties(element, props)
+   }
+   if (!supportConditionalEventDefinition(element)) {
+     const props = {}
+     setConditionalEventDefinition(props, undefined, element, factory)
+     updateProperties(element, props)
+   }
+   if (!supportSignalEventDefinition(element)) {
+     const props = {}
+     setSignalEventDefinition(props, undefined, element, factory)
+     updateProperties(element, props)
+   }
+   if (!supportTimerEventDefinition(element)) {
+     const props = {}
+     setTimerEventDefinition(props, undefined, element, factory)
+     updateProperties(element, props)
+   } */
   }
   return element
 }

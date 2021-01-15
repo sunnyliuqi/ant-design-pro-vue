@@ -10,7 +10,7 @@ import { getStartEventType } from '../SupportPropertyHelper'
  */
 export function setFormKey (_properties, propertyValue, element, factory) {
   if (isEmpty(propertyValue)) {
-    _properties.formKey = null
+    _properties.formKey = undefined
     return
   }
   _properties.formKey = propertyValue

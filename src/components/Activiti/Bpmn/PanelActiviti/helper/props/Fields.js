@@ -2,7 +2,7 @@ import {
   createElement,
   getBusinessObject,
   getPropertyValue
-} from '@/components/Activiti/Bpmn/PanelActiviti/helper/PropertyHelper'
+} from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 
 /**

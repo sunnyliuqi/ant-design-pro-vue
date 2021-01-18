@@ -1,6 +1,6 @@
 import { isEmpty } from '@/utils/common'
 import { getStartEventType } from '../SupportPropertyHelper'
-import { getBusinessObject } from '@/components/Activiti/Bpmn/PanelActiviti/helper/PropertyHelper'
+import { getBusinessObject } from '../PropertyHelper'
 
 /**
  * 设置/创建 FormKey 属性

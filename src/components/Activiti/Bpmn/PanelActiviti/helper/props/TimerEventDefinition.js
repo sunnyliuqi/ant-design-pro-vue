@@ -1,9 +1,7 @@
 import {
   createElement,
   filterByType,
-  getBusinessObject,
-  getExtensionElements,
-  getPropertyValue, removeByType
+  getBusinessObject, removeByType
 } from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 import { setFormalExpression, getFormalExpression } from './FormalExpression'

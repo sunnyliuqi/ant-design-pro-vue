@@ -1,4 +1,4 @@
-import { createElement, getPropertyValue } from '@/components/Activiti/Bpmn/PanelActiviti/helper/PropertyHelper'
+import { createElement, getPropertyValue } from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 
 /**

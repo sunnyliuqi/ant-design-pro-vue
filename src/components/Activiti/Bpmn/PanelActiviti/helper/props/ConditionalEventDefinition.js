@@ -1,4 +1,4 @@
-import { createElement, filterByType, getBusinessObject, getPropertyValue } from '../PropertyHelper'
+import { createElement, filterByType, getBusinessObject, removeByType } from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 import { setFormalExpression, getFormalExpression } from './FormalExpression'
 import {
@@ -6,7 +6,6 @@ import {
   getIntermediateEventType,
   getStartEventType
 } from '../SupportPropertyHelper'
-import { removeByType } from '@/components/Activiti/Bpmn/PanelActiviti/helper/PropertyHelper'
 /**
  * 设置/创建 ConditionalEventDefinition 元素
  * @param _properties

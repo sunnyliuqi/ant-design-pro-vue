@@ -86,18 +86,24 @@ function setProperty (_properties, propertyName, propertyValue, element, factory
     let propertyTimeDate
     if (!isEmpty(propertyValue)) {
       propertyTimeDate = { timeDate: propertyValue }
+    } else {
+      propertyTimeDate = { timeDate: undefined }
     }
     setTimerEventDefinition(_properties, propertyTimeDate, element, factory)
   } else if (propertyName === 'timeCycle') {
     let propertyTimeCycle
     if (!isEmpty(propertyValue)) {
       propertyTimeCycle = { timeCycle: propertyValue }
+    } else {
+      propertyTimeCycle = { timeCycle: undefined }
     }
     setTimerEventDefinition(_properties, propertyTimeCycle, element, factory)
   } else if (propertyName === 'timeDuration') {
     let propertyTimeDuration
     if (!isEmpty(propertyValue)) {
       propertyTimeDuration = { timeDuration: propertyValue }
+    } else {
+      propertyTimeDuration = { timeDuration: undefined }
     }
     setTimerEventDefinition(_properties, propertyTimeDuration, element, factory)
   } else {
@@ -175,31 +181,31 @@ export function removeBusinessObject (element, factory, updateProperties) {
       setFormKey(props, undefined, element, factory)
       updateProperties(element, props)
     }
-    /* if (!supportFormProperties(element)) {
+    if (!supportFormProperties(element)) {
      const props = {}
      setFormProperties(props, undefined, element, factory)
      updateProperties(element, props)
    }
-   if (!supportMessageEventDefinition(element)) {
-     const props = {}
-     setMessageEventDefinition(props, undefined, element, factory)
-     updateProperties(element, props)
-   }
-   if (!supportConditionalEventDefinition(element)) {
-     const props = {}
-     setConditionalEventDefinition(props, undefined, element, factory)
-     updateProperties(element, props)
-   }
-   if (!supportSignalEventDefinition(element)) {
-     const props = {}
-     setSignalEventDefinition(props, undefined, element, factory)
-     updateProperties(element, props)
-   }
-   if (!supportTimerEventDefinition(element)) {
-     const props = {}
-     setTimerEventDefinition(props, undefined, element, factory)
-     updateProperties(element, props)
-   } */
+    if (!supportMessageEventDefinition(element)) {
+      const props = {}
+      setMessageEventDefinition(props, undefined, element, factory)
+      updateProperties(element, props)
+    }
+    if (!supportConditionalEventDefinition(element)) {
+      const props = {}
+      setConditionalEventDefinition(props, undefined, element, factory)
+      updateProperties(element, props)
+    }
+    if (!supportSignalEventDefinition(element)) {
+      const props = {}
+      setSignalEventDefinition(props, undefined, element, factory)
+      updateProperties(element, props)
+    }
+    if (!supportTimerEventDefinition(element)) {
+      const props = {}
+      setTimerEventDefinition(props, undefined, element, factory)
+      updateProperties(element, props)
+    }
   }
   return element
 }

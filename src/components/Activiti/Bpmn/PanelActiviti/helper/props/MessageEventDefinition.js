@@ -1,4 +1,4 @@
-import { createElement, filterByType, getBusinessObject, getPropertyValue } from '../PropertyHelper'
+import { createElement, filterByType, getBusinessObject, getPropertyValue, removeByType } from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 import {
   getIntermediateEventDefinitionType,
@@ -13,10 +13,9 @@ import {
  * @param factory
  */
 export function setMessageEventDefinition (_properties, propertyValue, element, factory) {
-  if (isEmpty(propertyValue)) {
-    _properties.eventDefinitions = null
-    return
-  }
+  const bo = getBusinessObject(element)
+  bo.eventDefinitions = removeByType(bo.eventDefinitions, 'bpmn:MessageEventDefinition')
+  if (!isEmpty(propertyValue)) {
     try {
       if (!(propertyValue instanceof Object)) {
         propertyValue = JSON.parse(propertyValue)
@@ -25,11 +24,11 @@ export function setMessageEventDefinition (_properties, propertyValue, element, 
       throw new Error('消息事件选择内容格式不正确，请重新输入')
     }
     if (propertyValue) {
-      _properties.eventDefinitions = []
-      _properties.eventDefinitions.push(createElementMessageEventDefinition(propertyValue, element, factory))
-    } else {
-      _properties.eventDefinitions = null
+      bo.eventDefinitions = []
+      bo.eventDefinitions.push(createElementMessageEventDefinition(propertyValue, element, factory))
     }
+  }
+  _properties.eventDefinitions = bo.eventDefinitions
 }
 function createElementMessageEventDefinition (message, element, factory) {
   const property = {}

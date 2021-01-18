@@ -20,23 +20,21 @@ import {
  * @param factory
  */
 export function setTimerEventDefinition (_properties, propertyValue, element, factory) {
-  if (isEmpty(propertyValue)) {
-    _properties.eventDefinitions = null
-    return
-  }
-  try {
-    if (!(propertyValue instanceof Object)) {
-      propertyValue = JSON.parse(propertyValue)
+  let oldTimerEventDefinition = getTimerEventDefinition(element)
+  if (isEmpty(oldTimerEventDefinition)) {
+    const key = propertyValue && Object.keys(propertyValue)[0]
+    if (!key || !propertyValue[key]) {
+      oldTimerEventDefinition = removeByType(getBusinessObject(element).eventDefinitions, 'bpmn:TimerEventDefinition')
+    } else {
+      oldTimerEventDefinition = []
+      oldTimerEventDefinition.push(createElementTimerEventDefinition(propertyValue, element, factory))
     }
-  } catch (e) {
-    throw new Error('时间输入内容格式不正确，请重新输入')
-  }
-  const oldTimerEventDefinition = getTimerEventDefinition(element)
-  if (!isEmpty(oldTimerEventDefinition)) {
+  } else {
     propertyValue = Object.assign({}, JSON.parse(oldTimerEventDefinition), propertyValue)
-  }
-  _properties.eventDefinitions = []
-  _properties.eventDefinitions.push(createElementTimerEventDefinition(propertyValue, element, factory))
+    oldTimerEventDefinition = []
+    oldTimerEventDefinition.push(createElementTimerEventDefinition(propertyValue, element, factory))
+}
+  _properties.eventDefinitions = oldTimerEventDefinition
 }
 function createElementTimerEventDefinition (timer, element, factory) {
   const property = {}

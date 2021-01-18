@@ -5,6 +5,7 @@ import {
   getIntermediateEventType,
   getStartEventType
 } from '../SupportPropertyHelper'
+import { removeByType } from '@/components/Activiti/Bpmn/PanelActiviti/helper/PropertyHelper'
 /**
  * 设置/创建 SignalEventDefinition 元素
  * @param _properties
@@ -13,10 +14,9 @@ import {
  * @param factory
  */
 export function setSignalEventDefinition (_properties, propertyValue, element, factory) {
-  if (isEmpty(propertyValue)) {
-    _properties.eventDefinitions = null
-    return
-  }
+  const bo = getBusinessObject(element)
+  bo.eventDefinitions = removeByType(bo.eventDefinitions, 'bpmn:SignalEventDefinition')
+  if (!isEmpty(propertyValue)) {
     try {
       if (!(propertyValue instanceof Object)) {
         propertyValue = JSON.parse(propertyValue)
@@ -25,11 +25,11 @@ export function setSignalEventDefinition (_properties, propertyValue, element, f
       throw new Error('信号事件选择内容格式不正确，请重新输入')
     }
     if (propertyValue) {
-      _properties.eventDefinitions = []
-      _properties.eventDefinitions.push(createElementSignalEventDefinition(propertyValue, element, factory))
-    } else {
-      _properties.eventDefinitions = null
+      bo.eventDefinitions = []
+      bo.eventDefinitions.push(createElementSignalEventDefinition(propertyValue, element, factory))
     }
+  }
+   _properties.eventDefinitions = bo.eventDefinitions
 }
 function createElementSignalEventDefinition (message, element, factory) {
   const property = {}

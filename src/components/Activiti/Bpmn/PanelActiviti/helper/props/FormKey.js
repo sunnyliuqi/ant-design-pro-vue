@@ -1,5 +1,6 @@
 import { isEmpty } from '@/utils/common'
 import { getStartEventType } from '../SupportPropertyHelper'
+import { getBusinessObject } from '@/components/Activiti/Bpmn/PanelActiviti/helper/PropertyHelper'
 
 /**
  * 设置/创建 FormKey 属性
@@ -9,11 +10,14 @@ import { getStartEventType } from '../SupportPropertyHelper'
  * @param factory
  */
 export function setFormKey (_properties, propertyValue, element, factory) {
+  const bo = getBusinessObject(element)
   if (isEmpty(propertyValue)) {
-    _properties.formKey = undefined
+    bo.formKey = undefined
+    _properties.formKey = bo.formKey
     return
   }
-  _properties.formKey = propertyValue
+  bo.formKey = propertyValue
+  _properties.formKey = bo.formKey
 }
 
 /**

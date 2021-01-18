@@ -33,10 +33,10 @@ export default {
     </bpmn2:extensionElements>
     <bpmn2:messageEventDefinition id="MessageEventDefinition_1qce8us" activiti:messageRef="myMessage" />
     </bpmn2:startEvent>
-    <activiti:signal id="theSignal" name="The Signal" scop="processInstance" />
-    <activiti:signal id="theSignal2" name="The Signal2" scop="processInstance2" />
-    <activiti:message id="theMessage" name="The Message" />
-    <activiti:message id="theMessage2" name="The Message2" />
+    <activiti:signals id="theSignal" name="The Signal" scop="processInstance" />
+    <activiti:signals id="theSignal2" name="The Signal2" scop="processInstance2" />
+    <activiti:messages id="theMessage" name="The Message" />
+    <activiti:messages id="theMessage2" name="The Message2" />
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="process1567044459787">

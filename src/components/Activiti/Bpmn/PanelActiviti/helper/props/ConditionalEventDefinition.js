@@ -6,6 +6,7 @@ import {
   getIntermediateEventType,
   getStartEventType
 } from '../SupportPropertyHelper'
+import { removeByType } from '@/components/Activiti/Bpmn/PanelActiviti/helper/PropertyHelper'
 /**
  * 设置/创建 ConditionalEventDefinition 元素
  * @param _properties
@@ -14,11 +15,9 @@ import {
  * @param factory
  */
 export function setConditionalEventDefinition (_properties, propertyValue, element, factory) {
-  if (isEmpty(propertyValue)) {
-    _properties.eventDefinitions = null
-    _properties.documentation = null
-    return
-  }
+  const bo = getBusinessObject(element)
+  bo.eventDefinitions = removeByType(bo.eventDefinitions, 'bpmn:ConditionalEventDefinition')
+  if (!isEmpty(propertyValue)) {
     try {
       if (!(propertyValue instanceof Object)) {
         propertyValue = JSON.parse(propertyValue)
@@ -27,11 +26,11 @@ export function setConditionalEventDefinition (_properties, propertyValue, eleme
       throw new Error('条件事件输入内容格式不正确，请重新输入')
     }
     if (propertyValue) {
-      _properties.eventDefinitions = []
-      _properties.eventDefinitions.push(createElementConditionalEventDefinition(propertyValue, element, factory))
-    } else {
-      _properties.eventDefinitions = null
+      bo.eventDefinitions = []
+      bo.eventDefinitions.push(createElementConditionalEventDefinition(propertyValue, element, factory))
     }
+  }
+  _properties.eventDefinitions = bo.eventDefinitions
 }
 function createElementConditionalEventDefinition (conditional, element, factory) {
   const property = {}
@@ -40,7 +39,7 @@ function createElementConditionalEventDefinition (conditional, element, factory)
   }
 
   const conditionElement = createElement('bpmn:ConditionalEventDefinition', property, element, factory)
-  property.condition = setFormalExpression(conditionElement, conditional.condition, conditionElement, factory)
+  conditionElement.condition = setFormalExpression(conditionElement, conditional.condition, conditionElement, factory)
   return conditionElement
 }
 /**

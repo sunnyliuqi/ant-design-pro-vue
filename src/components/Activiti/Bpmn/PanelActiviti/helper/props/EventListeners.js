@@ -13,16 +13,15 @@ import { isEmpty } from '@/utils/common'
  * @param factory
  */
 export function setEventListeners (_properties, propertyValue, element, factory) {
-  const extensionElements = getExtensionElements(element, factory)
+  let extensionElements = getExtensionElements(element, factory)
   extensionElements.values = removeByType(extensionElements.values, 'activiti:EventListener')
   if (!isEmpty(propertyValue)) {
     pushElementEventListeners(propertyValue, extensionElements, factory)
   }
   if (!extensionElements.values || extensionElements.values.length < 1) {
-    _properties.extensionElements = null
-  } else {
-    _properties.extensionElements = extensionElements
+    extensionElements = null
   }
+  _properties.extensionElements = extensionElements
 }
 function pushElementEventListeners (propertyValue, extensionElements, factory) {
   try {

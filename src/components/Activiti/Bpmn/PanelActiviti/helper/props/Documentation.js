@@ -9,19 +9,21 @@ import { isEmpty } from '@/utils/common'
  * @param factory
  */
 export function setDocumentation (_properties, text, element, factory) {
+  const bo = getBusinessObject(element)
   if (isEmpty(text)) {
-    _properties.documentation = null
-    return
-  }
-  let documentations = getBusinessObject(element).documentation
-  if (documentations && documentations.length > 0) {
-    const documentation = documentations[0]
-    documentation.text = text
+    bo.documentation = null
   } else {
-    documentations = []
-    documentations.push(createElement('bpmn:Documentation', { text: text }, element, factory))
+    let documentations = bo.documentation
+    if (documentations && documentations.length > 0) {
+      const documentation = documentations[0]
+      documentation.text = text
+    } else {
+      documentations = []
+      documentations.push(createElement('bpmn:Documentation', { text: text }, element, factory))
+    }
+    bo.documentation = documentations
   }
-  _properties.documentation = documentations
+  _properties.documentation = bo.documentation
 }
 
 export function getDocumentation (element) {

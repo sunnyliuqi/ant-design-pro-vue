@@ -345,16 +345,16 @@
           this.processElement = val
           this.tabKey = '2'
         }
-        this.formPanel.resetFields(val)
+        this.formPanel.resetFields()
       }
     },
     methods: {
       changeActiveTab (key) {
-        if (this.element && this.element.type && this.element.type !== 'bpmn:Process') {
+        /* if (this.element && this.element.type && this.element.type !== 'bpmn:Process') {
           this.tabKey = key
         } else {
           this.$message.info('没有选中的节点')
-        }
+        } */
       },
       onPanelValuesChange (fields, values) {
         if (this.updateBpmn) {

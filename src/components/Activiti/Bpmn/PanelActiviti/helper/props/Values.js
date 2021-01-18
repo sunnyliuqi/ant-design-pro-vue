@@ -1,4 +1,8 @@
-import { createElement, getPropertyValue } from '@/components/Activiti/Bpmn/PanelActiviti/helper/PropertyHelper'
+import {
+  createElement,
+  getBusinessObject,
+  getPropertyValue
+} from '@/components/Activiti/Bpmn/PanelActiviti/helper/PropertyHelper'
 import { isEmpty } from '@/utils/common'
 
 /**
@@ -9,13 +13,15 @@ import { isEmpty } from '@/utils/common'
  * @param factory
  */
 export function setValues (_properties, propertyValue, element, factory) {
+  const bo = getBusinessObject(element)
   if (isEmpty(propertyValue)) {
-    _properties.values = null
-    return
+    bo.values = null
+  } else {
+    propertyValue.forEach(value => {
+      bo.values.push(createElementValue(value, element, factory))
+    })
   }
-  propertyValue.forEach(value => {
-    _properties.values.push(createElementValue(value, element, factory))
-  })
+  _properties.values = bo.values
 }
 
 /**

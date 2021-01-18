@@ -1,5 +1,6 @@
 import { isEmpty } from '@/utils/common'
 import { getStartEventType } from '../SupportPropertyHelper'
+import { getBusinessObject } from '../PropertyHelper'
 
 /**
  * 设置/创建 Initiator 属性
@@ -9,11 +10,14 @@ import { getStartEventType } from '../SupportPropertyHelper'
  * @param factory
  */
 export function setInitiator (_properties, propertyValue, element, factory) {
+  const bo = getBusinessObject(element)
   if (isEmpty(propertyValue)) {
-    _properties.initiator = undefined
+    bo.initiator = undefined
+    _properties.initiator = bo.initiator
     return
   }
-  _properties.initiator = propertyValue
+  bo.initiator = propertyValue
+  _properties.initiator = bo.initiator
 }
 
 export function getInitiator (element) {

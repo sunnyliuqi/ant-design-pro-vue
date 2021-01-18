@@ -15,16 +15,15 @@ import { getStartEventType } from '../SupportPropertyHelper'
  * @param factory
  */
 export function setFormProperties (_properties, propertyValue, element, factory) {
-  const extensionElements = getExtensionElements(element, factory)
+  let extensionElements = getExtensionElements(element, factory)
   extensionElements.values = removeByType(extensionElements.values, 'activiti:FormProperty')
   if (!isEmpty(propertyValue)) {
     pushElementFormProperties(propertyValue, extensionElements, factory)
   }
   if (!extensionElements.values || extensionElements.values.length < 1) {
-    _properties.extensionElements = null
-  } else {
-    _properties.extensionElements = extensionElements
+    extensionElements = null
   }
+    _properties.extensionElements = extensionElements
 }
 function pushElementFormProperties (propertyValue, extensionElements, factory) {
   try {

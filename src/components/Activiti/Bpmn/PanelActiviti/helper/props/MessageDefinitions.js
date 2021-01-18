@@ -8,10 +8,10 @@ import { isEmpty } from '@/utils/common'
  * @param factory
  */
 export function setMessageDefinitions (_properties, propertyValue, element, factory) {
+  const bo = getBusinessObject(element)
   if (isEmpty(propertyValue)) {
-    _properties.messages = null
-    return
-  }
+    bo.messages = null
+  } else {
     try {
       if (!(propertyValue instanceof Array)) {
         propertyValue = JSON.parse(propertyValue)
@@ -20,13 +20,15 @@ export function setMessageDefinitions (_properties, propertyValue, element, fact
       throw new Error('消息定义内容格式不正确，请重新输入')
     }
     if (propertyValue && propertyValue.length > 0) {
-      _properties.messages = []
+      bo.messages = []
       propertyValue.forEach(message => {
-        _properties.messages.push(createElementSignal(message, element, factory))
+        bo.messages.push(createElementSignal(message, element, factory))
       })
     } else {
-      _properties.messages = null
+      bo.messages = null
     }
+  }
+  _properties.messages = bo.messages
 }
 function createElementSignal (message, element, factory) {
   const property = {}

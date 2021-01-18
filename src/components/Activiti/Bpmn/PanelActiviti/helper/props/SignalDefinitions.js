@@ -8,10 +8,10 @@ import { isEmpty } from '@/utils/common'
  * @param factory
  */
 export function setSignalDefinitions (_properties, propertyValue, element, factory) {
+  const bo = getBusinessObject(element)
   if (isEmpty(propertyValue)) {
-    _properties.signals = null
-    return
-  }
+    bo.signals = undefined
+  } else {
     try {
       if (!(propertyValue instanceof Array)) {
         propertyValue = JSON.parse(propertyValue)
@@ -20,13 +20,16 @@ export function setSignalDefinitions (_properties, propertyValue, element, facto
       throw new Error('信号定义内容格式不正确，请重新输入')
     }
     if (propertyValue && propertyValue.length > 0) {
-      _properties.signals = []
+      bo.signals = []
       propertyValue.forEach(signal => {
-        _properties.signals.push(createElementSignal(signal, element, factory))
+        bo.signals.push(createElementSignal(signal, element, factory))
       })
     } else {
-      _properties.signals = null
+      bo.signals = undefined
     }
+  }
+
+  _properties.signals = bo.signals
 }
 function createElementSignal (signal, element, factory) {
   const property = {}

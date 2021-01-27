@@ -6,7 +6,7 @@ import {
 import { isEmpty } from '@/utils/common'
 import { setFormalExpression, getFormalExpression } from './FormalExpression'
 import {
-  getIntermediateEventDefinitionType,
+  getEventDefinitionType,
   getIntermediateEventType,
   getStartEventType
 } from '../SupportPropertyHelper'
@@ -92,7 +92,7 @@ export function isSupportTimerEventDefinition (element) {
   if (element.type === 'bpmn:StartEvent' && getStartEventType(element) === 'timer') {
     return true
   }
-  if (getIntermediateEventType(element) && getIntermediateEventDefinitionType(element) === 'timer') {
+  if (getIntermediateEventType(element) && getEventDefinitionType(element) === 'timer') {
     return true
   }
   return false

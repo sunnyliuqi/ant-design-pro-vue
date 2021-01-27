@@ -1187,6 +1187,23 @@
           "redefines": "bpmn:SignalEventDefinition#signalRef"
         }
       ]
+    },
+    {
+      "name": "ErrorEventDefinition",
+      "superClass": [
+        "bpmn:EventDefinition"
+      ],
+      "extends": [
+        "bpmn:ErrorEventDefinition"
+      ],
+      "properties": [
+        {
+          "name": "errorRef",
+          "type": "String",
+          "isAttr": true,
+          "redefines": "bpmn:ErrorEventDefinition#errorRef"
+        }
+      ]
     }
   ],
   "emumerations": [ ]

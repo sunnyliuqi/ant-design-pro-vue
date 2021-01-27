@@ -9,7 +9,7 @@ import {
 import { setFields, getFields } from './Fields'
 import { isEmpty } from '@/utils/common'
 import {
-  getIntermediateEventDefinitionType,
+  getEventDefinitionType,
   getIntermediateEventType
 } from '../SupportPropertyHelper'
 
@@ -120,7 +120,7 @@ export function isSupportExecutionListeners (element) {
   if (element.type === 'bpmn:StartEvent') {
     return true
   }
-  const intermediateCatchEventType = getIntermediateEventDefinitionType(element)
+  const intermediateCatchEventType = getEventDefinitionType(element)
   if (getIntermediateEventType(element) && intermediateCatchEventType === 'none' || intermediateCatchEventType === 'message' || intermediateCatchEventType === 'timer') {
     return true
   }

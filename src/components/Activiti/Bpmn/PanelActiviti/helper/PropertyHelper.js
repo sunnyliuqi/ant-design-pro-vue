@@ -22,10 +22,14 @@ import {
   setTimerEventDefinition
 } from './props/TimerEventDefinition'
 import {
-  supportConditionalEventDefinition,
+  supportConditionalEventDefinition, supportErrorEventDefinition,
   supportExecutionListeners, supportFormKey, supportFormProperties,
   supportInitiator, supportMessageEventDefinition, supportSignalEventDefinition, supportTimerEventDefinition
 } from './SupportPropertyHelper'
+import {
+  getErrorEventDefinition,
+  setErrorEventDefinition
+} from './props/ErrorEventDefinition'
 /**
  * 根据传入的表单properties获取对应bpmn properties
  * @param element
@@ -106,6 +110,8 @@ function setProperty (_properties, propertyName, propertyValue, element, factory
       propertyTimeDuration = { timeDuration: undefined }
     }
     setTimerEventDefinition(_properties, propertyTimeDuration, element, factory)
+  } else if (propertyName === 'errorEventDefinition') {
+    setErrorEventDefinition(_properties, propertyValue, element, factory)
   } else {
     _properties[propertyName] = getPropertyValue(propertyValue)
   }
@@ -155,6 +161,8 @@ export function getValues (type, element) {
     return timerEventDefinition && timerEventDefinition.timeDuration
   } else if (type === 'documentation') {
     return getDocumentation(element)
+  } else if (type === 'errorEventDefinition') {
+    return getErrorEventDefinition(element)
   }
   return undefined
 }
@@ -204,6 +212,11 @@ export function removeBusinessObject (element, factory, updateProperties) {
     if (!supportTimerEventDefinition(element)) {
       const props = {}
       setTimerEventDefinition(props, undefined, element, factory)
+      updateProperties(element, props)
+    }
+    if (!supportErrorEventDefinition(element)) {
+      const props = {}
+      setErrorEventDefinition(props, undefined, element, factory)
       updateProperties(element, props)
     }
   }

@@ -11,6 +11,7 @@ import { isSupportMessageEventDefinition } from './props/MessageEventDefinition'
 import { isSupportConditionalEventDefinition } from './props/ConditionalEventDefinition'
 import { isSupportSignalEventDefinition } from './props/SignalEventDefinition'
 import { isSupportTimerEventDefinition } from './props/TimerEventDefinition'
+import { isSupportErrorEventDefinition } from './props/ErrorEventDefinition'
 
 export function supportExecutionListeners (element) {
   return isSupportExecutionListeners(element)
@@ -44,6 +45,10 @@ export function supportTimerEventDefinition (element) {
   return isSupportTimerEventDefinition(element)
 }
 
+export function supportErrorEventDefinition (element) {
+  return isSupportErrorEventDefinition(element)
+}
+
 export function getStartEventType (element) {
   if (element.businessObject && element.businessObject.eventDefinitions && element.businessObject.eventDefinitions.length > 0) {
     const moddleElement = element.businessObject.eventDefinitions[0]
@@ -69,7 +74,7 @@ export function getIntermediateEventType (element) {
   return false
 }
 
-export function getIntermediateEventDefinitionType (element) {
+export function getEventDefinitionType (element) {
   if (element.businessObject && element.businessObject.eventDefinitions && element.businessObject.eventDefinitions.length > 0) {
     const moddleElement = element.businessObject.eventDefinitions[0]
     if (moddleElement) {
@@ -87,8 +92,17 @@ export function getIntermediateEventDefinitionType (element) {
         return 'signal'
       } else if (moddleElement.$type === 'bpmn:CompensateEventDefinition') {
         return 'compensate'
+      } else if (moddleElement.$type === 'bpmn:ErrorEventDefinition') {
+        return 'error'
       }
     }
   }
   return 'none'
+}
+
+export function getEndEventType (element) {
+  if (element.type === 'bpmn:EndEvent') {
+    return true
+  }
+  return false
 }

@@ -1,7 +1,8 @@
 import { createElement, filterByType, getBusinessObject, getPropertyValue, removeByType } from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 import {
-  getIntermediateEventDefinitionType,
+  getEndEventType,
+  getEventDefinitionType,
   getIntermediateEventType,
   getStartEventType
 } from '../SupportPropertyHelper'
@@ -64,7 +65,7 @@ export function isSupportSignalEventDefinition (element) {
   if (element.type === 'bpmn:StartEvent' && getStartEventType(element) === 'signal') {
     return true
   }
-  if (getIntermediateEventType(element) && getIntermediateEventDefinitionType(element) === 'signal') {
+  if ((getIntermediateEventType(element) || getEndEventType(element)) && getEventDefinitionType(element) === 'signal') {
     return true
   }
   return false

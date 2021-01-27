@@ -173,6 +173,19 @@
                 placeholder="请输入定时期间"/>
             </a-form-item>
           </a-col>
+          <a-col :span="24" v-show="supportErrorEventDefinition(element)">
+            <a-form-item
+              label="错误事件"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-textarea
+                v-decorator="[
+                  'errorEventDefinition',
+                  {initialValue: getValues('errorEventDefinition',element)}
+                ]"
+                placeholder="请输入错误事件"/>
+            </a-form-item>
+          </a-col>
         </a-row>
       </a-tab-pane>
       <a-tab-pane key="2" tab="流程属性">
@@ -302,7 +315,7 @@
 </template>
 
 <script>
-  import { supportExecutionListeners, supportConditionalEventDefinition, supportFormKey, supportFormProperties, supportInitiator, supportMessageEventDefinition, supportSignalEventDefinition, supportTimerEventDefinition } from './helper/SupportPropertyHelper'
+  import { supportExecutionListeners, supportConditionalEventDefinition, supportFormKey, supportFormProperties, supportInitiator, supportMessageEventDefinition, supportSignalEventDefinition, supportTimerEventDefinition, supportErrorEventDefinition } from './helper/SupportPropertyHelper'
   export default {
     name: 'ActivitiPanel',
     props: {
@@ -331,7 +344,8 @@
         supportInitiator,
         supportMessageEventDefinition,
         supportSignalEventDefinition,
-        supportTimerEventDefinition
+        supportTimerEventDefinition,
+        supportErrorEventDefinition
       }
     },
     mounted () {

@@ -2,7 +2,7 @@ import { createElement, filterByType, getBusinessObject, removeByType } from '..
 import { isEmpty } from '@/utils/common'
 import { setFormalExpression, getFormalExpression } from './FormalExpression'
 import {
-  getIntermediateEventDefinitionType,
+  getEventDefinitionType,
   getIntermediateEventType,
   getStartEventType
 } from '../SupportPropertyHelper'
@@ -70,7 +70,7 @@ export function isSupportConditionalEventDefinition (element) {
   if (element.type === 'bpmn:StartEvent' && getStartEventType(element) === 'conditional') {
     return true
   }
-  if (getIntermediateEventType(element) && getIntermediateEventDefinitionType(element) === 'conditional') {
+  if (getIntermediateEventType(element) && getEventDefinitionType(element) === 'conditional') {
     return true
   }
   return false

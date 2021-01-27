@@ -29,6 +29,9 @@ export function setConditionalEventDefinition (_properties, propertyValue, eleme
       bo.eventDefinitions.push(createElementConditionalEventDefinition(propertyValue, element, factory))
     }
   }
+  if (!bo.eventDefinitions || bo.eventDefinitions.length < 1) {
+    bo.eventDefinitions = undefined
+  }
   _properties.eventDefinitions = bo.eventDefinitions
 }
 function createElementConditionalEventDefinition (conditional, element, factory) {

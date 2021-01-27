@@ -29,6 +29,9 @@ export function setMessageEventDefinition (_properties, propertyValue, element, 
       bo.eventDefinitions.push(createElementMessageEventDefinition(propertyValue, element, factory))
     }
   }
+  if (!bo.eventDefinitions || bo.eventDefinitions.length < 1) {
+    bo.eventDefinitions = undefined
+  }
   _properties.eventDefinitions = bo.eventDefinitions
 }
 function createElementMessageEventDefinition (message, element, factory) {

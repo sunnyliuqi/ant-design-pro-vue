@@ -27,6 +27,9 @@ export function setErrorEventDefinition (_properties, propertyValue, element, fa
       bo.eventDefinitions.push(createElementErrorEventDefinition(propertyValue, element, factory))
     }
   }
+  if (!bo.eventDefinitions || bo.eventDefinitions.length < 1) {
+    bo.eventDefinitions = undefined
+  }
    _properties.eventDefinitions = bo.eventDefinitions
 }
 function createElementErrorEventDefinition (message, element, factory) {

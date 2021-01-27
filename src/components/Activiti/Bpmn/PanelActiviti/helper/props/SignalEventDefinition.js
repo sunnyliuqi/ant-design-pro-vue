@@ -29,6 +29,9 @@ export function setSignalEventDefinition (_properties, propertyValue, element, f
       bo.eventDefinitions.push(createElementSignalEventDefinition(propertyValue, element, factory))
     }
   }
+  if (!bo.eventDefinitions || bo.eventDefinitions.length < 1) {
+    bo.eventDefinitions = undefined
+  }
    _properties.eventDefinitions = bo.eventDefinitions
 }
 function createElementSignalEventDefinition (message, element, factory) {

@@ -2,12 +2,12 @@ import { createElement, getBusinessObject, getPropertyValue } from '../PropertyH
 import { isEmpty } from '@/utils/common'
 /**
  * 设置/创建 MessageDefinitions 元素
- * @param _properties
  * @param propertyValue
  * @param element
  * @param factory
+ * @param updateProperties
  */
-export function setMessageDefinitions (_properties, propertyValue, element, factory) {
+export function setMessageDefinitions (propertyValue, element, factory, updateProperties) {
   const bo = getBusinessObject(element)
   if (isEmpty(propertyValue)) {
     bo.messages = null
@@ -28,7 +28,13 @@ export function setMessageDefinitions (_properties, propertyValue, element, fact
       bo.messages = null
     }
   }
-  _properties.messages = bo.messages
+  if (updateProperties) {
+    const _property = {}
+    _property.messages = bo.messages
+    updateProperties(element, _property)
+  } else {
+    return bo.messages
+  }
 }
 function createElementSignal (message, element, factory) {
   const property = {}

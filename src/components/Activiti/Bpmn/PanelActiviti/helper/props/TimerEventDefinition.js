@@ -12,12 +12,12 @@ import {
 } from '../SupportPropertyHelper'
 /**
  * 设置/创建 TimerEventDefinition 元素
- * @param _properties
  * @param propertyValue
  * @param element
  * @param factory
+ * @param updateProperties
  */
-export function setTimerEventDefinition (_properties, propertyValue, element, factory) {
+export function setTimerEventDefinition (propertyValue, element, factory, updateProperties) {
   let oldTimerEventDefinition = getTimerEventDefinition(element)
   if (isEmpty(oldTimerEventDefinition)) {
     const key = propertyValue && Object.keys(propertyValue)[0]
@@ -32,7 +32,13 @@ export function setTimerEventDefinition (_properties, propertyValue, element, fa
     oldTimerEventDefinition = []
     oldTimerEventDefinition.push(createElementTimerEventDefinition(propertyValue, element, factory))
 }
-  _properties.eventDefinitions = oldTimerEventDefinition
+  if (updateProperties) {
+    const _property = {}
+    _property.eventDefinitions = oldTimerEventDefinition
+    updateProperties(element, _property)
+  } else {
+    return oldTimerEventDefinition
+  }
 }
 function createElementTimerEventDefinition (timer, element, factory) {
   const property = {}
@@ -47,13 +53,13 @@ function createElementTimerEventDefinition (timer, element, factory) {
   }
   const timerElement = createElement('bpmn:TimerEventDefinition', property, element, factory)
   if (timer.timeDate) {
-    timerElement.timeDate = setFormalExpression(timerElement, timer.timeDate, timerElement, factory)
+    timerElement.timeDate = setFormalExpression(timer.timeDate, timerElement, factory, undefined)
   }
   if (timer.timeCycle) {
-    timerElement.timeCycle = setFormalExpression(timerElement, timer.timeCycle, timerElement, factory)
+    timerElement.timeCycle = setFormalExpression(timer.timeCycle, timerElement, factory, undefined)
   }
   if (timer.timeDuration) {
-    timerElement.timeDuration = setFormalExpression(timerElement, timer.timeDuration, timerElement, factory)
+    timerElement.timeDuration = setFormalExpression(timer.timeDuration, timerElement, factory, undefined)
   }
   return timerElement
 }

@@ -2,12 +2,12 @@ import { createElement, getBusinessObject, getPropertyValue } from '../PropertyH
 import { isEmpty } from '@/utils/common'
 /**
  * 设置/创建 SignalDefinitions 元素
- * @param _properties
  * @param propertyValue
  * @param element
  * @param factory
+ * @param updateProperties
  */
-export function setSignalDefinitions (_properties, propertyValue, element, factory) {
+export function setSignalDefinitions (propertyValue, element, factory, updateProperties) {
   const bo = getBusinessObject(element)
   if (isEmpty(propertyValue)) {
     bo.signals = undefined
@@ -28,8 +28,13 @@ export function setSignalDefinitions (_properties, propertyValue, element, facto
       bo.signals = undefined
     }
   }
-
-  _properties.signals = bo.signals
+  if (updateProperties) {
+    const _property = {}
+    _property.signals = bo.signals
+    updateProperties(element, _property)
+  } else {
+    return bo.signals
+  }
 }
 function createElementSignal (signal, element, factory) {
   const property = {}

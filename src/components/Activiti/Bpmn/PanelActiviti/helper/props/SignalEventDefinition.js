@@ -8,12 +8,12 @@ import {
 } from '../SupportPropertyHelper'
 /**
  * 设置/创建 SignalEventDefinition 元素
- * @param _properties
  * @param propertyValue
  * @param element
  * @param factory
+ * @param updateProperties
  */
-export function setSignalEventDefinition (_properties, propertyValue, element, factory) {
+export function setSignalEventDefinition (propertyValue, element, factory, updateProperties) {
   const bo = getBusinessObject(element)
   bo.eventDefinitions = removeByType(bo.eventDefinitions, 'bpmn:SignalEventDefinition')
   if (!isEmpty(propertyValue)) {
@@ -32,7 +32,13 @@ export function setSignalEventDefinition (_properties, propertyValue, element, f
   if (!bo.eventDefinitions || bo.eventDefinitions.length < 1) {
     bo.eventDefinitions = undefined
   }
-   _properties.eventDefinitions = bo.eventDefinitions
+  if (updateProperties) {
+    const _property = {}
+    _property.eventDefinitions = bo.eventDefinitions
+    updateProperties(element, _property)
+  } else {
+    return bo.eventDefinitions
+  }
 }
 function createElementSignalEventDefinition (message, element, factory) {
   const property = {}

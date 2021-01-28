@@ -16,12 +16,12 @@ import {
 
 /**
  * 设置ExecutionListeners
- * @param _properties
  * @param propertyValue
  * @param element
  * @param factory
+ * @param updateProperties
  */
-export function setExecutionListeners (_properties, propertyValue, element, factory) {
+export function setExecutionListeners (propertyValue, element, factory, updateProperties) {
   let extensionElements = getExtensionElements(element, factory)
   extensionElements.values = removeByType(extensionElements.values, 'activiti:ExecutionListener')
   if (!isEmpty(propertyValue)) {
@@ -30,7 +30,13 @@ export function setExecutionListeners (_properties, propertyValue, element, fact
   if (!extensionElements.values || extensionElements.values.length < 1) {
     extensionElements = null
   }
-  _properties.extensionElements = extensionElements
+  if (updateProperties) {
+   const _property = {}
+    _property.extensionElements = extensionElements
+    updateProperties(element, _property)
+  } else {
+    return extensionElements
+  }
 }
 
 /**
@@ -73,7 +79,7 @@ function createElementExecutionListener (execution, element, factory) {
   }
   const executionListenerElement = createElement('activiti:ExecutionListener', property, element, factory)
   if (execution.fields && execution.fields.length > 0) {
-    setFields(executionListenerElement, execution.fields, executionListenerElement, factory)
+    executionListenerElement.fields = setFields(execution.fields, executionListenerElement, factory, undefined)
   }
   return executionListenerElement
 }

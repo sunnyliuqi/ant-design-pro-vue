@@ -5,19 +5,25 @@ import { getConnectType } from '../SupportPropertyHelper'
 
 /**
  * 设置/创建 ConditionExpression 属性
- * @param _properties
  * @param propertyValue
  * @param element
  * @param factory
+ * @param updateProperties
  */
-export function setConditionExpression (_properties, propertyValue, element, factory) {
+export function setConditionExpression (propertyValue, element, factory, updateProperties) {
   const bo = getBusinessObject(element)
   if (isEmpty(propertyValue)) {
     bo.conditionExpression = undefined
   } else {
-  bo.conditionExpression = setFormalExpression(element, propertyValue, element, factory)
+  bo.conditionExpression = setFormalExpression(propertyValue, element, factory, undefined)
   }
-  _properties.conditionExpression = bo.conditionExpression
+  if (updateProperties) {
+    const _property = {}
+    _property.conditionExpression = bo.conditionExpression
+    updateProperties(element, _property)
+  } else {
+    return bo.conditionExpression
+  }
 }
 /**
  * 获取

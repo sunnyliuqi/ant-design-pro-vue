@@ -9,12 +9,12 @@ import { setValues, getValues } from './Values'
 import { getStartEventType } from '../SupportPropertyHelper'
 /**
  * 设置 FormProperties
- * @param _properties
  * @param propertyValue
  * @param element
  * @param factory
+ * @param updateProperties
  */
-export function setFormProperties (_properties, propertyValue, element, factory) {
+export function setFormProperties (propertyValue, element, factory, updateProperties) {
   let extensionElements = getExtensionElements(element, factory)
   extensionElements.values = removeByType(extensionElements.values, 'activiti:FormProperty')
   if (!isEmpty(propertyValue)) {
@@ -23,7 +23,13 @@ export function setFormProperties (_properties, propertyValue, element, factory)
   if (!extensionElements.values || extensionElements.values.length < 1) {
     extensionElements = null
   }
-    _properties.extensionElements = extensionElements
+  if (updateProperties) {
+    const _property = {}
+    _property.extensionElements = extensionElements
+    updateProperties(element, _property)
+  } else {
+    return extensionElements
+  }
 }
 function pushElementFormProperties (propertyValue, extensionElements, factory) {
   try {
@@ -66,7 +72,7 @@ function createElementFormProperty (formProperty, element, factory) {
   }
   const formPropertyElement = createElement('activiti:FormProperty', property, element, factory)
   if (formProperty.values && formProperty.values.length > 0) {
-    setValues(formPropertyElement, formProperty.values, formPropertyElement, factory)
+    formPropertyElement.values = setValues(formProperty.values, formPropertyElement, factory, undefined)
   }
   return formPropertyElement
 }

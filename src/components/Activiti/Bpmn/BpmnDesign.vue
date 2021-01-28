@@ -29,7 +29,7 @@
   import customTranslate from './i18n/customTranslate'
   import ActivitiPanel from './PanelActiviti/ActivitiPanel'
   import activitiDescriptor from './PanelActiviti/lib/moddle/activiti'
-  import { getProperties, getValues, removeBusinessObject } from './PanelActiviti/helper/PropertyHelper'
+  import { setProperties, getValues, removeBusinessObject } from './PanelActiviti/helper/PropertyHelper'
   import { emptyBpmn } from './store/defaultBpmn'
   export default {
     name: 'BpmnDesign',
@@ -103,7 +103,7 @@
        */
       updateBpmn (element, properties) {
         if (properties && Object.keys(properties).length > 0) {
-          getProperties(element, properties, this.getBpmnFactory(), this.updateProperties).catch(msg => {
+          setProperties(element, properties, this.getBpmnFactory(), this.updateProperties).catch(msg => {
             console.warn(msg)
           })
         }

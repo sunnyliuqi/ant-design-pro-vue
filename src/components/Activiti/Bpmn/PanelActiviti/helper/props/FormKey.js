@@ -4,20 +4,25 @@ import { getBusinessObject } from '../PropertyHelper'
 
 /**
  * 设置/创建 FormKey 属性
- * @param _properties
  * @param propertyValue
  * @param element
  * @param factory
+ * @param updateProperties
  */
-export function setFormKey (_properties, propertyValue, element, factory) {
+export function setFormKey (propertyValue, element, factory, updateProperties) {
   const bo = getBusinessObject(element)
   if (isEmpty(propertyValue)) {
     bo.formKey = undefined
-    _properties.formKey = bo.formKey
-    return
+  } else {
+    bo.formKey = propertyValue
   }
-  bo.formKey = propertyValue
-  _properties.formKey = bo.formKey
+  if (updateProperties) {
+    const _property = {}
+    _property.formKey = bo.formKey
+    updateProperties(element, _property)
+  } else {
+    return bo.formKey
+  }
 }
 
 /**

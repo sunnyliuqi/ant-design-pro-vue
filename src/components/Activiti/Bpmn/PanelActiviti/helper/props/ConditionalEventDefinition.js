@@ -8,12 +8,12 @@ import {
 } from '../SupportPropertyHelper'
 /**
  * 设置/创建 ConditionalEventDefinition 元素
- * @param _properties
  * @param propertyValue
  * @param element
  * @param factory
+ * @param updateProperties
  */
-export function setConditionalEventDefinition (_properties, propertyValue, element, factory) {
+export function setConditionalEventDefinition (propertyValue, element, factory, updateProperties) {
   const bo = getBusinessObject(element)
   bo.eventDefinitions = removeByType(bo.eventDefinitions, 'bpmn:ConditionalEventDefinition')
   if (!isEmpty(propertyValue)) {
@@ -32,7 +32,13 @@ export function setConditionalEventDefinition (_properties, propertyValue, eleme
   if (!bo.eventDefinitions || bo.eventDefinitions.length < 1) {
     bo.eventDefinitions = undefined
   }
-  _properties.eventDefinitions = bo.eventDefinitions
+  if (updateProperties) {
+    const _property = {}
+    _property.eventDefinitions = bo.eventDefinitions
+    updateProperties(element, _property)
+  } else {
+    return bo.eventDefinitions
+  }
 }
 function createElementConditionalEventDefinition (conditional, element, factory) {
   const property = {}
@@ -41,7 +47,7 @@ function createElementConditionalEventDefinition (conditional, element, factory)
   }
 
   const conditionElement = createElement('bpmn:ConditionalEventDefinition', property, element, factory)
-  conditionElement.condition = setFormalExpression(conditionElement, conditional.condition, conditionElement, factory)
+  conditionElement.condition = setFormalExpression(conditional.condition, conditionElement, factory, undefined)
   return conditionElement
 }
 /**

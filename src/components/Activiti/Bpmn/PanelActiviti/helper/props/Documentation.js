@@ -3,12 +3,12 @@ import { isEmpty } from '@/utils/common'
 
 /**
  * 设置/创建 Documentation 元素
- * @param _properties
  * @param text
  * @param element
  * @param factory
+ * @param updateProperties
  */
-export function setDocumentation (_properties, text, element, factory) {
+export function setDocumentation (text, element, factory, updateProperties) {
   const bo = getBusinessObject(element)
   if (isEmpty(text)) {
     bo.documentation = null
@@ -23,7 +23,13 @@ export function setDocumentation (_properties, text, element, factory) {
     }
     bo.documentation = documentations
   }
-  _properties.documentation = bo.documentation
+  if (updateProperties) {
+    const _property = {}
+    _property.documentation = bo.documentation
+    updateProperties(element, _property)
+  } else {
+    return bo.documentation
+  }
 }
 
 export function getDocumentation (element) {

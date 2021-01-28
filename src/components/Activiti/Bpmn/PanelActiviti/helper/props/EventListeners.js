@@ -7,12 +7,12 @@ import {
 import { isEmpty } from '@/utils/common'
 /**
  * 设置EventListeners
- * @param _properties
  * @param propertyValue
  * @param element
  * @param factory
+ * @param updateProperties
  */
-export function setEventListeners (_properties, propertyValue, element, factory) {
+export function setEventListeners (propertyValue, element, factory, updateProperties) {
   let extensionElements = getExtensionElements(element, factory)
   extensionElements.values = removeByType(extensionElements.values, 'activiti:EventListener')
   if (!isEmpty(propertyValue)) {
@@ -21,7 +21,13 @@ export function setEventListeners (_properties, propertyValue, element, factory)
   if (!extensionElements.values || extensionElements.values.length < 1) {
     extensionElements = null
   }
-  _properties.extensionElements = extensionElements
+  if (updateProperties) {
+    const _property = {}
+    _property.extensionElements = extensionElements
+    updateProperties(element, _property)
+  } else {
+    return extensionElements
+  }
 }
 function pushElementEventListeners (propertyValue, extensionElements, factory) {
   try {

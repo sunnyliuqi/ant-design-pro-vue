@@ -8,12 +8,12 @@ import {
 } from '../SupportPropertyHelper'
 /**
  * 设置/创建 MessageEventDefinition 元素
- * @param _properties
  * @param propertyValue
  * @param element
  * @param factory
+ * @param updateProperties
  */
-export function setMessageEventDefinition (_properties, propertyValue, element, factory) {
+export function setMessageEventDefinition (propertyValue, element, factory, updateProperties) {
   const bo = getBusinessObject(element)
   bo.eventDefinitions = removeByType(bo.eventDefinitions, 'bpmn:MessageEventDefinition')
   if (!isEmpty(propertyValue)) {
@@ -32,7 +32,13 @@ export function setMessageEventDefinition (_properties, propertyValue, element, 
   if (!bo.eventDefinitions || bo.eventDefinitions.length < 1) {
     bo.eventDefinitions = undefined
   }
-  _properties.eventDefinitions = bo.eventDefinitions
+  if (updateProperties) {
+    const _property = {}
+    _property.eventDefinitions = bo.eventDefinitions
+    updateProperties(element, _property)
+  } else {
+    return bo.eventDefinitions
+  }
 }
 function createElementMessageEventDefinition (message, element, factory) {
   const property = {}

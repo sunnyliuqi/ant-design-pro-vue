@@ -6,12 +6,12 @@ import {
 } from '../SupportPropertyHelper'
 /**
  * 设置/创建 ErrorEventDefinition 元素
- * @param _properties
  * @param propertyValue
  * @param element
  * @param factory
+ * @param updateProperties
  */
-export function setErrorEventDefinition (_properties, propertyValue, element, factory) {
+export function setErrorEventDefinition (propertyValue, element, factory, updateProperties) {
   const bo = getBusinessObject(element)
   bo.eventDefinitions = removeByType(bo.eventDefinitions, 'bpmn:ErrorEventDefinition')
   if (!isEmpty(propertyValue)) {
@@ -30,7 +30,13 @@ export function setErrorEventDefinition (_properties, propertyValue, element, fa
   if (!bo.eventDefinitions || bo.eventDefinitions.length < 1) {
     bo.eventDefinitions = undefined
   }
-   _properties.eventDefinitions = bo.eventDefinitions
+  if (updateProperties) {
+    const _property = {}
+    _property.eventDefinitions = bo.eventDefinitions
+    updateProperties(element, _property)
+  } else {
+    return bo.eventDefinitions
+  }
 }
 function createElementErrorEventDefinition (message, element, factory) {
   const property = {}

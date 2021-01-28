@@ -34,26 +34,25 @@ import {
   getConditionExpression,
   setConditionExpression
 } from './props/ConditionExpression'
+
 /**
- * 根据传入的表单properties获取对应bpmn properties
+ * 设置element properties
  * @param element
  * @param properties
  * @param factory
  * @param updateProperties
  * @returns {Promise<unknown>}
  */
-export function getProperties (element, properties, factory, updateProperties) {
+export function setProperties (element, properties, factory, updateProperties) {
   return new Promise((resolve, reject) => {
     try {
       const propertyNames = properties && Object.keys(properties)
-      const _properties = {}
       if (propertyNames && propertyNames.length > 0) {
         propertyNames.forEach(propertyName => {
-          setProperty(_properties, propertyName, properties[propertyName], element, factory)
+          setProperty(propertyName, properties[propertyName], element, factory, updateProperties)
         })
       }
-      updateProperties(element, _properties)
-      return resolve(_properties)
+      return resolve(element)
     } catch (e) {
       return reject(e.message)
     }
@@ -61,35 +60,35 @@ export function getProperties (element, properties, factory, updateProperties) {
 }
 /**
  * 获取bpmn property
- * @param _properties
  * @param propertyName
  * @param propertyValue
  * @param element
  * @param factory
+ * @param updateProperties
  */
-function setProperty (_properties, propertyName, propertyValue, element, factory) {
+function setProperty (propertyName, propertyValue, element, factory, updateProperties) {
   if (propertyName === 'documentation') {
-    setDocumentation(_properties, propertyValue, element, factory)
+    setDocumentation(propertyValue, element, factory, updateProperties)
   } else if (propertyName === 'executionlisteners') {
-    setExecutionListeners(_properties, propertyValue, element, factory)
+    setExecutionListeners(propertyValue, element, factory, updateProperties)
   } else if (propertyName === 'eventlisteners') {
-    setEventListeners(_properties, propertyValue, element, factory)
+    setEventListeners(propertyValue, element, factory, updateProperties)
   } else if (propertyName === 'signaldefinitions') {
-    setSignalDefinitions(_properties, propertyValue, element, factory)
+    setSignalDefinitions(propertyValue, element, factory, updateProperties)
   } else if (propertyName === 'messagedefinitions') {
-    setMessageDefinitions(_properties, propertyValue, element, factory)
+    setMessageDefinitions(propertyValue, element, factory, updateProperties)
   } else if (propertyName === 'initiator') {
-    setInitiator(_properties, propertyValue, element, factory)
+    setInitiator(propertyValue, element, factory, updateProperties)
   } else if (propertyName === 'formKey') {
-    setFormKey(_properties, propertyValue, element, factory)
+    setFormKey(propertyValue, element, factory, updateProperties)
   } else if (propertyName === 'formProperties') {
-    setFormProperties(_properties, propertyValue, element, factory)
+    setFormProperties(propertyValue, element, factory, updateProperties)
   } else if (propertyName === 'messageEventDefinition') {
-    setMessageEventDefinition(_properties, propertyValue, element, factory)
+    setMessageEventDefinition(propertyValue, element, factory, updateProperties)
   } else if (propertyName === 'conditionalEventDefinition') {
-    setConditionalEventDefinition(_properties, propertyValue, element, factory)
+    setConditionalEventDefinition(propertyValue, element, factory, updateProperties)
   } else if (propertyName === 'signalEventDefinition') {
-    setSignalEventDefinition(_properties, propertyValue, element, factory)
+    setSignalEventDefinition(propertyValue, element, factory, updateProperties)
   } else if (propertyName === 'timeDate') {
     let propertyTimeDate
     if (!isEmpty(propertyValue)) {
@@ -97,7 +96,7 @@ function setProperty (_properties, propertyName, propertyValue, element, factory
     } else {
       propertyTimeDate = { timeDate: undefined }
     }
-    setTimerEventDefinition(_properties, propertyTimeDate, element, factory)
+    setTimerEventDefinition(propertyTimeDate, element, factory, updateProperties)
   } else if (propertyName === 'timeCycle') {
     let propertyTimeCycle
     if (!isEmpty(propertyValue)) {
@@ -105,7 +104,7 @@ function setProperty (_properties, propertyName, propertyValue, element, factory
     } else {
       propertyTimeCycle = { timeCycle: undefined }
     }
-    setTimerEventDefinition(_properties, propertyTimeCycle, element, factory)
+    setTimerEventDefinition(propertyTimeCycle, element, factory, updateProperties)
   } else if (propertyName === 'timeDuration') {
     let propertyTimeDuration
     if (!isEmpty(propertyValue)) {
@@ -113,13 +112,15 @@ function setProperty (_properties, propertyName, propertyValue, element, factory
     } else {
       propertyTimeDuration = { timeDuration: undefined }
     }
-    setTimerEventDefinition(_properties, propertyTimeDuration, element, factory)
+    setTimerEventDefinition(propertyTimeDuration, element, factory, updateProperties)
   } else if (propertyName === 'errorEventDefinition') {
-    setErrorEventDefinition(_properties, propertyValue, element, factory)
+    setErrorEventDefinition(propertyValue, element, factory, updateProperties)
   } else if (propertyName === 'conditionExpression ') {
-    setConditionExpression(_properties, propertyValue, element, factory)
+    setConditionExpression(propertyValue, element, factory, updateProperties)
   } else {
-    _properties[propertyName] = getPropertyValue(propertyValue)
+    const _property = {}
+    _property[propertyName] = getPropertyValue(propertyValue)
+    updateProperties(element, _property)
   }
 }
 
@@ -183,58 +184,39 @@ export function getValues (type, element) {
 export function removeBusinessObject (element, factory, updateProperties) {
   if (element) {
     if (!supportExecutionListeners(element)) {
-      const props = {}
-      setExecutionListeners(props, undefined, element, factory)
-      updateProperties(element, props)
+      setExecutionListeners(undefined, element, factory, updateProperties)
     }
     if (!supportInitiator(element)) {
-      const props = {}
-      setInitiator(props, undefined, element, factory)
-      updateProperties(element, props)
+      setInitiator(undefined, element, factory, updateProperties)
     }
     if (!supportFormKey(element)) {
-      const props = {}
-      setFormKey(props, undefined, element, factory)
-      updateProperties(element, props)
+      setFormKey(undefined, element, factory, updateProperties)
     }
     if (!supportFormProperties(element)) {
-     const props = {}
-     setFormProperties(props, undefined, element, factory)
-     updateProperties(element, props)
+     setFormProperties(undefined, element, factory, updateProperties)
    }
     if (!supportMessageEventDefinition(element)) {
-      const props = {}
-      setMessageEventDefinition(props, undefined, element, factory)
-      updateProperties(element, props)
+      setMessageEventDefinition(undefined, element, factory, updateProperties)
     }
     if (!supportConditionalEventDefinition(element)) {
-      const props = {}
-      setConditionalEventDefinition(props, undefined, element, factory)
-      updateProperties(element, props)
+      setConditionalEventDefinition(undefined, element, factory, updateProperties)
     }
     if (!supportSignalEventDefinition(element)) {
-      const props = {}
-      setSignalEventDefinition(props, undefined, element, factory)
-      updateProperties(element, props)
+      setSignalEventDefinition(undefined, element, factory, updateProperties)
     }
     if (!supportTimerEventDefinition(element)) {
-      const props = {}
-      setTimerEventDefinition(props, undefined, element, factory)
-      updateProperties(element, props)
+      setTimerEventDefinition(undefined, element, factory, updateProperties)
     }
     if (!supportErrorEventDefinition(element)) {
-      const props = {}
-      setErrorEventDefinition(props, undefined, element, factory)
-      updateProperties(element, props)
+      setErrorEventDefinition(undefined, element, factory, updateProperties)
     }
     if (!supportConditionExpression(element)) {
-      const props = {}
-      setConditionExpression(props, undefined, element, factory)
-      updateProperties(element, props)
+      setConditionExpression(undefined, element, factory, updateProperties)
     }
   }
   return element
 }
+
 /**
  * 字符串转对象
  * @param s

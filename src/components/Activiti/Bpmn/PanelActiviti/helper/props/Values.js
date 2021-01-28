@@ -7,12 +7,12 @@ import { isEmpty } from '@/utils/common'
 
 /**
  * 设置Values
- * @param _properties
  * @param propertyValue
  * @param element
  * @param factory
+ * @param updateProperties
  */
-export function setValues (_properties, propertyValue, element, factory) {
+export function setValues (propertyValue, element, factory, updateProperties) {
   const bo = getBusinessObject(element)
   if (isEmpty(propertyValue)) {
     bo.values = null
@@ -21,7 +21,13 @@ export function setValues (_properties, propertyValue, element, factory) {
       bo.values.push(createElementValue(value, element, factory))
     })
   }
-  _properties.values = bo.values
+  if (updateProperties) {
+    const _property = {}
+    _property.values = bo.values
+    updateProperties(element, _property)
+  } else {
+    return bo.values
+  }
 }
 
 /**

@@ -3,16 +3,16 @@ import { isEmpty } from '@/utils/common'
 
 /**
  * 设置 FormalExpression
- * @param _properties
  * @param propertyValue
  * @param element
  * @param factory
+ * @param updateProperties
  */
-export function setFormalExpression (_properties, propertyValue, element, factory) {
-  if (isEmpty(propertyValue)) {
-    return null
-  }
-  return createElementFormalExpression(propertyValue, element, factory)
+export function setFormalExpression (propertyValue, element, factory, updateProperties) {
+    if (isEmpty(propertyValue)) {
+      return null
+    }
+    return createElementFormalExpression(propertyValue, element, factory)
 }
 
 /**

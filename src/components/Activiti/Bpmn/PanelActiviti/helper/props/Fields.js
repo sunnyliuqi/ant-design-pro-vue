@@ -7,12 +7,12 @@ import { isEmpty } from '@/utils/common'
 
 /**
  * 设置Fields
- * @param _properties
  * @param propertyValue
  * @param element
  * @param factory
+ * @param updateProperties
  */
-export function setFields (_properties, propertyValue, element, factory) {
+export function setFields (propertyValue, element, factory, updateProperties) {
   const bo = getBusinessObject(element)
   if (isEmpty(propertyValue)) {
     bo.fields = null
@@ -20,7 +20,13 @@ export function setFields (_properties, propertyValue, element, factory) {
   propertyValue.forEach(field => {
     bo.fields.push(createElementField(field, element, factory))
   })
-  _properties.fields = bo.fields
+  if (updateProperties) {
+    const _property = {}
+    _property.fields = bo.fields
+    updateProperties(element, _property)
+  } else {
+    return bo.fields
+  }
 }
 
 /**

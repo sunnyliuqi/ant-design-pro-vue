@@ -4,20 +4,25 @@ import { getBusinessObject } from '../PropertyHelper'
 
 /**
  * 设置/创建 Initiator 属性
- * @param _properties
  * @param propertyValue
  * @param element
  * @param factory
+ * @param updateProperties
  */
-export function setInitiator (_properties, propertyValue, element, factory) {
+export function setInitiator (propertyValue, element, factory, updateProperties) {
   const bo = getBusinessObject(element)
   if (isEmpty(propertyValue)) {
     bo.initiator = undefined
-    _properties.initiator = bo.initiator
-    return
+  } else {
+    bo.initiator = propertyValue
   }
-  bo.initiator = propertyValue
-  _properties.initiator = bo.initiator
+  if (updateProperties) {
+    const _property = {}
+    _property.initiator = bo.initiator
+    updateProperties(element, _property)
+  } else {
+    return bo.initiator
+  }
 }
 
 export function getInitiator (element) {

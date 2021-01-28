@@ -1,7 +1,6 @@
 import { isEmpty } from '@/utils/common'
 import { setFormalExpression, getFormalExpression } from './FormalExpression'
-import { getBusinessObject } from '../PropertyHelper'
-import { getConnectType } from '../SupportPropertyHelper'
+import { getBusinessObject, getConnectType } from '../PropertyHelper'
 
 /**
  * 设置/创建 ConditionExpression 属性

@@ -4,15 +4,13 @@ import {
   getPropertyValue,
   removeByType,
   filterByType,
-  getBusinessObject
-} from '../PropertyHelper'
-import { setFields, getFields } from './Fields'
-import { isEmpty } from '@/utils/common'
-import {
+  getBusinessObject,
   getConnectType,
   getEventDefinitionType,
   getIntermediateEventType
-} from '../SupportPropertyHelper'
+} from '../PropertyHelper'
+import { setFields, getFields } from './Fields'
+import { isEmpty } from '@/utils/common'
 
 /**
  * 设置ExecutionListeners

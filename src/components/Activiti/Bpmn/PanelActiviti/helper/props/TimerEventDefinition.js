@@ -1,15 +1,12 @@
 import {
   createElement,
   filterByType,
-  getBusinessObject, removeByType
+  getBusinessObject, removeByType, getEventDefinitionType,
+  getIntermediateEventType,
+  getStartEventType
 } from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 import { setFormalExpression, getFormalExpression } from './FormalExpression'
-import {
-  getEventDefinitionType,
-  getIntermediateEventType,
-  getStartEventType
-} from '../SupportPropertyHelper'
 /**
  * 设置/创建 TimerEventDefinition 元素
  * @param propertyValue

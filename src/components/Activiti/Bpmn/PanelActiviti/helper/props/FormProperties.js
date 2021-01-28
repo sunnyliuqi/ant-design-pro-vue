@@ -2,11 +2,10 @@ import {
   createElement,
   getExtensionElements,
   removeByType, filterByType,
-  getPropertyValue, getBusinessObject
+  getPropertyValue, getBusinessObject, getStartEventType
 } from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 import { setValues, getValues } from './Values'
-import { getStartEventType } from '../SupportPropertyHelper'
 /**
  * 设置 FormProperties
  * @param propertyValue

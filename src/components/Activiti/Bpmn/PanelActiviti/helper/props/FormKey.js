@@ -1,6 +1,5 @@
 import { isEmpty } from '@/utils/common'
-import { getStartEventType } from '../SupportPropertyHelper'
-import { getBusinessObject } from '../PropertyHelper'
+import { getBusinessObject, getStartEventType } from '../PropertyHelper'
 
 /**
  * 设置/创建 FormKey 属性

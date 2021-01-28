@@ -1,11 +1,8 @@
-import { createElement, filterByType, getBusinessObject, getPropertyValue, removeByType } from '../PropertyHelper'
-import { isEmpty } from '@/utils/common'
-import {
-  getEndEventType,
+import { createElement, filterByType, getBusinessObject, getPropertyValue, removeByType, getEndEventType,
   getEventDefinitionType,
   getIntermediateEventType,
-  getStartEventType
-} from '../SupportPropertyHelper'
+  getStartEventType } from '../PropertyHelper'
+import { isEmpty } from '@/utils/common'
 /**
  * 设置/创建 SignalEventDefinition 元素
  * @param propertyValue

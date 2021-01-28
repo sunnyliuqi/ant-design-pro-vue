@@ -1,11 +1,8 @@
-import { createElement, filterByType, getBusinessObject, removeByType } from '../PropertyHelper'
+import { createElement, filterByType, getBusinessObject, removeByType, getEventDefinitionType,
+  getIntermediateEventType,
+  getStartEventType } from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 import { setFormalExpression, getFormalExpression } from './FormalExpression'
-import {
-  getEventDefinitionType,
-  getIntermediateEventType,
-  getStartEventType
-} from '../SupportPropertyHelper'
 /**
  * 设置/创建 ConditionalEventDefinition 元素
  * @param propertyValue

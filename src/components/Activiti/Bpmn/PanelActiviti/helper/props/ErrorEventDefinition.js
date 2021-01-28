@@ -1,9 +1,6 @@
-import { createElement, filterByType, getBusinessObject, getPropertyValue, removeByType } from '../PropertyHelper'
+import { createElement, filterByType, getBusinessObject, getPropertyValue, removeByType, getEndEventType,
+  getEventDefinitionType } from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
-import {
-  getEndEventType,
-  getEventDefinitionType
-} from '../SupportPropertyHelper'
 /**
  * 设置/创建 ErrorEventDefinition 元素
  * @param propertyValue

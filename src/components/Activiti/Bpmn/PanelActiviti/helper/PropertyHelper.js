@@ -1,37 +1,36 @@
 'use strict'
 import { isEmpty } from '@/utils/common'
 import { setDocumentation, getDocumentation } from './props/Documentation'
-import { setExecutionListeners, getExecutionListeners } from './props/ExecutionListeners'
+import { setExecutionListeners, getExecutionListeners, isSupportExecutionListeners } from './props/ExecutionListeners'
 import { setEventListeners, getEventListeners } from './props/EventListeners'
 import { setSignalDefinitions, getSignalDefinitions } from './props/SignalDefinitions'
 import { setMessageDefinitions, getMessageDefinitions } from './props/MessageDefinitions'
-import { setInitiator, getInitiator } from './props/Initiator'
-import { getFormKey, setFormKey } from './props/FormKey'
-import { setFormProperties, getFormProperties } from './props/FormProperties'
-import { setMessageEventDefinition, getMessageEventDefinition } from './props/MessageEventDefinition'
+import { setInitiator, getInitiator, isSupportInitiator } from './props/Initiator'
+import { getFormKey, isSupportFormKey, setFormKey } from './props/FormKey'
+import { setFormProperties, getFormProperties, isSupportFormProperties } from './props/FormProperties'
 import {
-  getConditionalEventDefinition,
+  setMessageEventDefinition,
+  getMessageEventDefinition,
+  isSupportMessageEventDefinition
+} from './props/MessageEventDefinition'
+import {
+  getConditionalEventDefinition, isSupportConditionalEventDefinition,
   setConditionalEventDefinition
 } from './props/ConditionalEventDefinition'
 import {
-  getSignalEventDefinition,
+  getSignalEventDefinition, isSupportSignalEventDefinition,
   setSignalEventDefinition
 } from './props/SignalEventDefinition'
 import {
-  getTimerEventDefinition,
+  getTimerEventDefinition, isSupportTimerEventDefinition,
   setTimerEventDefinition
 } from './props/TimerEventDefinition'
 import {
-  supportConditionalEventDefinition, supportConditionExpression, supportErrorEventDefinition,
-  supportExecutionListeners, supportFormKey, supportFormProperties,
-  supportInitiator, supportMessageEventDefinition, supportSignalEventDefinition, supportTimerEventDefinition
-} from './SupportPropertyHelper'
-import {
-  getErrorEventDefinition,
+  getErrorEventDefinition, isSupportErrorEventDefinition,
   setErrorEventDefinition
 } from './props/ErrorEventDefinition'
 import {
-  getConditionExpression,
+  getConditionExpression, isSupportConditionExpression,
   setConditionExpression
 } from './props/ConditionExpression'
 
@@ -115,7 +114,9 @@ function setProperty (propertyName, propertyValue, element, factory, updatePrope
     setTimerEventDefinition(propertyTimeDuration, element, factory, updateProperties)
   } else if (propertyName === 'errorEventDefinition') {
     setErrorEventDefinition(propertyValue, element, factory, updateProperties)
-  } else if (propertyName === 'conditionExpression ') {
+  } else if (propertyName === 'conditionExpression') {
+    setConditionExpression(propertyValue, element, factory, updateProperties)
+  } else if (propertyName === 'defaultFlow') {
     setConditionExpression(propertyValue, element, factory, updateProperties)
   } else {
     const _property = {}
@@ -170,7 +171,7 @@ export function getValues (type, element) {
     return getDocumentation(element)
   } else if (type === 'errorEventDefinition') {
     return getErrorEventDefinition(element)
-  } else if (type === 'conditionExpression ') {
+  } else if (type === 'conditionExpression') {
     return getConditionExpression(element)
   }
   return undefined
@@ -183,40 +184,74 @@ export function getValues (type, element) {
  */
 export function removeBusinessObject (element, factory, updateProperties) {
   if (element) {
-    if (!supportExecutionListeners(element)) {
+    if (!isSupportExecutionListeners(element)) {
       setExecutionListeners(undefined, element, factory, updateProperties)
     }
-    if (!supportInitiator(element)) {
+    if (!isSupportInitiator(element)) {
       setInitiator(undefined, element, factory, updateProperties)
     }
-    if (!supportFormKey(element)) {
+    if (!isSupportFormKey(element)) {
       setFormKey(undefined, element, factory, updateProperties)
     }
-    if (!supportFormProperties(element)) {
+    if (!isSupportFormProperties(element)) {
      setFormProperties(undefined, element, factory, updateProperties)
    }
-    if (!supportMessageEventDefinition(element)) {
+    if (!isSupportMessageEventDefinition(element)) {
       setMessageEventDefinition(undefined, element, factory, updateProperties)
     }
-    if (!supportConditionalEventDefinition(element)) {
+    if (!isSupportConditionalEventDefinition(element)) {
       setConditionalEventDefinition(undefined, element, factory, updateProperties)
     }
-    if (!supportSignalEventDefinition(element)) {
+    if (!isSupportSignalEventDefinition(element)) {
       setSignalEventDefinition(undefined, element, factory, updateProperties)
     }
-    if (!supportTimerEventDefinition(element)) {
+    if (!isSupportTimerEventDefinition(element)) {
       setTimerEventDefinition(undefined, element, factory, updateProperties)
     }
-    if (!supportErrorEventDefinition(element)) {
+    if (!isSupportErrorEventDefinition(element)) {
       setErrorEventDefinition(undefined, element, factory, updateProperties)
     }
-    if (!supportConditionExpression(element)) {
+    if (!isSupportConditionExpression(element)) {
       setConditionExpression(undefined, element, factory, updateProperties)
     }
   }
   return element
 }
 
+/**
+ * 是否支持
+ * @param type
+ * @param element
+ * @constructor
+ */
+export function supportProperty (type, element) {
+  if (type === 'executionlisteners') {
+    return isSupportExecutionListeners(element)
+  } else if (type === 'initiator') {
+    return isSupportInitiator(element)
+  } else if (type === 'formKey') {
+    return isSupportFormKey(element)
+  } else if (type === 'formProperties') {
+    return isSupportFormProperties(element)
+  } else if (type === 'messageEventDefinition') {
+    return isSupportMessageEventDefinition(element)
+  } else if (type === 'conditionalEventDefinition') {
+    return isSupportConditionalEventDefinition(element)
+  } else if (type === 'signalEventDefinition') {
+    return isSupportSignalEventDefinition(element)
+  } else if (type === 'timeDate') {
+    return isSupportTimerEventDefinition(element)
+  } else if (type === 'timeCycle') {
+    return isSupportTimerEventDefinition(element)
+  } else if (type === 'timeDuration') {
+    return isSupportTimerEventDefinition(element)
+  } else if (type === 'errorEventDefinition') {
+    return isSupportErrorEventDefinition(element)
+  } else if (type === 'conditionExpression') {
+    return isSupportConditionExpression(element)
+  }
+  return false
+}
 /**
  * 字符串转对象
  * @param s
@@ -296,6 +331,69 @@ export function getPropertyValue (property) {
   }
 }
 
+export function getStartEventType (element) {
+  if (element.businessObject && element.businessObject.eventDefinitions && element.businessObject.eventDefinitions.length > 0) {
+    const moddleElement = element.businessObject.eventDefinitions[0]
+    if (moddleElement) {
+      if (moddleElement.$type === 'bpmn:MessageEventDefinition') {
+        return 'message'
+      } else if (moddleElement.$type === 'bpmn:TimerEventDefinition') {
+        return 'timer'
+      } else if (moddleElement.$type === 'bpmn:ConditionalEventDefinition') {
+        return 'conditional'
+      } else if (moddleElement.$type === 'bpmn:SignalEventDefinition') {
+        return 'signal'
+      }
+    }
+  }
+  return 'none'
+}
+
+export function getIntermediateEventType (element) {
+  if (element.type === 'bpmn:IntermediateThrowEvent' || element.type === 'bpmn:IntermediateCatchEvent') {
+    return true
+  }
+  return false
+}
+
+export function getEventDefinitionType (element) {
+  if (element.businessObject && element.businessObject.eventDefinitions && element.businessObject.eventDefinitions.length > 0) {
+    const moddleElement = element.businessObject.eventDefinitions[0]
+    if (moddleElement) {
+      if (moddleElement.$type === 'bpmn:MessageEventDefinition') {
+        return 'message'
+      } else if (moddleElement.$type === 'bpmn:TimerEventDefinition') {
+        return 'timer'
+      } else if (moddleElement.$type === 'bpmn:EscalationEventDefinition') {
+        return 'escalation'
+      } else if (moddleElement.$type === 'bpmn:ConditionalEventDefinition') {
+        return 'conditional'
+      } else if (moddleElement.$type === 'bpmn:LinkEventDefinition') {
+        return 'link'
+      } else if (moddleElement.$type === 'bpmn:SignalEventDefinition') {
+        return 'signal'
+      } else if (moddleElement.$type === 'bpmn:CompensateEventDefinition') {
+        return 'compensate'
+      } else if (moddleElement.$type === 'bpmn:ErrorEventDefinition') {
+        return 'error'
+      }
+    }
+  }
+  return 'none'
+}
+
+export function getEndEventType (element) {
+  if (element.type === 'bpmn:EndEvent') {
+    return true
+  }
+  return false
+}
+export function getConnectType (element) {
+  if (element.type === 'bpmn:SequenceFlow') {
+    return true
+  }
+  return false
+}
 /**
  * 获取到根节点
  * @param businessObject

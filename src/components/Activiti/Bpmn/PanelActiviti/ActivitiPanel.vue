@@ -43,7 +43,7 @@
                 placeholder="请输入描述"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportExecutionListeners(element)">
+          <a-col :span="24" v-show="supportProperty('executionlisteners', element)">
             <a-form-item
               label="执行监听器"
               :labelCol="{ span: 8 }"
@@ -56,7 +56,7 @@
                 placeholder="请选择执行监听器"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportInitiator(element)">
+          <a-col :span="24" v-show="supportProperty('initiator',element)">
             <a-form-item
               label="发起人"
               :labelCol="{ span: 8 }"
@@ -69,7 +69,7 @@
                 placeholder="请选择发起人"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportFormKey(element)">
+          <a-col :span="24" v-show="supportProperty('formKey',element)">
             <a-form-item
               label="外置表单"
               :labelCol="{ span: 8 }"
@@ -82,7 +82,7 @@
                 placeholder="请选择外置表单"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportFormProperties(element)">
+          <a-col :span="24" v-show="supportProperty('formProperties',element)">
             <a-form-item
               label="动态表单字段"
               :labelCol="{ span: 8 }"
@@ -95,7 +95,7 @@
                 placeholder="请设置动态表单字段"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportMessageEventDefinition(element)">
+          <a-col :span="24" v-show="supportProperty('messageEventDefinition',element)">
             <a-form-item
               label="消息事件"
               :labelCol="{ span: 8 }"
@@ -108,7 +108,7 @@
                 placeholder="请选择消息事件"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportConditionalEventDefinition(element)">
+          <a-col :span="24" v-show="supportProperty('conditionalEventDefinition',element)">
             <a-form-item
               label="条件事件"
               :labelCol="{ span: 8 }"
@@ -121,7 +121,7 @@
                 placeholder="请输入条件事件"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportSignalEventDefinition(element)">
+          <a-col :span="24" v-show="supportProperty('signalEventDefinition',element)">
             <a-form-item
               label="信号事件"
               :labelCol="{ span: 8 }"
@@ -134,7 +134,7 @@
                 placeholder="请选择信号事件"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportTimerEventDefinition(element)">
+          <a-col :span="24" v-show="supportProperty('timeCycle',element)">
             <a-form-item
               label="定时周期"
               :labelCol="{ span: 8 }"
@@ -147,7 +147,7 @@
                 placeholder="请输入定时周期"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportTimerEventDefinition(element)">
+          <a-col :span="24" v-show="supportProperty('timeDate',element)">
             <a-form-item
               label="定时时间"
               :labelCol="{ span: 8 }"
@@ -160,7 +160,7 @@
                 placeholder="请输入定时时间"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportTimerEventDefinition(element)">
+          <a-col :span="24" v-show="supportProperty('timeDuration',element)">
             <a-form-item
               label="定时期间"
               :labelCol="{ span: 8 }"
@@ -173,7 +173,7 @@
                 placeholder="请输入定时期间"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportErrorEventDefinition(element)">
+          <a-col :span="24" v-show="supportProperty('errorEventDefinition',element)">
             <a-form-item
               label="错误事件"
               :labelCol="{ span: 8 }"
@@ -186,7 +186,7 @@
                 placeholder="请输入错误事件"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportConditionExpression(element)">
+          <a-col :span="24" v-show="supportProperty('conditionExpression',element)">
             <a-form-item
               label="程条件"
               :labelCol="{ span: 8 }"
@@ -194,7 +194,7 @@
               <a-textarea
                 v-decorator="[
                   'conditionExpression ',
-                  {initialValue: getValues('conditionExpression ',element)}
+                  {initialValue: getValues('conditionExpression',element)}
                 ]"
                 placeholder="请输入程条件"/>
             </a-form-item>
@@ -328,7 +328,7 @@
 </template>
 
 <script>
-  import { supportExecutionListeners, supportConditionalEventDefinition, supportFormKey, supportFormProperties, supportInitiator, supportMessageEventDefinition, supportSignalEventDefinition, supportTimerEventDefinition, supportErrorEventDefinition, supportConditionExpression } from './helper/SupportPropertyHelper'
+  import { supportProperty } from './helper/PropertyHelper'
   export default {
     name: 'ActivitiPanel',
     props: {
@@ -350,16 +350,7 @@
         formPanel: this.$form.createForm(this, { onValuesChange: this.onPanelValuesChange }),
         tabKey: '2',
         processElement: {},
-        supportExecutionListeners,
-        supportConditionalEventDefinition,
-        supportFormKey,
-        supportFormProperties,
-        supportInitiator,
-        supportMessageEventDefinition,
-        supportSignalEventDefinition,
-        supportTimerEventDefinition,
-        supportErrorEventDefinition,
-        supportConditionExpression
+        supportProperty
       }
     },
     mounted () {

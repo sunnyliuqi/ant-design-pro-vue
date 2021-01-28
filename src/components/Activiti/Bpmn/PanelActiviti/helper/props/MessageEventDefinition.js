@@ -1,11 +1,8 @@
-import { createElement, filterByType, getBusinessObject, getPropertyValue, removeByType } from '../PropertyHelper'
-import { isEmpty } from '@/utils/common'
-import {
-  getEventDefinitionType,
+import { createElement, filterByType, getBusinessObject, getPropertyValue, removeByType, getEventDefinitionType,
   getIntermediateEventType,
   getStartEventType,
-  getEndEventType
-} from '../SupportPropertyHelper'
+  getEndEventType } from '../PropertyHelper'
+import { isEmpty } from '@/utils/common'
 /**
  * 设置/创建 MessageEventDefinition 元素
  * @param propertyValue

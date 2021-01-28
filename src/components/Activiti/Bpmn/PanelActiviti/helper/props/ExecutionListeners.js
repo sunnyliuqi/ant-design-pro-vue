@@ -9,6 +9,7 @@ import {
 import { setFields, getFields } from './Fields'
 import { isEmpty } from '@/utils/common'
 import {
+  getConnectType,
   getEventDefinitionType,
   getIntermediateEventType
 } from '../SupportPropertyHelper'
@@ -122,6 +123,9 @@ export function isSupportExecutionListeners (element) {
   }
   const intermediateCatchEventType = getEventDefinitionType(element)
   if (getIntermediateEventType(element) && intermediateCatchEventType === 'none' || intermediateCatchEventType === 'message' || intermediateCatchEventType === 'timer') {
+    return true
+  }
+  if (getConnectType(element)) {
     return true
   }
   return false

@@ -110,3 +110,9 @@ export function getEndEventType (element) {
   }
   return false
 }
+export function getConnectType (element) {
+  if (element.type === 'bpmn:SequenceFlow') {
+    return true
+  }
+  return false
+}

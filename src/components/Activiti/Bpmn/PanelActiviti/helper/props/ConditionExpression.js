@@ -1,6 +1,7 @@
 import { isEmpty } from '@/utils/common'
 import { setFormalExpression, getFormalExpression } from './FormalExpression'
-import { createElement, getBusinessObject, getPropertyValue } from '../PropertyHelper'
+import { getBusinessObject } from '../PropertyHelper'
+import { getConnectType } from '../SupportPropertyHelper'
 
 /**
  * 设置/创建 ConditionExpression 属性
@@ -34,8 +35,5 @@ export function getConditionExpression (element) {
  * @returns {boolean}
  */
 export function isSupportConditionExpression (element) {
-  if (element.type === 'bpmn:SequenceFlow') {
-    return true
-  }
-  return false
+  return getConnectType(element)
 }

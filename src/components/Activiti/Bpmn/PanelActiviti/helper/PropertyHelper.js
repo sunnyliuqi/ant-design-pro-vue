@@ -22,7 +22,7 @@ import {
   setTimerEventDefinition
 } from './props/TimerEventDefinition'
 import {
-  supportConditionalEventDefinition, supportErrorEventDefinition,
+  supportConditionalEventDefinition, supportConditionExpression, supportErrorEventDefinition,
   supportExecutionListeners, supportFormKey, supportFormProperties,
   supportInitiator, supportMessageEventDefinition, supportSignalEventDefinition, supportTimerEventDefinition
 } from './SupportPropertyHelper'
@@ -30,6 +30,10 @@ import {
   getErrorEventDefinition,
   setErrorEventDefinition
 } from './props/ErrorEventDefinition'
+import {
+  getConditionExpression,
+  setConditionExpression
+} from './props/ConditionExpression'
 /**
  * 根据传入的表单properties获取对应bpmn properties
  * @param element
@@ -112,6 +116,8 @@ function setProperty (_properties, propertyName, propertyValue, element, factory
     setTimerEventDefinition(_properties, propertyTimeDuration, element, factory)
   } else if (propertyName === 'errorEventDefinition') {
     setErrorEventDefinition(_properties, propertyValue, element, factory)
+  } else if (propertyName === 'conditionExpression ') {
+    setConditionExpression(_properties, propertyValue, element, factory)
   } else {
     _properties[propertyName] = getPropertyValue(propertyValue)
   }
@@ -163,6 +169,8 @@ export function getValues (type, element) {
     return getDocumentation(element)
   } else if (type === 'errorEventDefinition') {
     return getErrorEventDefinition(element)
+  } else if (type === 'conditionExpression ') {
+    return getConditionExpression(element)
   }
   return undefined
 }
@@ -217,6 +225,11 @@ export function removeBusinessObject (element, factory, updateProperties) {
     if (!supportErrorEventDefinition(element)) {
       const props = {}
       setErrorEventDefinition(props, undefined, element, factory)
+      updateProperties(element, props)
+    }
+    if (!supportConditionExpression(element)) {
+      const props = {}
+      setConditionExpression(props, undefined, element, factory)
       updateProperties(element, props)
     }
   }

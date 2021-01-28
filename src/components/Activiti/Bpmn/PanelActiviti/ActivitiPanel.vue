@@ -186,6 +186,19 @@
                 placeholder="请输入错误事件"/>
             </a-form-item>
           </a-col>
+          <a-col :span="24" v-show="supportConditionExpression(element)">
+            <a-form-item
+              label="程条件"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-textarea
+                v-decorator="[
+                  'conditionExpression ',
+                  {initialValue: getValues('conditionExpression ',element)}
+                ]"
+                placeholder="请输入程条件"/>
+            </a-form-item>
+          </a-col>
         </a-row>
       </a-tab-pane>
       <a-tab-pane key="2" tab="流程属性">
@@ -315,7 +328,7 @@
 </template>
 
 <script>
-  import { supportExecutionListeners, supportConditionalEventDefinition, supportFormKey, supportFormProperties, supportInitiator, supportMessageEventDefinition, supportSignalEventDefinition, supportTimerEventDefinition, supportErrorEventDefinition } from './helper/SupportPropertyHelper'
+  import { supportExecutionListeners, supportConditionalEventDefinition, supportFormKey, supportFormProperties, supportInitiator, supportMessageEventDefinition, supportSignalEventDefinition, supportTimerEventDefinition, supportErrorEventDefinition, supportConditionExpression } from './helper/SupportPropertyHelper'
   export default {
     name: 'ActivitiPanel',
     props: {
@@ -345,7 +358,8 @@
         supportMessageEventDefinition,
         supportSignalEventDefinition,
         supportTimerEventDefinition,
-        supportErrorEventDefinition
+        supportErrorEventDefinition,
+        supportConditionExpression
       }
     },
     mounted () {

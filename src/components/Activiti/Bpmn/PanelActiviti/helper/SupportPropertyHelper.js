@@ -12,6 +12,7 @@ import { isSupportConditionalEventDefinition } from './props/ConditionalEventDef
 import { isSupportSignalEventDefinition } from './props/SignalEventDefinition'
 import { isSupportTimerEventDefinition } from './props/TimerEventDefinition'
 import { isSupportErrorEventDefinition } from './props/ErrorEventDefinition'
+import { isSupportConditionExpression } from './props/ConditionExpression'
 
 export function supportExecutionListeners (element) {
   return isSupportExecutionListeners(element)
@@ -47,6 +48,9 @@ export function supportTimerEventDefinition (element) {
 
 export function supportErrorEventDefinition (element) {
   return isSupportErrorEventDefinition(element)
+}
+export function supportConditionExpression (element) {
+  return isSupportConditionExpression(element)
 }
 
 export function getStartEventType (element) {

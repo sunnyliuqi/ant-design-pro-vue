@@ -147,7 +147,7 @@
       importDiagram (_xml) {
         this.bpmnModeler.importXML(_xml).then((result) => {
           const { warnings } = result
-          if (warnings && warnings instanceof Array && warnings.less > 0) {
+          if (warnings && warnings instanceof Array && warnings.length > 0) {
             console.warn(warnings)
           }
           this.adjustPalette()

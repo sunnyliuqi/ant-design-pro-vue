@@ -41,6 +41,10 @@ import {
   getAsync, isSupportAsync,
   setAsync
 } from './props/Async'
+import {
+  getExclusive, isSupportExclusive,
+  setExclusive
+} from './props/Exclusive'
 /**
  * 设置element properties
  * @param element
@@ -125,6 +129,8 @@ function setProperty (propertyName, propertyValue, element, modeler) {
     setDefaultFlow(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'asynchronous') {
     setAsync(propertyValue, element, modeler, updateProperties)
+  } else if (propertyName === 'exclusive') {
+    setExclusive(propertyValue, element, modeler, updateProperties)
   } else {
     const _property = {}
     _property[propertyName] = getPropertyValue(propertyValue)
@@ -184,6 +190,8 @@ export function getValues (type, element) {
     return getDefaultFlow(element)
   } else if (type === 'asynchronous') {
     return getAsync(element)
+  } else if (type === 'exclusive') {
+    return getExclusive(element)
   }
   return undefined
 }
@@ -232,6 +240,9 @@ export function removeBusinessObject (element, modeler) {
     if (!isSupportAsync(element)) {
       setAsync(undefined, element, modeler, updateProperties)
     }
+    if (!isSupportExclusive(element)) {
+      setExclusive(undefined, element, modeler, updateProperties)
+    }
   }
   return element
 }
@@ -270,6 +281,8 @@ export function supportProperty (type, element) {
   } else if (type === 'defaultFlow') {
     return isSupportDefaultFlow(element)
   } else if (type === 'asynchronous') {
+    return isSupportAsync(element)
+  } else if (type === 'exclusive') {
     return isSupportAsync(element)
   }
   return false

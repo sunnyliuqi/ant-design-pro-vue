@@ -227,6 +227,20 @@
               </a-checkbox-group>
             </a-form-item>
           </a-col>
+          <a-col :span="24" v-show="supportProperty('exclusive',element)">
+            <a-form-item
+              label="设为排他"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-checkbox-group
+                v-decorator="[
+                  'exclusive',
+                  {initialValue: getValues('exclusive',element)}
+                ]">
+                <a-checkbox :value="true" />
+              </a-checkbox-group>
+            </a-form-item>
+          </a-col>
         </a-row>
       </a-tab-pane>
       <a-tab-pane key="2" tab="流程属性">

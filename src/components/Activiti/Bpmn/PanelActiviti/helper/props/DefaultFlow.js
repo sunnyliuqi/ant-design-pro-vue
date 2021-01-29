@@ -1,5 +1,11 @@
 import { isEmpty } from '@/utils/common'
-import { getBpmnFactory, getBusinessObject, getConnectType } from '../PropertyHelper'
+import {
+  getBpmnFactory,
+  getBusinessObject,
+  getConnectType,
+  getElementRegistry,
+  getStartEventType
+} from '../PropertyHelper'
 
 /**
  * 设置/创建 DefaultFlow 属性
@@ -12,17 +18,19 @@ export function setDefaultFlow (propertyValue, element, modeler, updatePropertie
   const bo = getBusinessObject(element)
   const sourceRef = bo.sourceRef
   if (sourceRef) {
+    const sourceElement = getElementRegistry(modeler).get(sourceRef.id)
+    const sourceBo = getBusinessObject(sourceElement)
     if (!isEmpty(propertyValue) && propertyValue instanceof Array && propertyValue.length > 0 && propertyValue[0] === true) {
-      sourceRef.default = element.id
+      sourceBo.default = element
     } else {
-      sourceRef.default = undefined
+      sourceBo.default = undefined
     }
     if (updateProperties) {
       const _property = {}
-      _property.default = sourceRef.default
-      updateProperties(modeler, sourceRef, _property)
+      _property.default = sourceBo.default
+      updateProperties(modeler, sourceElement, _property)
     } else {
-      return sourceRef.default
+      return sourceBo.default
     }
   }
 }
@@ -33,7 +41,7 @@ export function setDefaultFlow (propertyValue, element, modeler, updatePropertie
  * @returns {*|null}
  */
 export function getDefaultFlow (element) {
-  if (element.businessObject && element.businessObject.sourceRef && element.businessObject.sourceRef.default && element.businessObject.sourceRef.default === element.id) {
+  if (element.businessObject && element.businessObject.sourceRef && element.businessObject.sourceRef.default && element.businessObject.sourceRef.default.id === element.id) {
     return [true]
   } else {
     return [false]
@@ -46,5 +54,12 @@ export function getDefaultFlow (element) {
  * @returns {boolean}
  */
 export function isSupportDefaultFlow (element) {
-  return getConnectType(element)
+  if (getConnectType(element)) {
+    const bo = getBusinessObject(element)
+    const sourceRef = bo.sourceRef
+    if (sourceRef && sourceRef.$type !== 'bpmn:StartEvent') {
+      return true
+    }
+  }
+  return false
 }

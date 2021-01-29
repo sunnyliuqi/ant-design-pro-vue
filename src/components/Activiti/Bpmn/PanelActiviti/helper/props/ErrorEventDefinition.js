@@ -1,14 +1,14 @@
-import { createElement, filterByType, getBusinessObject, getPropertyValue, removeByType, getEndEventType,
+import { getBpmnFactory, createElement, filterByType, getBusinessObject, getPropertyValue, removeByType, getEndEventType,
   getEventDefinitionType } from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 /**
  * 设置/创建 ErrorEventDefinition 元素
  * @param propertyValue
  * @param element
- * @param factory
+ * @param modeler
  * @param updateProperties
  */
-export function setErrorEventDefinition (propertyValue, element, factory, updateProperties) {
+export function setErrorEventDefinition (propertyValue, element, modeler, updateProperties) {
   const bo = getBusinessObject(element)
   bo.eventDefinitions = removeByType(bo.eventDefinitions, 'bpmn:ErrorEventDefinition')
   if (!isEmpty(propertyValue)) {
@@ -21,7 +21,7 @@ export function setErrorEventDefinition (propertyValue, element, factory, update
     }
     if (propertyValue) {
       bo.eventDefinitions = []
-      bo.eventDefinitions.push(createElementErrorEventDefinition(propertyValue, element, factory))
+      bo.eventDefinitions.push(createElementErrorEventDefinition(propertyValue, element, modeler))
     }
   }
   if (!bo.eventDefinitions || bo.eventDefinitions.length < 1) {
@@ -30,15 +30,15 @@ export function setErrorEventDefinition (propertyValue, element, factory, update
   if (updateProperties) {
     const _property = {}
     _property.eventDefinitions = bo.eventDefinitions
-    updateProperties(element, _property)
+    updateProperties(modeler, element, _property)
   } else {
     return bo.eventDefinitions
   }
 }
-function createElementErrorEventDefinition (message, element, factory) {
+function createElementErrorEventDefinition (message, element, modeler) {
   const property = {}
   property.errorRef = getPropertyValue(message.errorRef)
-  return createElement('bpmn:ErrorEventDefinition', property, element, factory)
+  return createElement('bpmn:ErrorEventDefinition', property, element, getBpmnFactory(modeler))
 }
 /**
  * 获取

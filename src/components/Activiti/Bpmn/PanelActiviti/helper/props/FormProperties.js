@@ -1,5 +1,5 @@
 import {
-  createElement,
+  getBpmnFactory, createElement,
   getExtensionElements,
   removeByType, filterByType,
   getPropertyValue, getBusinessObject, getStartEventType
@@ -10,14 +10,14 @@ import { setValues, getValues } from './Values'
  * 设置 FormProperties
  * @param propertyValue
  * @param element
- * @param factory
+ * @param modeler
  * @param updateProperties
  */
-export function setFormProperties (propertyValue, element, factory, updateProperties) {
-  let extensionElements = getExtensionElements(element, factory)
+export function setFormProperties (propertyValue, element, modeler, updateProperties) {
+  let extensionElements = getExtensionElements(element, getBpmnFactory(modeler))
   extensionElements.values = removeByType(extensionElements.values, 'activiti:FormProperty')
   if (!isEmpty(propertyValue)) {
-    pushElementFormProperties(propertyValue, extensionElements, factory)
+    pushElementFormProperties(propertyValue, extensionElements, modeler)
   }
   if (!extensionElements.values || extensionElements.values.length < 1) {
     extensionElements = null
@@ -25,12 +25,12 @@ export function setFormProperties (propertyValue, element, factory, updateProper
   if (updateProperties) {
     const _property = {}
     _property.extensionElements = extensionElements
-    updateProperties(element, _property)
+    updateProperties(modeler, element, _property)
   } else {
     return extensionElements
   }
 }
-function pushElementFormProperties (propertyValue, extensionElements, factory) {
+function pushElementFormProperties (propertyValue, extensionElements, modeler) {
   try {
     if (!(propertyValue instanceof Array)) {
       propertyValue = JSON.parse(propertyValue)
@@ -40,7 +40,7 @@ function pushElementFormProperties (propertyValue, extensionElements, factory) {
   }
   if (propertyValue && propertyValue.length > 0) {
     propertyValue.forEach(formProperty => {
-      extensionElements.values.push(createElementFormProperty(formProperty, extensionElements, factory))
+      extensionElements.values.push(createElementFormProperty(formProperty, extensionElements, modeler))
     })
   }
 }
@@ -49,10 +49,10 @@ function pushElementFormProperties (propertyValue, extensionElements, factory) {
  * 创建 ElementFormProperty 元素
  * @param formProperty
  * @param element
- * @param factory
+ * @param modeler
  * @returns {djs.model.Base}
  */
-function createElementFormProperty (formProperty, element, factory) {
+function createElementFormProperty (formProperty, element, modeler) {
   const property = {}
   property.id = getPropertyValue(formProperty.id)
   property.name = getPropertyValue(formProperty.name)
@@ -69,9 +69,9 @@ function createElementFormProperty (formProperty, element, factory) {
   } else {
     property.values = null
   }
-  const formPropertyElement = createElement('activiti:FormProperty', property, element, factory)
+  const formPropertyElement = createElement('activiti:FormProperty', property, element, getBpmnFactory(modeler))
   if (formProperty.values && formProperty.values.length > 0) {
-    formPropertyElement.values = setValues(formProperty.values, formPropertyElement, factory, undefined)
+    formPropertyElement.values = setValues(formProperty.values, formPropertyElement, modeler, undefined)
   }
   return formPropertyElement
 }

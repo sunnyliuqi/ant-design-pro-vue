@@ -1,4 +1,4 @@
-import { createElement, filterByType, getBusinessObject, removeByType, getEventDefinitionType,
+import { getBpmnFactory, createElement, filterByType, getBusinessObject, removeByType, getEventDefinitionType,
   getIntermediateEventType,
   getStartEventType } from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
@@ -7,10 +7,10 @@ import { setFormalExpression, getFormalExpression } from './FormalExpression'
  * 设置/创建 ConditionalEventDefinition 元素
  * @param propertyValue
  * @param element
- * @param factory
+ * @param modeler
  * @param updateProperties
  */
-export function setConditionalEventDefinition (propertyValue, element, factory, updateProperties) {
+export function setConditionalEventDefinition (propertyValue, element, modeler, updateProperties) {
   const bo = getBusinessObject(element)
   bo.eventDefinitions = removeByType(bo.eventDefinitions, 'bpmn:ConditionalEventDefinition')
   if (!isEmpty(propertyValue)) {
@@ -23,7 +23,7 @@ export function setConditionalEventDefinition (propertyValue, element, factory, 
     }
     if (propertyValue) {
       bo.eventDefinitions = []
-      bo.eventDefinitions.push(createElementConditionalEventDefinition(propertyValue, element, factory))
+      bo.eventDefinitions.push(createElementConditionalEventDefinition(propertyValue, element, modeler))
     }
   }
   if (!bo.eventDefinitions || bo.eventDefinitions.length < 1) {
@@ -32,19 +32,19 @@ export function setConditionalEventDefinition (propertyValue, element, factory, 
   if (updateProperties) {
     const _property = {}
     _property.eventDefinitions = bo.eventDefinitions
-    updateProperties(element, _property)
+    updateProperties(modeler, element, _property)
   } else {
     return bo.eventDefinitions
   }
 }
-function createElementConditionalEventDefinition (conditional, element, factory) {
+function createElementConditionalEventDefinition (conditional, element, modeler) {
   const property = {}
   if (conditional.condition) {
     property.condition = {}
   }
 
-  const conditionElement = createElement('bpmn:ConditionalEventDefinition', property, element, factory)
-  conditionElement.condition = setFormalExpression(conditional.condition, conditionElement, factory, undefined)
+  const conditionElement = createElement('bpmn:ConditionalEventDefinition', property, element, getBpmnFactory(modeler))
+  conditionElement.condition = setFormalExpression(conditional.condition, conditionElement, modeler, undefined)
   return conditionElement
 }
 /**

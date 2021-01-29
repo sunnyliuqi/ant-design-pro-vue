@@ -1,5 +1,5 @@
 import {
-  createElement,
+  getBpmnFactory, createElement,
   getExtensionElements,
   getPropertyValue,
   removeByType,
@@ -16,14 +16,14 @@ import { isEmpty } from '@/utils/common'
  * 设置ExecutionListeners
  * @param propertyValue
  * @param element
- * @param factory
+ * @param modeler
  * @param updateProperties
  */
-export function setExecutionListeners (propertyValue, element, factory, updateProperties) {
-  let extensionElements = getExtensionElements(element, factory)
+export function setExecutionListeners (propertyValue, element, modeler, updateProperties) {
+  let extensionElements = getExtensionElements(element, getBpmnFactory(modeler))
   extensionElements.values = removeByType(extensionElements.values, 'activiti:ExecutionListener')
   if (!isEmpty(propertyValue)) {
-    pushElementExecutionListeners(propertyValue, extensionElements, factory)
+    pushElementExecutionListeners(propertyValue, extensionElements, modeler)
   }
   if (!extensionElements.values || extensionElements.values.length < 1) {
     extensionElements = null
@@ -31,7 +31,7 @@ export function setExecutionListeners (propertyValue, element, factory, updatePr
   if (updateProperties) {
    const _property = {}
     _property.extensionElements = extensionElements
-    updateProperties(element, _property)
+    updateProperties(modeler, element, _property)
   } else {
     return extensionElements
   }
@@ -41,9 +41,9 @@ export function setExecutionListeners (propertyValue, element, factory, updatePr
  *
  * @param propertyValue [{event:'start',delegateExpression:'${delegateExpression}',class:'',expression:'',fields:[{name:'',stringValue:'',string:'',expression:''}] }]
  * @param element
- * @param factory
+ * @param modeler
  */
-function pushElementExecutionListeners (propertyValue, element, factory) {
+function pushElementExecutionListeners (propertyValue, element, modeler) {
   try {
     if (!(propertyValue instanceof Array)) {
       propertyValue = JSON.parse(propertyValue)
@@ -53,7 +53,7 @@ function pushElementExecutionListeners (propertyValue, element, factory) {
   }
   if (propertyValue && propertyValue.length > 0) {
     propertyValue.forEach(execution => {
-      element.values.push(createElementExecutionListener(execution, element, factory))
+      element.values.push(createElementExecutionListener(execution, element, modeler))
     })
   }
 }
@@ -62,9 +62,9 @@ function pushElementExecutionListeners (propertyValue, element, factory) {
  * 创建ExecutionListener 元素
  * @param execution {event:'start',delegateExpression:'${delegateExpression}',class:'',expression:'',fields:[{name:'',stringValue:'',string:'',expression:''}] }
  * @param element
- * @param factory
+ * @param modeler
  */
-function createElementExecutionListener (execution, element, factory) {
+function createElementExecutionListener (execution, element, modeler) {
   const property = {}
   property.event = getPropertyValue(execution.event)
   property.class = getPropertyValue(execution.class)
@@ -75,9 +75,9 @@ function createElementExecutionListener (execution, element, factory) {
   } else {
     property.fields = null
   }
-  const executionListenerElement = createElement('activiti:ExecutionListener', property, element, factory)
+  const executionListenerElement = createElement('activiti:ExecutionListener', property, element, getBpmnFactory(modeler))
   if (execution.fields && execution.fields.length > 0) {
-    executionListenerElement.fields = setFields(execution.fields, executionListenerElement, factory, undefined)
+    executionListenerElement.fields = setFields(execution.fields, executionListenerElement, modeler, undefined)
   }
   return executionListenerElement
 }

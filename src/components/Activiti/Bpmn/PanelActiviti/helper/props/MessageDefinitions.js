@@ -1,13 +1,13 @@
-import { createElement, getBusinessObject, getPropertyValue } from '../PropertyHelper'
+import { getBpmnFactory, createElement, getBusinessObject, getPropertyValue } from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 /**
  * 设置/创建 MessageDefinitions 元素
  * @param propertyValue
  * @param element
- * @param factory
+ * @param modeler
  * @param updateProperties
  */
-export function setMessageDefinitions (propertyValue, element, factory, updateProperties) {
+export function setMessageDefinitions (propertyValue, element, modeler, updateProperties) {
   const bo = getBusinessObject(element)
   if (isEmpty(propertyValue)) {
     bo.messages = null
@@ -22,7 +22,7 @@ export function setMessageDefinitions (propertyValue, element, factory, updatePr
     if (propertyValue && propertyValue.length > 0) {
       bo.messages = []
       propertyValue.forEach(message => {
-        bo.messages.push(createElementSignal(message, element, factory))
+        bo.messages.push(createElementSignal(message, element, modeler))
       })
     } else {
       bo.messages = null
@@ -31,17 +31,17 @@ export function setMessageDefinitions (propertyValue, element, factory, updatePr
   if (updateProperties) {
     const _property = {}
     _property.messages = bo.messages
-    updateProperties(element, _property)
+    updateProperties(modeler, element, _property)
   } else {
     return bo.messages
   }
 }
-function createElementSignal (message, element, factory) {
+function createElementSignal (message, element, modeler) {
   const property = {}
   property.id = getPropertyValue(message.id)
   property.name = getPropertyValue(message.name)
   property.itemRef = getPropertyValue(message.itemRef)
-  return createElement('activiti:Message', property, element, factory)
+  return createElement('activiti:Message', property, element, getBpmnFactory(modeler))
 }
 /**
  * 获取

@@ -1,14 +1,14 @@
 import { isEmpty } from '@/utils/common'
-import { getBusinessObject, getStartEventType } from '../PropertyHelper'
+import { getBpmnFactory, getBusinessObject, getStartEventType } from '../PropertyHelper'
 
 /**
  * 设置/创建 FormKey 属性
  * @param propertyValue
  * @param element
- * @param factory
+ * @param modeler
  * @param updateProperties
  */
-export function setFormKey (propertyValue, element, factory, updateProperties) {
+export function setFormKey (propertyValue, element, modeler, updateProperties) {
   const bo = getBusinessObject(element)
   if (isEmpty(propertyValue)) {
     bo.formKey = undefined
@@ -18,7 +18,7 @@ export function setFormKey (propertyValue, element, factory, updateProperties) {
   if (updateProperties) {
     const _property = {}
     _property.formKey = bo.formKey
-    updateProperties(element, _property)
+    updateProperties(modeler, element, _property)
   } else {
     return bo.formKey
   }

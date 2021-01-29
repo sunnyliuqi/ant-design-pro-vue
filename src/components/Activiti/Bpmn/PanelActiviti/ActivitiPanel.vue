@@ -199,6 +199,20 @@
                 placeholder="请输入程条件"/>
             </a-form-item>
           </a-col>
+          <a-col :span="24" v-show="supportProperty('defaultFlow',element)">
+            <a-form-item
+              label="设置为默认"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-checkbox-group
+                v-decorator="[
+                  'defaultFlow',
+                  {initialValue: getValues('defaultFlow',element)}
+                ]">
+                <a-checkbox :value="true" />
+              </a-checkbox-group>
+            </a-form-item>
+          </a-col>
         </a-row>
       </a-tab-pane>
       <a-tab-pane key="2" tab="流程属性">

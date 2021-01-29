@@ -103,13 +103,10 @@
        */
       updateBpmn (element, properties) {
         if (properties && Object.keys(properties).length > 0) {
-          setProperties(element, properties, this.getBpmnFactory(), this.updateProperties).catch(msg => {
+          setProperties(element, properties, this.bpmnModeler).catch(msg => {
             console.warn(msg)
           })
         }
-      },
-      updateProperties (element, props) {
-        this.getModeling().updateProperties(element, props)
       },
       // 下载为SVG格式,done是个函数，调用的时候传入的
       saveSVG (e) {
@@ -186,30 +183,6 @@
       getCanvas () {
         return this.bpmnModeler.get('canvas')
       },
-      /**
-       * 消息中心
-       */
-      getEventBus () {
-        return this.bpmnModeler.get('eventBus')
-      },
-      /**
-       * 模型
-       */
-      getModeling () {
-        return this.bpmnModeler.get('modeling')
-      },
-      /**
-       * bpmn工厂
-       */
-      getBpmnFactory () {
-        return this.bpmnModeler.get('bpmnFactory')
-      },
-      /**
-       * 命令栈
-       */
-      getCommandStack () {
-        return this.bpmnModeler.get('commandStack')
-      },
       isImplicitRoot (element) {
         return element.id === '__implicitroot'
       },
@@ -252,7 +225,7 @@
                 return
               }
 
-              that.ActivePanel(removeBusinessObject(newElement, that.getBpmnFactory(), that.updateProperties))
+              that.ActivePanel(removeBusinessObject(newElement, that.bpmnModeler))
             }
           },
           {

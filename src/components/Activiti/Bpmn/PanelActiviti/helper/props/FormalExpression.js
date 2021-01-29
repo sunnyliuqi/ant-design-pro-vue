@@ -1,31 +1,31 @@
-import { createElement, getPropertyValue } from '../PropertyHelper'
+import { getBpmnFactory, createElement, getPropertyValue } from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 
 /**
  * 设置 FormalExpression
  * @param propertyValue
  * @param element
- * @param factory
+ * @param modeler
  * @param updateProperties
  */
-export function setFormalExpression (propertyValue, element, factory, updateProperties) {
+export function setFormalExpression (propertyValue, element, modeler, updateProperties) {
     if (isEmpty(propertyValue)) {
       return null
     }
-    return createElementFormalExpression(propertyValue, element, factory)
+    return createElementFormalExpression(propertyValue, element, modeler)
 }
 
 /**
  * 创建 FormalExpression 元素
  * @param field
  * @param parentElement
- * @param factory
+ * @param modeler
  * @returns {djs.model.Base}
  */
-function createElementFormalExpression (value, parentElement, factory) {
+function createElementFormalExpression (value, parentElement, modeler) {
   const property = {}
   property.body = getPropertyValue(value)
-  return createElement('bpmn:FormalExpression', property, parentElement, factory)
+  return createElement('bpmn:FormalExpression', property, parentElement, getBpmnFactory(modeler))
 }
 /**
  * 获取

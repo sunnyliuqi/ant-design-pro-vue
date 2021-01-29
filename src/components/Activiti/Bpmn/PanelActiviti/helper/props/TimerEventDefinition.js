@@ -1,5 +1,5 @@
 import {
-  createElement,
+  getBpmnFactory, createElement,
   filterByType,
   getBusinessObject, removeByType, getEventDefinitionType,
   getIntermediateEventType,
@@ -11,10 +11,10 @@ import { setFormalExpression, getFormalExpression } from './FormalExpression'
  * 设置/创建 TimerEventDefinition 元素
  * @param propertyValue
  * @param element
- * @param factory
+ * @param modeler
  * @param updateProperties
  */
-export function setTimerEventDefinition (propertyValue, element, factory, updateProperties) {
+export function setTimerEventDefinition (propertyValue, element, modeler, updateProperties) {
   let oldTimerEventDefinition = getTimerEventDefinition(element)
   if (isEmpty(oldTimerEventDefinition)) {
     const key = propertyValue && Object.keys(propertyValue)[0]
@@ -22,22 +22,22 @@ export function setTimerEventDefinition (propertyValue, element, factory, update
       oldTimerEventDefinition = removeByType(getBusinessObject(element).eventDefinitions, 'bpmn:TimerEventDefinition')
     } else {
       oldTimerEventDefinition = []
-      oldTimerEventDefinition.push(createElementTimerEventDefinition(propertyValue, element, factory))
+      oldTimerEventDefinition.push(createElementTimerEventDefinition(propertyValue, element, modeler))
     }
   } else {
     propertyValue = Object.assign({}, JSON.parse(oldTimerEventDefinition), propertyValue)
     oldTimerEventDefinition = []
-    oldTimerEventDefinition.push(createElementTimerEventDefinition(propertyValue, element, factory))
+    oldTimerEventDefinition.push(createElementTimerEventDefinition(propertyValue, element, modeler))
 }
   if (updateProperties) {
     const _property = {}
     _property.eventDefinitions = oldTimerEventDefinition
-    updateProperties(element, _property)
+    updateProperties(modeler, element, _property)
   } else {
     return oldTimerEventDefinition
   }
 }
-function createElementTimerEventDefinition (timer, element, factory) {
+function createElementTimerEventDefinition (timer, element, modeler) {
   const property = {}
   if (timer.timeDate) {
     property.timeDate = {}
@@ -48,15 +48,15 @@ function createElementTimerEventDefinition (timer, element, factory) {
   if (timer.timeDuration) {
     property.timeDuration = {}
   }
-  const timerElement = createElement('bpmn:TimerEventDefinition', property, element, factory)
+  const timerElement = createElement('bpmn:TimerEventDefinition', property, element, getBpmnFactory(modeler))
   if (timer.timeDate) {
-    timerElement.timeDate = setFormalExpression(timer.timeDate, timerElement, factory, undefined)
+    timerElement.timeDate = setFormalExpression(timer.timeDate, timerElement, modeler, undefined)
   }
   if (timer.timeCycle) {
-    timerElement.timeCycle = setFormalExpression(timer.timeCycle, timerElement, factory, undefined)
+    timerElement.timeCycle = setFormalExpression(timer.timeCycle, timerElement, modeler, undefined)
   }
   if (timer.timeDuration) {
-    timerElement.timeDuration = setFormalExpression(timer.timeDuration, timerElement, factory, undefined)
+    timerElement.timeDuration = setFormalExpression(timer.timeDuration, timerElement, modeler, undefined)
   }
   return timerElement
 }

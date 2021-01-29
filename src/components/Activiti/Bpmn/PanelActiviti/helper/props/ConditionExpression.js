@@ -1,25 +1,25 @@
 import { isEmpty } from '@/utils/common'
 import { setFormalExpression, getFormalExpression } from './FormalExpression'
-import { getBusinessObject, getConnectType } from '../PropertyHelper'
+import { getBpmnFactory, getBusinessObject, getConnectType } from '../PropertyHelper'
 
 /**
  * 设置/创建 ConditionExpression 属性
  * @param propertyValue
  * @param element
- * @param factory
+ * @param modeler
  * @param updateProperties
  */
-export function setConditionExpression (propertyValue, element, factory, updateProperties) {
+export function setConditionExpression (propertyValue, element, modeler, updateProperties) {
   const bo = getBusinessObject(element)
   if (isEmpty(propertyValue)) {
     bo.conditionExpression = undefined
   } else {
-  bo.conditionExpression = setFormalExpression(propertyValue, element, factory, undefined)
+    bo.conditionExpression = setFormalExpression(propertyValue, element, modeler, undefined)
   }
   if (updateProperties) {
     const _property = {}
     _property.conditionExpression = bo.conditionExpression
-    updateProperties(element, _property)
+    updateProperties(modeler, element, _property)
   } else {
     return bo.conditionExpression
   }

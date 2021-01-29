@@ -1,26 +1,29 @@
 import { isEmpty } from '@/utils/common'
-import { getBusinessObject, getConnectType } from '../PropertyHelper'
+import { getBpmnFactory, getBusinessObject, getConnectType } from '../PropertyHelper'
 
 /**
  * 设置/创建 DefaultFlow 属性
  * @param propertyValue
  * @param element
- * @param factory
+ * @param modeler
  * @param updateProperties
  */
-export function setDefaultFlow (propertyValue, element, factory, updateProperties) {
+export function setDefaultFlow (propertyValue, element, modeler, updateProperties) {
   const bo = getBusinessObject(element)
-  if (isEmpty(propertyValue)) {
-    bo.default = undefined
-  } else {
-    bo.default = propertyValue
-  }
-  if (updateProperties) {
-    const _property = {}
-    _property.default = bo.default
-    // updateProperties(element, _property)
-  } else {
-    return bo.default
+  const sourceRef = bo.sourceRef
+  if (sourceRef) {
+    if (!isEmpty(propertyValue) && propertyValue instanceof Array && propertyValue.length > 0 && propertyValue[0] === true) {
+      sourceRef.default = element.id
+    } else {
+      sourceRef.default = undefined
+    }
+    if (updateProperties) {
+      const _property = {}
+      _property.default = sourceRef.default
+      updateProperties(modeler, sourceRef, _property)
+    } else {
+      return sourceRef.default
+    }
   }
 }
 
@@ -30,10 +33,10 @@ export function setDefaultFlow (propertyValue, element, factory, updatePropertie
  * @returns {*|null}
  */
 export function getDefaultFlow (element) {
-  if (element.businessObject && element.businessObject.default) {
-    return true
+  if (element.businessObject && element.businessObject.sourceRef && element.businessObject.sourceRef.default && element.businessObject.sourceRef.default === element.id) {
+    return [true]
   } else {
-    return false
+    return [false]
   }
 }
 

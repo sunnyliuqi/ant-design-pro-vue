@@ -1,4 +1,4 @@
-import { createElement, filterByType, getBusinessObject, getPropertyValue, removeByType, getEventDefinitionType,
+import { getBpmnFactory, createElement, filterByType, getBusinessObject, getPropertyValue, removeByType, getEventDefinitionType,
   getIntermediateEventType,
   getStartEventType,
   getEndEventType } from '../PropertyHelper'
@@ -7,10 +7,10 @@ import { isEmpty } from '@/utils/common'
  * 设置/创建 MessageEventDefinition 元素
  * @param propertyValue
  * @param element
- * @param factory
+ * @param modeler
  * @param updateProperties
  */
-export function setMessageEventDefinition (propertyValue, element, factory, updateProperties) {
+export function setMessageEventDefinition (propertyValue, element, modeler, updateProperties) {
   const bo = getBusinessObject(element)
   bo.eventDefinitions = removeByType(bo.eventDefinitions, 'bpmn:MessageEventDefinition')
   if (!isEmpty(propertyValue)) {
@@ -23,7 +23,7 @@ export function setMessageEventDefinition (propertyValue, element, factory, upda
     }
     if (propertyValue) {
       bo.eventDefinitions = []
-      bo.eventDefinitions.push(createElementMessageEventDefinition(propertyValue, element, factory))
+      bo.eventDefinitions.push(createElementMessageEventDefinition(propertyValue, element, modeler))
     }
   }
   if (!bo.eventDefinitions || bo.eventDefinitions.length < 1) {
@@ -32,15 +32,15 @@ export function setMessageEventDefinition (propertyValue, element, factory, upda
   if (updateProperties) {
     const _property = {}
     _property.eventDefinitions = bo.eventDefinitions
-    updateProperties(element, _property)
+    updateProperties(modeler, element, _property)
   } else {
     return bo.eventDefinitions
   }
 }
-function createElementMessageEventDefinition (message, element, factory) {
+function createElementMessageEventDefinition (message, element, modeler) {
   const property = {}
   property.messageRef = getPropertyValue(message.messageRef)
-  return createElement('bpmn:MessageEventDefinition', property, element, factory)
+  return createElement('bpmn:MessageEventDefinition', property, element, getBpmnFactory(modeler))
 }
 /**
  * 获取

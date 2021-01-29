@@ -1,4 +1,4 @@
-import { createElement, filterByType, getBusinessObject, getPropertyValue, removeByType, getEndEventType,
+import { getBpmnFactory, createElement, filterByType, getBusinessObject, getPropertyValue, removeByType, getEndEventType,
   getEventDefinitionType,
   getIntermediateEventType,
   getStartEventType } from '../PropertyHelper'
@@ -7,10 +7,10 @@ import { isEmpty } from '@/utils/common'
  * 设置/创建 SignalEventDefinition 元素
  * @param propertyValue
  * @param element
- * @param factory
+ * @param modeler
  * @param updateProperties
  */
-export function setSignalEventDefinition (propertyValue, element, factory, updateProperties) {
+export function setSignalEventDefinition (propertyValue, element, modeler, updateProperties) {
   const bo = getBusinessObject(element)
   bo.eventDefinitions = removeByType(bo.eventDefinitions, 'bpmn:SignalEventDefinition')
   if (!isEmpty(propertyValue)) {
@@ -23,7 +23,7 @@ export function setSignalEventDefinition (propertyValue, element, factory, updat
     }
     if (propertyValue) {
       bo.eventDefinitions = []
-      bo.eventDefinitions.push(createElementSignalEventDefinition(propertyValue, element, factory))
+      bo.eventDefinitions.push(createElementSignalEventDefinition(propertyValue, element, modeler))
     }
   }
   if (!bo.eventDefinitions || bo.eventDefinitions.length < 1) {
@@ -32,15 +32,15 @@ export function setSignalEventDefinition (propertyValue, element, factory, updat
   if (updateProperties) {
     const _property = {}
     _property.eventDefinitions = bo.eventDefinitions
-    updateProperties(element, _property)
+    updateProperties(modeler, element, _property)
   } else {
     return bo.eventDefinitions
   }
 }
-function createElementSignalEventDefinition (message, element, factory) {
+function createElementSignalEventDefinition (message, element, modeler) {
   const property = {}
   property.signalRef = getPropertyValue(message.signalRef)
-  return createElement('bpmn:SignalEventDefinition', property, element, factory)
+  return createElement('bpmn:SignalEventDefinition', property, element, getBpmnFactory(modeler))
 }
 /**
  * 获取

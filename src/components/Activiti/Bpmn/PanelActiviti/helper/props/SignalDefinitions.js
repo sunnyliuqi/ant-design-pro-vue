@@ -1,13 +1,13 @@
-import { createElement, getBusinessObject, getPropertyValue } from '../PropertyHelper'
+import { getBpmnFactory, createElement, getBusinessObject, getPropertyValue } from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 /**
  * 设置/创建 SignalDefinitions 元素
  * @param propertyValue
  * @param element
- * @param factory
+ * @param modeler
  * @param updateProperties
  */
-export function setSignalDefinitions (propertyValue, element, factory, updateProperties) {
+export function setSignalDefinitions (propertyValue, element, modeler, updateProperties) {
   const bo = getBusinessObject(element)
   if (isEmpty(propertyValue)) {
     bo.signals = undefined
@@ -22,7 +22,7 @@ export function setSignalDefinitions (propertyValue, element, factory, updatePro
     if (propertyValue && propertyValue.length > 0) {
       bo.signals = []
       propertyValue.forEach(signal => {
-        bo.signals.push(createElementSignal(signal, element, factory))
+        bo.signals.push(createElementSignal(signal, element, modeler))
       })
     } else {
       bo.signals = undefined
@@ -31,17 +31,17 @@ export function setSignalDefinitions (propertyValue, element, factory, updatePro
   if (updateProperties) {
     const _property = {}
     _property.signals = bo.signals
-    updateProperties(element, _property)
+    updateProperties(modeler, element, _property)
   } else {
     return bo.signals
   }
 }
-function createElementSignal (signal, element, factory) {
+function createElementSignal (signal, element, modeler) {
   const property = {}
   property.id = getPropertyValue(signal.id)
   property.name = getPropertyValue(signal.name)
   property.scop = getPropertyValue(signal.scop)
-  return createElement('activiti:Signal', property, element, factory)
+  return createElement('activiti:Signal', property, element, getBpmnFactory(modeler))
 }
 /**
  * 获取

@@ -1,5 +1,5 @@
 import {
-  createElement,
+  getBpmnFactory, createElement,
   getBusinessObject,
   getPropertyValue
 } from '../PropertyHelper'
@@ -9,22 +9,22 @@ import { isEmpty } from '@/utils/common'
  * 设置Values
  * @param propertyValue
  * @param element
- * @param factory
+ * @param modeler
  * @param updateProperties
  */
-export function setValues (propertyValue, element, factory, updateProperties) {
+export function setValues (propertyValue, element, modeler, updateProperties) {
   const bo = getBusinessObject(element)
   if (isEmpty(propertyValue)) {
     bo.values = null
   } else {
     propertyValue.forEach(value => {
-      bo.values.push(createElementValue(value, element, factory))
+      bo.values.push(createElementValue(value, element, modeler))
     })
   }
   if (updateProperties) {
     const _property = {}
     _property.values = bo.values
-    updateProperties(element, _property)
+    updateProperties(modeler, element, _property)
   } else {
     return bo.values
   }
@@ -34,15 +34,15 @@ export function setValues (propertyValue, element, factory, updateProperties) {
  * 创建 Value 元素
  * @param field
  * @param parentElement
- * @param factory
+ * @param modeler
  * @returns {djs.model.Base}
  */
-function createElementValue (value, parentElement, factory) {
+function createElementValue (value, parentElement, modeler) {
   const property = {}
   property.id = getPropertyValue(value.id)
   property.name = getPropertyValue(value.name)
   property.value = getPropertyValue(value.value)
-  return createElement('activiti:Value', property, parentElement, factory)
+  return createElement('activiti:Value', property, parentElement, getBpmnFactory(modeler))
 }
 /**
  * 获取

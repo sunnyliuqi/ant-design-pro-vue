@@ -1,5 +1,5 @@
 import {
-  createElement,
+  getBpmnFactory, createElement,
   getExtensionElements,
   removeByType, filterByType,
   getPropertyValue, getBusinessObject
@@ -9,14 +9,14 @@ import { isEmpty } from '@/utils/common'
  * 设置EventListeners
  * @param propertyValue
  * @param element
- * @param factory
+ * @param modeler
  * @param updateProperties
  */
-export function setEventListeners (propertyValue, element, factory, updateProperties) {
-  let extensionElements = getExtensionElements(element, factory)
+export function setEventListeners (propertyValue, element, modeler, updateProperties) {
+  let extensionElements = getExtensionElements(element, getBpmnFactory(modeler))
   extensionElements.values = removeByType(extensionElements.values, 'activiti:EventListener')
   if (!isEmpty(propertyValue)) {
-    pushElementEventListeners(propertyValue, extensionElements, factory)
+    pushElementEventListeners(propertyValue, extensionElements, modeler)
   }
   if (!extensionElements.values || extensionElements.values.length < 1) {
     extensionElements = null
@@ -24,12 +24,12 @@ export function setEventListeners (propertyValue, element, factory, updateProper
   if (updateProperties) {
     const _property = {}
     _property.extensionElements = extensionElements
-    updateProperties(element, _property)
+    updateProperties(modeler, element, _property)
   } else {
     return extensionElements
   }
 }
-function pushElementEventListeners (propertyValue, extensionElements, factory) {
+function pushElementEventListeners (propertyValue, extensionElements, modeler) {
   try {
     if (!(propertyValue instanceof Array)) {
       propertyValue = JSON.parse(propertyValue)
@@ -39,7 +39,7 @@ function pushElementEventListeners (propertyValue, extensionElements, factory) {
   }
   if (propertyValue && propertyValue.length > 0) {
     propertyValue.forEach(event => {
-      extensionElements.values.push(createElementEventListener(event, extensionElements, factory))
+      extensionElements.values.push(createElementEventListener(event, extensionElements, modeler))
     })
   }
 }
@@ -48,10 +48,10 @@ function pushElementEventListeners (propertyValue, extensionElements, factory) {
  * 创建 EventListener 元素
  * @param event
  * @param element
- * @param factory
+ * @param modeler
  * @returns {djs.model.Base}
  */
-function createElementEventListener (event, element, factory) {
+function createElementEventListener (event, element, modeler) {
   const property = {}
   property.events = getPropertyValue(event.events)
   property.throwEvent = getPropertyValue(event.throwEvent)
@@ -61,7 +61,7 @@ function createElementEventListener (event, element, factory) {
   property.class = getPropertyValue(event.class)
   property.delegateExpression = getPropertyValue(event.delegateExpression)
   property.entityType = getPropertyValue(event.entityType)
-  return createElement('activiti:EventListener', property, element, factory)
+  return createElement('activiti:EventListener', property, element, getBpmnFactory(modeler))
 }
 /**
  * 获取

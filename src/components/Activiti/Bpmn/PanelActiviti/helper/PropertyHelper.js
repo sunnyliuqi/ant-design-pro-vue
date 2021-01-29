@@ -33,22 +33,24 @@ import {
   getConditionExpression, isSupportConditionExpression,
   setConditionExpression
 } from './props/ConditionExpression'
-
+import {
+  getDefaultFlow, isSupportDefaultFlow,
+  setDefaultFlow
+} from './props/DefaultFlow'
 /**
  * 设置element properties
  * @param element
  * @param properties
- * @param factory
- * @param updateProperties
+ * @param modeler
  * @returns {Promise<unknown>}
  */
-export function setProperties (element, properties, factory, updateProperties) {
+export function setProperties (element, properties, modeler) {
   return new Promise((resolve, reject) => {
     try {
       const propertyNames = properties && Object.keys(properties)
       if (propertyNames && propertyNames.length > 0) {
         propertyNames.forEach(propertyName => {
-          setProperty(propertyName, properties[propertyName], element, factory, updateProperties)
+          setProperty(propertyName, properties[propertyName], element, modeler)
         })
       }
       return resolve(element)
@@ -62,32 +64,31 @@ export function setProperties (element, properties, factory, updateProperties) {
  * @param propertyName
  * @param propertyValue
  * @param element
- * @param factory
- * @param updateProperties
+ * @param modeler
  */
-function setProperty (propertyName, propertyValue, element, factory, updateProperties) {
+function setProperty (propertyName, propertyValue, element, modeler) {
   if (propertyName === 'documentation') {
-    setDocumentation(propertyValue, element, factory, updateProperties)
+    setDocumentation(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'executionlisteners') {
-    setExecutionListeners(propertyValue, element, factory, updateProperties)
+    setExecutionListeners(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'eventlisteners') {
-    setEventListeners(propertyValue, element, factory, updateProperties)
+    setEventListeners(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'signaldefinitions') {
-    setSignalDefinitions(propertyValue, element, factory, updateProperties)
+    setSignalDefinitions(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'messagedefinitions') {
-    setMessageDefinitions(propertyValue, element, factory, updateProperties)
+    setMessageDefinitions(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'initiator') {
-    setInitiator(propertyValue, element, factory, updateProperties)
+    setInitiator(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'formKey') {
-    setFormKey(propertyValue, element, factory, updateProperties)
+    setFormKey(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'formProperties') {
-    setFormProperties(propertyValue, element, factory, updateProperties)
+    setFormProperties(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'messageEventDefinition') {
-    setMessageEventDefinition(propertyValue, element, factory, updateProperties)
+    setMessageEventDefinition(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'conditionalEventDefinition') {
-    setConditionalEventDefinition(propertyValue, element, factory, updateProperties)
+    setConditionalEventDefinition(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'signalEventDefinition') {
-    setSignalEventDefinition(propertyValue, element, factory, updateProperties)
+    setSignalEventDefinition(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'timeDate') {
     let propertyTimeDate
     if (!isEmpty(propertyValue)) {
@@ -95,7 +96,7 @@ function setProperty (propertyName, propertyValue, element, factory, updatePrope
     } else {
       propertyTimeDate = { timeDate: undefined }
     }
-    setTimerEventDefinition(propertyTimeDate, element, factory, updateProperties)
+    setTimerEventDefinition(propertyTimeDate, element, modeler, updateProperties)
   } else if (propertyName === 'timeCycle') {
     let propertyTimeCycle
     if (!isEmpty(propertyValue)) {
@@ -103,7 +104,7 @@ function setProperty (propertyName, propertyValue, element, factory, updatePrope
     } else {
       propertyTimeCycle = { timeCycle: undefined }
     }
-    setTimerEventDefinition(propertyTimeCycle, element, factory, updateProperties)
+    setTimerEventDefinition(propertyTimeCycle, element, modeler, updateProperties)
   } else if (propertyName === 'timeDuration') {
     let propertyTimeDuration
     if (!isEmpty(propertyValue)) {
@@ -111,17 +112,17 @@ function setProperty (propertyName, propertyValue, element, factory, updatePrope
     } else {
       propertyTimeDuration = { timeDuration: undefined }
     }
-    setTimerEventDefinition(propertyTimeDuration, element, factory, updateProperties)
+    setTimerEventDefinition(propertyTimeDuration, element, modeler, updateProperties)
   } else if (propertyName === 'errorEventDefinition') {
-    setErrorEventDefinition(propertyValue, element, factory, updateProperties)
+    setErrorEventDefinition(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'conditionExpression') {
-    setConditionExpression(propertyValue, element, factory, updateProperties)
+    setConditionExpression(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'defaultFlow') {
-    setConditionExpression(propertyValue, element, factory, updateProperties)
+    setDefaultFlow(propertyValue, element, modeler, updateProperties)
   } else {
     const _property = {}
     _property[propertyName] = getPropertyValue(propertyValue)
-    updateProperties(element, _property)
+    updateProperties(modeler, element, _property)
   }
 }
 
@@ -173,6 +174,8 @@ export function getValues (type, element) {
     return getErrorEventDefinition(element)
   } else if (type === 'conditionExpression') {
     return getConditionExpression(element)
+  } else if (type === 'defaultFlow') {
+    return getDefaultFlow(element)
   }
   return undefined
 }
@@ -180,39 +183,43 @@ export function getValues (type, element) {
 /**
  * 移除节点多余的bo
  * @param element
+ * @param modeler
  * @returns {*}
  */
-export function removeBusinessObject (element, factory, updateProperties) {
+export function removeBusinessObject (element, modeler) {
   if (element) {
     if (!isSupportExecutionListeners(element)) {
-      setExecutionListeners(undefined, element, factory, updateProperties)
+      setExecutionListeners(undefined, element, modeler, updateProperties)
     }
     if (!isSupportInitiator(element)) {
-      setInitiator(undefined, element, factory, updateProperties)
+      setInitiator(undefined, element, modeler, updateProperties)
     }
     if (!isSupportFormKey(element)) {
-      setFormKey(undefined, element, factory, updateProperties)
+      setFormKey(undefined, element, modeler, updateProperties)
     }
     if (!isSupportFormProperties(element)) {
-     setFormProperties(undefined, element, factory, updateProperties)
+     setFormProperties(undefined, element, modeler, updateProperties)
    }
     if (!isSupportMessageEventDefinition(element)) {
-      setMessageEventDefinition(undefined, element, factory, updateProperties)
+      setMessageEventDefinition(undefined, element, modeler, updateProperties)
     }
     if (!isSupportConditionalEventDefinition(element)) {
-      setConditionalEventDefinition(undefined, element, factory, updateProperties)
+      setConditionalEventDefinition(undefined, element, modeler, updateProperties)
     }
     if (!isSupportSignalEventDefinition(element)) {
-      setSignalEventDefinition(undefined, element, factory, updateProperties)
+      setSignalEventDefinition(undefined, element, modeler, updateProperties)
     }
     if (!isSupportTimerEventDefinition(element)) {
-      setTimerEventDefinition(undefined, element, factory, updateProperties)
+      setTimerEventDefinition(undefined, element, modeler, updateProperties)
     }
     if (!isSupportErrorEventDefinition(element)) {
-      setErrorEventDefinition(undefined, element, factory, updateProperties)
+      setErrorEventDefinition(undefined, element, modeler, updateProperties)
     }
     if (!isSupportConditionExpression(element)) {
-      setConditionExpression(undefined, element, factory, updateProperties)
+      setConditionExpression(undefined, element, modeler, updateProperties)
+    }
+    if (!isSupportDefaultFlow(element)) {
+      setDefaultFlow(undefined, element, modeler, updateProperties)
     }
   }
   return element
@@ -249,6 +256,8 @@ export function supportProperty (type, element) {
     return isSupportErrorEventDefinition(element)
   } else if (type === 'conditionExpression') {
     return isSupportConditionExpression(element)
+  } else if (type === 'defaultFlow') {
+    return isSupportDefaultFlow(element)
   }
   return false
 }
@@ -394,6 +403,16 @@ export function getConnectType (element) {
   }
   return false
 }
+
+/**
+ * 更新元素
+ * @param modeler
+ * @param element
+ * @param props
+ */
+function updateProperties (modeler, element, props) {
+  getModeling(modeler).updateProperties(element, props)
+}
 /**
  * 获取到根节点
  * @param businessObject
@@ -405,6 +424,39 @@ export function getRoot (businessObject) {
     parent = parent.$parent
   }
   return parent
+}
+export function getElementRegistry (modeler) {
+  return modeler.get('elementRegistry')
+}
+/**
+ * 画布
+ */
+export function getCanvas (modeler) {
+  return modeler.get('canvas')
+}
+/**
+ * 消息中心
+ */
+export function getEventBus (modeler) {
+  return modeler.get('eventBus')
+}
+/**
+ * 模型
+ */
+export function getModeling (modeler) {
+  return modeler.get('modeling')
+}
+/**
+ * bpmn工厂
+ */
+export function getBpmnFactory (modeler) {
+  return modeler.get('bpmnFactory')
+}
+/**
+ * 命令栈
+ */
+export function getCommandStack (modeler) {
+  return modeler.get('commandStack')
 }
 /**
  * 创建元素

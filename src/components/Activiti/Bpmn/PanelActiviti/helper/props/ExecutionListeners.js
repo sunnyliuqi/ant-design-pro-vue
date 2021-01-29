@@ -132,5 +132,8 @@ export function isSupportExecutionListeners (element) {
   if (getConnectType(element)) {
     return true
   }
+  if (element.type.includes('Task')) {
+    return true
+  }
   return false
 }

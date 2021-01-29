@@ -45,6 +45,10 @@ import {
   getExclusive, isSupportExclusive,
   setExclusive
 } from './props/Exclusive'
+import {
+  getMultiInstanceLoopCharacteristics, isMultiInstanceLoopCharacteristics, isSupportMultiInstanceLoopCharacteristics,
+  setMultiInstanceLoopCharacteristics
+} from './props/MultiInstanceLoopCharacteristics'
 /**
  * 设置element properties
  * @param element
@@ -131,6 +135,46 @@ function setProperty (propertyName, propertyValue, element, modeler) {
     setAsync(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'exclusive') {
     setExclusive(propertyValue, element, modeler, updateProperties)
+  } else if (propertyName === 'isSequential') {
+    let property
+    if (!isEmpty(propertyValue)) {
+      property = { isSequential: propertyValue[0] }
+    } else {
+      property = { isSequential: undefined }
+    }
+    setMultiInstanceLoopCharacteristics(property, element, modeler, updateProperties)
+  } else if (propertyName === 'loopCardinality') {
+    let property
+    if (!isEmpty(propertyValue)) {
+      property = { loopCardinality: propertyValue }
+    } else {
+      property = { loopCardinality: undefined }
+    }
+    setMultiInstanceLoopCharacteristics(property, element, modeler, updateProperties)
+  } else if (propertyName === 'collection') {
+    let property
+    if (!isEmpty(propertyValue)) {
+      property = { collection: propertyValue }
+    } else {
+      property = { collection: undefined }
+    }
+    setMultiInstanceLoopCharacteristics(property, element, modeler, updateProperties)
+  } else if (propertyName === 'elementVariable') {
+    let property
+    if (!isEmpty(propertyValue)) {
+      property = { elementVariable: propertyValue }
+    } else {
+      property = { elementVariable: undefined }
+    }
+    setMultiInstanceLoopCharacteristics(property, element, modeler, updateProperties)
+  } else if (propertyName === 'completionCondition') {
+    let property
+    if (!isEmpty(propertyValue)) {
+      property = { completionCondition: propertyValue }
+    } else {
+      property = { completionCondition: undefined }
+    }
+    setMultiInstanceLoopCharacteristics(property, element, modeler, updateProperties)
   } else {
     const _property = {}
     _property[propertyName] = getPropertyValue(propertyValue)
@@ -192,6 +236,24 @@ export function getValues (type, element) {
     return getAsync(element)
   } else if (type === 'exclusive') {
     return getExclusive(element)
+  } else if (type === 'isSequential') {
+    const multiInstanceLoopCharacteristics = Parse(getMultiInstanceLoopCharacteristics(element))
+    if (multiInstanceLoopCharacteristics && multiInstanceLoopCharacteristics.isSequential === true) {
+      return [true]
+    }
+  return [false]
+  } else if (type === 'loopCardinality') {
+    const multiInstanceLoopCharacteristics = Parse(getMultiInstanceLoopCharacteristics(element))
+    return multiInstanceLoopCharacteristics && multiInstanceLoopCharacteristics.loopCardinality
+  } else if (type === 'collection') {
+    const multiInstanceLoopCharacteristics = Parse(getMultiInstanceLoopCharacteristics(element))
+    return multiInstanceLoopCharacteristics && multiInstanceLoopCharacteristics.collection
+  } else if (type === 'elementVariable') {
+    const multiInstanceLoopCharacteristics = Parse(getMultiInstanceLoopCharacteristics(element))
+    return multiInstanceLoopCharacteristics && multiInstanceLoopCharacteristics.elementVariable
+  } else if (type === 'completionCondition') {
+    const multiInstanceLoopCharacteristics = Parse(getMultiInstanceLoopCharacteristics(element))
+    return multiInstanceLoopCharacteristics && multiInstanceLoopCharacteristics.completionCondition
   }
   return undefined
 }
@@ -243,6 +305,9 @@ export function removeBusinessObject (element, modeler) {
     if (!isSupportExclusive(element)) {
       setExclusive(undefined, element, modeler, updateProperties)
     }
+    if (!isSupportMultiInstanceLoopCharacteristics(element)) {
+      setMultiInstanceLoopCharacteristics(undefined, element, modeler, updateProperties)
+    }
   }
   return element
 }
@@ -283,7 +348,17 @@ export function supportProperty (type, element) {
   } else if (type === 'asynchronous') {
     return isSupportAsync(element)
   } else if (type === 'exclusive') {
-    return isSupportAsync(element)
+    return isSupportExclusive(element)
+  } else if (type === 'isSequential') {
+    return isSupportMultiInstanceLoopCharacteristics(element)
+  } else if (type === 'loopCardinality') {
+    return isSupportMultiInstanceLoopCharacteristics(element)
+  } else if (type === 'collection') {
+    return isSupportMultiInstanceLoopCharacteristics(element)
+  } else if (type === 'elementVariable') {
+    return isSupportMultiInstanceLoopCharacteristics(element)
+  } else if (type === 'completionCondition') {
+    return isSupportMultiInstanceLoopCharacteristics(element)
   }
   return false
 }

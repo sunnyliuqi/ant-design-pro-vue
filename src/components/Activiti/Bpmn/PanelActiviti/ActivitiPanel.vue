@@ -241,6 +241,72 @@
               </a-checkbox-group>
             </a-form-item>
           </a-col>
+          <a-col :span="24" v-show="supportProperty('isSequential',element)">
+            <a-form-item
+              label="是否有序[多]"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-checkbox-group
+                v-decorator="[
+                  'isSequential',
+                  {initialValue: getValues('isSequential',element)}
+                ]">
+                <a-checkbox :value="true" />
+              </a-checkbox-group>
+            </a-form-item>
+          </a-col>
+          <a-col :span="24" v-show="supportProperty('loopCardinality',element)">
+            <a-form-item
+              label="循环基数[多]"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-input
+                v-decorator="[
+                  'loopCardinality',
+                  {initialValue: getValues('loopCardinality',element)}
+                ]"
+                placeholder="请输入循环基数"/>
+            </a-form-item>
+          </a-col>
+          <a-col :span="24" v-show="supportProperty('collection',element)">
+            <a-form-item
+              label="集合[多]"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-input
+                v-decorator="[
+                  'collection',
+                  {initialValue: getValues('collection',element)}
+                ]"
+                placeholder="请输入集合"/>
+            </a-form-item>
+          </a-col>
+          <a-col :span="24" v-show="supportProperty('elementVariable',element)">
+            <a-form-item
+              label="变量[多]"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-input
+                v-decorator="[
+                  'elementVariable',
+                  {initialValue: getValues('elementVariable',element)}
+                ]"
+                placeholder="请输入变量"/>
+            </a-form-item>
+          </a-col>
+          <a-col :span="24" v-show="supportProperty('completionCondition',element)">
+            <a-form-item
+              label="完成条件[多]"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-input
+                v-decorator="[
+                  'completionCondition',
+                  {initialValue: getValues('completionCondition',element)}
+                ]"
+                placeholder="请输入完成条件"/>
+            </a-form-item>
+          </a-col>
         </a-row>
       </a-tab-pane>
       <a-tab-pane key="2" tab="流程属性">

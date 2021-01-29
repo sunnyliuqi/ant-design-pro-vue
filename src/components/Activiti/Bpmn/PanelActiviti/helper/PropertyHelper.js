@@ -37,6 +37,10 @@ import {
   getDefaultFlow, isSupportDefaultFlow,
   setDefaultFlow
 } from './props/DefaultFlow'
+import {
+  getAsync, isSupportAsync,
+  setAsync
+} from './props/Async'
 /**
  * 设置element properties
  * @param element
@@ -119,6 +123,8 @@ function setProperty (propertyName, propertyValue, element, modeler) {
     setConditionExpression(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'defaultFlow') {
     setDefaultFlow(propertyValue, element, modeler, updateProperties)
+  } else if (propertyName === 'asynchronous') {
+    setAsync(propertyValue, element, modeler, updateProperties)
   } else {
     const _property = {}
     _property[propertyName] = getPropertyValue(propertyValue)
@@ -176,6 +182,8 @@ export function getValues (type, element) {
     return getConditionExpression(element)
   } else if (type === 'defaultFlow') {
     return getDefaultFlow(element)
+  } else if (type === 'asynchronous') {
+    return getAsync(element)
   }
   return undefined
 }
@@ -221,6 +229,9 @@ export function removeBusinessObject (element, modeler) {
     if (!isSupportDefaultFlow(element)) {
       setDefaultFlow(undefined, element, modeler, updateProperties)
     }
+    if (!isSupportAsync(element)) {
+      setAsync(undefined, element, modeler, updateProperties)
+    }
   }
   return element
 }
@@ -258,6 +269,8 @@ export function supportProperty (type, element) {
     return isSupportConditionExpression(element)
   } else if (type === 'defaultFlow') {
     return isSupportDefaultFlow(element)
+  } else if (type === 'asynchronous') {
+    return isSupportAsync(element)
   }
   return false
 }

@@ -201,13 +201,27 @@
           </a-col>
           <a-col :span="24" v-show="supportProperty('defaultFlow',element)">
             <a-form-item
-              label="设置为默认"
+              label="设为默认"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
               <a-checkbox-group
                 v-decorator="[
                   'defaultFlow',
                   {initialValue: getValues('defaultFlow',element)}
+                ]">
+                <a-checkbox :value="true" />
+              </a-checkbox-group>
+            </a-form-item>
+          </a-col>
+          <a-col :span="24" v-show="supportProperty('asynchronous',element)">
+            <a-form-item
+              label="设为异步"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-checkbox-group
+                v-decorator="[
+                  'asynchronous',
+                  {initialValue: getValues('asynchronous',element)}
                 ]">
                 <a-checkbox :value="true" />
               </a-checkbox-group>

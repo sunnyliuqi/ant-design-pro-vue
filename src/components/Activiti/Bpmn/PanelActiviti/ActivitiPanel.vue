@@ -193,7 +193,7 @@
               :wrapperCol="{ span: 16 }">
               <a-textarea
                 v-decorator="[
-                  'conditionExpression ',
+                  'conditionExpression',
                   {initialValue: getValues('conditionExpression',element)}
                 ]"
                 placeholder="请输入程条件"/>

@@ -61,7 +61,10 @@ import {
   getInitiatorCanComplete, isSupportInitiatorCanComplete,
   setInitiatorCanComplete
 } from './props/InitiatorCanComplete'
-
+import {
+  getDueDate, isSupportDueDate,
+  setDueDate
+} from './props/DueDate'
 /**
  * 设置element properties
  * @param element
@@ -194,6 +197,8 @@ function setProperty (propertyName, propertyValue, element, modeler) {
     setAssignments(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'initiatorCanComplete') {
     setInitiatorCanComplete(propertyValue, element, modeler, updateProperties)
+  } else if (propertyName === 'dueDate') {
+    setDueDate(propertyValue, element, modeler, updateProperties)
   } else {
     const _property = {}
     _property[propertyName] = getPropertyValue(propertyValue)
@@ -279,6 +284,8 @@ export function getValues (type, element) {
     return getAssignments(element)
   } else if (type === 'initiatorCanComplete') {
     return getInitiatorCanComplete(element)
+  } else if (type === 'dueDate') {
+    return getDueDate(element)
   }
   return undefined
 }
@@ -342,6 +349,9 @@ export function removeBusinessObject (element, modeler) {
     if (!isSupportInitiatorCanComplete(element)) {
       setInitiatorCanComplete(undefined, element, modeler, updateProperties)
     }
+    if (!isSupportDueDate(element)) {
+      setDueDate(undefined, element, modeler, updateProperties)
+    }
   }
   return element
 }
@@ -399,6 +409,8 @@ export function supportProperty (type, element) {
     return isSupportAssignments(element)
   } else if (type === 'initiatorCanComplete') {
     return isSupportInitiatorCanComplete(element)
+  } else if (type === 'dueDate') {
+    return isSupportDueDate(element)
   }
   return false
 }

@@ -348,6 +348,19 @@
               </a-checkbox-group>
             </a-form-item>
           </a-col>
+          <a-col :span="24" v-show="supportProperty('dueDate',element)">
+            <a-form-item
+              label="到期日"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-date-picker
+                v-decorator="[
+                  'dueDate',
+                  {initialValue: getDueDate(getValues('dueDate',element))}
+                ]"
+                placeholder="请输入到期日"/>
+            </a-form-item>
+          </a-col>
         </a-row>
       </a-tab-pane>
       <a-tab-pane key="2" tab="流程属性">
@@ -478,6 +491,7 @@
 
 <script>
   import { supportProperty } from './helper/PropertyHelper'
+  import { getMoment, formatDate } from '@/utils/common'
   export default {
     name: 'ActivitiPanel',
     props: {
@@ -498,6 +512,8 @@
       return {
         formPanel: this.$form.createForm(this, { onValuesChange: this.onPanelValuesChange }),
         tabKey: '2',
+        getMoment,
+        formatDate,
         processElement: {},
         supportProperty
       }
@@ -524,13 +540,23 @@
           this.$message.info('没有选中的节点')
         } */
       },
+      getDueDate (value) {
+        if (value) {
+          return getMoment(value, 'YYYY-MM-DD')
+        }
+        return value
+      },
       onPanelValuesChange (fields, values) {
         if (this.updateBpmn) {
           const fieldKeys = Object.keys(values)
           if (fieldKeys && fieldKeys.length > 0) {
             const properties = {}
             fieldKeys.forEach(key => {
-              properties[key.replace('process', '')] = values[key]
+              if (key === 'dueDate') {
+                properties[key] = formatDate(values[key], 'YYYY-MM-DD')
+              } else {
+                properties[key.replace('process', '')] = values[key]
+              }
             })
             this.updateBpmn(this.element, properties)
           }

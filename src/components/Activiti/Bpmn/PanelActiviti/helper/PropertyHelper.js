@@ -65,6 +65,10 @@ import {
   getDueDate, isSupportDueDate,
   setDueDate
 } from './props/DueDate'
+import {
+  getPriority, isSupportPriority,
+  setPriority
+} from './props/Priority'
 /**
  * 设置element properties
  * @param element
@@ -199,6 +203,8 @@ function setProperty (propertyName, propertyValue, element, modeler) {
     setInitiatorCanComplete(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'dueDate') {
     setDueDate(propertyValue, element, modeler, updateProperties)
+  } else if (propertyName === 'priority') {
+    setPriority(propertyValue, element, modeler, updateProperties)
   } else {
     const _property = {}
     _property[propertyName] = getPropertyValue(propertyValue)
@@ -286,6 +292,8 @@ export function getValues (type, element) {
     return getInitiatorCanComplete(element)
   } else if (type === 'dueDate') {
     return getDueDate(element)
+  } else if (type === 'priority') {
+    return getPriority(element)
   }
   return undefined
 }
@@ -352,6 +360,9 @@ export function removeBusinessObject (element, modeler) {
     if (!isSupportDueDate(element)) {
       setDueDate(undefined, element, modeler, updateProperties)
     }
+    if (!isSupportPriority(element)) {
+      setPriority(undefined, element, modeler, updateProperties)
+    }
   }
   return element
 }
@@ -411,6 +422,8 @@ export function supportProperty (type, element) {
     return isSupportInitiatorCanComplete(element)
   } else if (type === 'dueDate') {
     return isSupportDueDate(element)
+  } else if (type === 'priority') {
+    return isSupportPriority(element)
   }
   return false
 }

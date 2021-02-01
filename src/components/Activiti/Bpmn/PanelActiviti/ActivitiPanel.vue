@@ -361,6 +361,19 @@
                 placeholder="请输入到期日"/>
             </a-form-item>
           </a-col>
+          <a-col :span="24" v-show="supportProperty('priority',element)">
+            <a-form-item
+              label="优先级"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-input
+                v-decorator="[
+                  'priority',
+                  {initialValue: getValues('priority',element)}
+                ]"
+                placeholder="请输入优先级"/>
+            </a-form-item>
+          </a-col>
         </a-row>
       </a-tab-pane>
       <a-tab-pane key="2" tab="流程属性">

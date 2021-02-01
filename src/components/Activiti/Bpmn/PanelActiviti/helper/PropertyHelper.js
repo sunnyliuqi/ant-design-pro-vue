@@ -81,6 +81,14 @@ import {
   getInputVariables, isSupportInputVariables,
   setInputVariables
 } from './props/InputVariables'
+import {
+  getExclude, isSupportExclude,
+  setExclude
+} from './props/Exclude'
+import {
+  getResultVariables, isSupportResultVariables,
+  setResultVariables
+} from './props/ResultVariables'
 /**
  * 设置element properties
  * @param element
@@ -223,6 +231,10 @@ function setProperty (propertyName, propertyValue, element, modeler) {
     setRules(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'inputVariables') {
     setInputVariables(propertyValue, element, modeler, updateProperties)
+  } else if (propertyName === 'exclude') {
+    setExclude(propertyValue, element, modeler, updateProperties)
+  } else if (propertyName === 'resultVariables') {
+    setResultVariables(propertyValue, element, modeler, updateProperties)
   } else {
     const _property = {}
     _property[propertyName] = getPropertyValue(propertyValue)
@@ -318,6 +330,10 @@ export function getValues (type, element) {
     return getRules(element)
   } else if (type === 'inputVariables') {
     return getInputVariables(element)
+  } else if (type === 'exclude') {
+    return getExclude(element)
+  } else if (type === 'resultVariables') {
+    return getResultVariables(element)
   }
   return undefined
 }
@@ -396,6 +412,12 @@ export function removeBusinessObject (element, modeler) {
     if (!isSupportInputVariables(element)) {
       setInputVariables(undefined, element, modeler, updateProperties)
     }
+    if (!isSupportExclude(element)) {
+      setExclude(undefined, element, modeler, updateProperties)
+    }
+    if (!isSupportResultVariables(element)) {
+      setResultVariables(undefined, element, modeler, updateProperties)
+    }
   }
   return element
 }
@@ -463,6 +485,10 @@ export function supportProperty (type, element) {
     return isSupportRules(element)
   } else if (type === 'inputVariables') {
     return isSupportInputVariables(element)
+  } else if (type === 'exclude') {
+    return isSupportExclude(element)
+  } else if (type === 'resultVariables') {
+    return isSupportResultVariables(element)
   }
   return false
 }

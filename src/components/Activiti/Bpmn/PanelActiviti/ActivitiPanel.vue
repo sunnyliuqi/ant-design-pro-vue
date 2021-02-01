@@ -413,6 +413,33 @@
                 placeholder="请输入输入变量"/>
             </a-form-item>
           </a-col>
+          <a-col :span="24" v-show="supportProperty('exclude',element)">
+            <a-form-item
+              label="排除"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-checkbox-group
+                v-decorator="[
+                  'exclude',
+                  {initialValue: getValues('exclude',element)}
+                ]">
+                <a-checkbox :value="true" />
+              </a-checkbox-group>
+            </a-form-item>
+          </a-col>
+          <a-col :span="24" v-show="supportProperty('resultVariables', element)">
+            <a-form-item
+              label="结果变量"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-input
+                v-decorator="[
+                  'resultVariables',
+                  {initialValue: getValues('resultVariables',element)}
+                ]"
+                placeholder="请输入结果变量"/>
+            </a-form-item>
+          </a-col>
         </a-row>
       </a-tab-pane>
       <a-tab-pane key="2" tab="流程属性">

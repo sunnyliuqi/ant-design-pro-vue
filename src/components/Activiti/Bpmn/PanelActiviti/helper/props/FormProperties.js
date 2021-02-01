@@ -137,5 +137,8 @@ export function isSupportFormProperties (element) {
   if (element.type === 'bpmn:StartEvent' && getStartEventType(element) === 'none') {
     return true
   }
+  if (element.type.includes('UserTask')) {
+    return true
+  }
   return false
 }

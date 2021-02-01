@@ -374,6 +374,19 @@
                 placeholder="请输入优先级"/>
             </a-form-item>
           </a-col>
+          <a-col :span="24" v-show="supportProperty('taskListeners', element)">
+            <a-form-item
+              label="任务监听器"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-textarea
+                v-decorator="[
+                  'taskListeners',
+                  {initialValue: getValues('taskListeners',element)}
+                ]"
+                placeholder="请选择任务监听器"/>
+            </a-form-item>
+          </a-col>
         </a-row>
       </a-tab-pane>
       <a-tab-pane key="2" tab="流程属性">

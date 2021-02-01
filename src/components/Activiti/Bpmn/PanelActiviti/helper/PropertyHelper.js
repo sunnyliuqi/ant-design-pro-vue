@@ -53,6 +53,10 @@ import {
   getIsForCompensation, isSupportIsForCompensation,
   setIsForCompensation
 } from './props/IsForCompensation'
+import {
+  getAssignments, isSupportAssignments,
+  setAssignments
+} from './props/Assignments'
 /**
  * 设置element properties
  * @param element
@@ -181,6 +185,8 @@ function setProperty (propertyName, propertyValue, element, modeler) {
     setMultiInstanceLoopCharacteristics(property, element, modeler, updateProperties)
   } else if (propertyName === 'isForCompensation') {
     setIsForCompensation(propertyValue, element, modeler, updateProperties)
+  } else if (propertyName === 'assignments') {
+    setAssignments(propertyValue, element, modeler, updateProperties)
   } else {
     const _property = {}
     _property[propertyName] = getPropertyValue(propertyValue)
@@ -262,6 +268,8 @@ export function getValues (type, element) {
     return multiInstanceLoopCharacteristics && multiInstanceLoopCharacteristics.completionCondition
   } else if (type === 'isForCompensation') {
     return getIsForCompensation(element)
+  } else if (type === 'assignments') {
+    return getAssignments(element)
   }
   return undefined
 }
@@ -319,6 +327,9 @@ export function removeBusinessObject (element, modeler) {
     if (!isSupportIsForCompensation(element)) {
       setIsForCompensation(undefined, element, modeler, updateProperties)
     }
+    if (!isSupportAssignments(element)) {
+      setAssignments(undefined, element, modeler, updateProperties)
+    }
   }
   return element
 }
@@ -372,6 +383,8 @@ export function supportProperty (type, element) {
     return isSupportMultiInstanceLoopCharacteristics(element)
   } else if (type === 'isForCompensation') {
     return isSupportIsForCompensation(element)
+  } else if (type === 'assignments') {
+    return isSupportAssignments(element)
   }
   return false
 }

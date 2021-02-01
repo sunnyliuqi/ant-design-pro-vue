@@ -321,6 +321,19 @@
               </a-checkbox-group>
             </a-form-item>
           </a-col>
+          <a-col :span="24" v-show="supportProperty('assignments', element)">
+            <a-form-item
+              label="分配"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-textarea
+                v-decorator="[
+                  'assignments',
+                  {initialValue: getValues('assignments',element)}
+                ]"
+                placeholder="请选择分配"/>
+            </a-form-item>
+          </a-col>
         </a-row>
       </a-tab-pane>
       <a-tab-pane key="2" tab="流程属性">

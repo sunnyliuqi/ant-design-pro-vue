@@ -56,45 +56,6 @@
                 placeholder="请选择执行监听器"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('initiator',element)">
-            <a-form-item
-              label="发起人"
-              :labelCol="{ span: 8 }"
-              :wrapperCol="{ span: 16 }">
-              <a-input
-                v-decorator="[
-                  'initiator',
-                  {initialValue: getValues('initiator',element)}
-                ]"
-                placeholder="请选择发起人"/>
-            </a-form-item>
-          </a-col>
-          <a-col :span="24" v-show="supportProperty('formKey',element)">
-            <a-form-item
-              label="外置表单"
-              :labelCol="{ span: 8 }"
-              :wrapperCol="{ span: 16 }">
-              <a-input
-                v-decorator="[
-                  'formKey',
-                  {initialValue: getValues('formKey',element)}
-                ]"
-                placeholder="请选择外置表单"/>
-            </a-form-item>
-          </a-col>
-          <a-col :span="24" v-show="supportProperty('formProperties',element)">
-            <a-form-item
-              label="动态表单字段"
-              :labelCol="{ span: 8 }"
-              :wrapperCol="{ span: 16 }">
-              <a-textarea
-                v-decorator="[
-                  'formProperties',
-                  {initialValue: getValues('formProperties',element)}
-                ]"
-                placeholder="请设置动态表单字段"/>
-            </a-form-item>
-          </a-col>
           <a-col :span="24" v-show="supportProperty('messageEventDefinition',element)">
             <a-form-item
               label="消息事件"
@@ -321,6 +282,45 @@
               </a-checkbox-group>
             </a-form-item>
           </a-col>
+          <a-col :span="24" v-show="supportProperty('initiator',element)">
+            <a-form-item
+              label="发起人"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-input
+                v-decorator="[
+                  'initiator',
+                  {initialValue: getValues('initiator',element)}
+                ]"
+                placeholder="请选择发起人"/>
+            </a-form-item>
+          </a-col>
+          <a-col :span="24" v-show="supportProperty('formKey',element)">
+            <a-form-item
+              label="外置表单"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-input
+                v-decorator="[
+                  'formKey',
+                  {initialValue: getValues('formKey',element)}
+                ]"
+                placeholder="请选择外置表单"/>
+            </a-form-item>
+          </a-col>
+          <a-col :span="24" v-show="supportProperty('formProperties',element)">
+            <a-form-item
+              label="动态表单字段"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-textarea
+                v-decorator="[
+                  'formProperties',
+                  {initialValue: getValues('formProperties',element)}
+                ]"
+                placeholder="请设置动态表单字段"/>
+            </a-form-item>
+          </a-col>
           <a-col :span="24" v-show="supportProperty('assignments', element)">
             <a-form-item
               label="分配"
@@ -332,6 +332,20 @@
                   {initialValue: getValues('assignments',element)}
                 ]"
                 placeholder="请选择分配"/>
+            </a-form-item>
+          </a-col>
+          <a-col :span="24" v-show="supportProperty('initiatorCanComplete',element)">
+            <a-form-item
+              label="初始人完成"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-checkbox-group
+                v-decorator="[
+                  'initiatorCanComplete',
+                  {initialValue: getValues('initiatorCanComplete',element)}
+                ]">
+                <a-checkbox :value="true" />
+              </a-checkbox-group>
             </a-form-item>
           </a-col>
         </a-row>

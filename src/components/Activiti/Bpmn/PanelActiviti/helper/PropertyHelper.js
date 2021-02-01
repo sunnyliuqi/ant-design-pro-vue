@@ -57,6 +57,11 @@ import {
   getAssignments, isSupportAssignments,
   setAssignments
 } from './props/Assignments'
+import {
+  getInitiatorCanComplete, isSupportInitiatorCanComplete,
+  setInitiatorCanComplete
+} from './props/InitiatorCanComplete'
+
 /**
  * 设置element properties
  * @param element
@@ -187,6 +192,8 @@ function setProperty (propertyName, propertyValue, element, modeler) {
     setIsForCompensation(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'assignments') {
     setAssignments(propertyValue, element, modeler, updateProperties)
+  } else if (propertyName === 'initiatorCanComplete') {
+    setInitiatorCanComplete(propertyValue, element, modeler, updateProperties)
   } else {
     const _property = {}
     _property[propertyName] = getPropertyValue(propertyValue)
@@ -270,6 +277,8 @@ export function getValues (type, element) {
     return getIsForCompensation(element)
   } else if (type === 'assignments') {
     return getAssignments(element)
+  } else if (type === 'initiatorCanComplete') {
+    return getInitiatorCanComplete(element)
   }
   return undefined
 }
@@ -330,6 +339,9 @@ export function removeBusinessObject (element, modeler) {
     if (!isSupportAssignments(element)) {
       setAssignments(undefined, element, modeler, updateProperties)
     }
+    if (!isSupportInitiatorCanComplete(element)) {
+      setInitiatorCanComplete(undefined, element, modeler, updateProperties)
+    }
   }
   return element
 }
@@ -385,6 +397,8 @@ export function supportProperty (type, element) {
     return isSupportIsForCompensation(element)
   } else if (type === 'assignments') {
     return isSupportAssignments(element)
+  } else if (type === 'initiatorCanComplete') {
+    return isSupportInitiatorCanComplete(element)
   }
   return false
 }

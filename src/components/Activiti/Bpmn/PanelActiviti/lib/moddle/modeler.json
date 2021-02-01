@@ -1,0 +1,24 @@
+{
+  "name": "modeler",
+  "uri": "http://activiti.org/bpmn/modeler",
+  "prefix": "modeler",
+  "xml": {
+  "tagAlias": "lowerCase"
+},
+  "associations": [],
+  "types": [
+    {
+    "name": "InitiatorCanComplete",
+    "superClass": [ "Element" ],
+    "properties": [
+      {
+        "name": "body",
+        "isBody": true,
+        "type": "Boolean",
+        "default": false
+      }
+    ]
+  }
+  ],
+  "emumerations": [ ]
+}

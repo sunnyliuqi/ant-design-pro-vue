@@ -29,6 +29,7 @@
   import customTranslate from './i18n/customTranslate'
   import ActivitiPanel from './PanelActiviti/ActivitiPanel'
   import activitiDescriptor from './PanelActiviti/lib/moddle/activiti'
+  import activitiModelerDescriptor from './PanelActiviti/lib/moddle/modeler'
   import { setProperties, getValues, removeBusinessObject } from './PanelActiviti/helper/PropertyHelper'
   import { emptyBpmn } from './store/defaultBpmn'
   export default {
@@ -74,7 +75,8 @@
               translate: ['value', customTranslate]
             }],
           moddleExtensions: {
-            activiti: activitiDescriptor
+            activiti: activitiDescriptor,
+            modeler: activitiModelerDescriptor
           }
         })
         /**

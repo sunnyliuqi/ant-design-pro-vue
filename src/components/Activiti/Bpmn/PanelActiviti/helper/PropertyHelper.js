@@ -73,6 +73,10 @@ import {
   getTaskListeners, isSupportTaskListeners,
   setTaskListeners
 } from './props/TaskListeners'
+import {
+  getRules, isSupportRules,
+  setRules
+} from './props/Rules'
 /**
  * 设置element properties
  * @param element
@@ -211,6 +215,8 @@ function setProperty (propertyName, propertyValue, element, modeler) {
     setPriority(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'taskListeners') {
     setTaskListeners(propertyValue, element, modeler, updateProperties)
+  } else if (propertyName === 'rules') {
+    setRules(propertyValue, element, modeler, updateProperties)
   } else {
     const _property = {}
     _property[propertyName] = getPropertyValue(propertyValue)
@@ -302,6 +308,8 @@ export function getValues (type, element) {
     return getPriority(element)
   } else if (type === 'taskListeners') {
     return getTaskListeners(element)
+  } else if (type === 'rules') {
+    return getRules(element)
   }
   return undefined
 }
@@ -374,6 +382,9 @@ export function removeBusinessObject (element, modeler) {
     if (!isSupportTaskListeners(element)) {
       setTaskListeners(undefined, element, modeler, updateProperties)
     }
+    if (!isSupportRules(element)) {
+      setRules(undefined, element, modeler, updateProperties)
+    }
   }
   return element
 }
@@ -437,6 +448,8 @@ export function supportProperty (type, element) {
     return isSupportPriority(element)
   } else if (type === 'taskListeners') {
     return isSupportTaskListeners(element)
+  } else if (type === 'rules') {
+    return isSupportRules(element)
   }
   return false
 }

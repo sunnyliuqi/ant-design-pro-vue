@@ -387,6 +387,19 @@
                 placeholder="请选择任务监听器"/>
             </a-form-item>
           </a-col>
+          <a-col :span="24" v-show="supportProperty('rules', element)">
+            <a-form-item
+              label="规则"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-input
+                v-decorator="[
+                  'rules',
+                  {initialValue: getValues('rules',element)}
+                ]"
+                placeholder="请输入规则"/>
+            </a-form-item>
+          </a-col>
         </a-row>
       </a-tab-pane>
       <a-tab-pane key="2" tab="流程属性">

@@ -307,6 +307,20 @@
                 placeholder="请输入完成条件"/>
             </a-form-item>
           </a-col>
+          <a-col :span="24" v-show="supportProperty('isForCompensation',element)">
+            <a-form-item
+              label="是否补偿"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-checkbox-group
+                v-decorator="[
+                  'isForCompensation',
+                  {initialValue: getValues('isForCompensation',element)}
+                ]">
+                <a-checkbox :value="true" />
+              </a-checkbox-group>
+            </a-form-item>
+          </a-col>
         </a-row>
       </a-tab-pane>
       <a-tab-pane key="2" tab="流程属性">

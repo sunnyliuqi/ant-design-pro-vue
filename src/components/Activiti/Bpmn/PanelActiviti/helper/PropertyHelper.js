@@ -46,9 +46,13 @@ import {
   setExclusive
 } from './props/Exclusive'
 import {
-  getMultiInstanceLoopCharacteristics, isMultiInstanceLoopCharacteristics, isSupportMultiInstanceLoopCharacteristics,
+  getMultiInstanceLoopCharacteristics, isSupportMultiInstanceLoopCharacteristics,
   setMultiInstanceLoopCharacteristics
 } from './props/MultiInstanceLoopCharacteristics'
+import {
+  getIsForCompensation, isSupportIsForCompensation,
+  setIsForCompensation
+} from './props/IsForCompensation'
 /**
  * 设置element properties
  * @param element
@@ -175,6 +179,8 @@ function setProperty (propertyName, propertyValue, element, modeler) {
       property = { completionCondition: undefined }
     }
     setMultiInstanceLoopCharacteristics(property, element, modeler, updateProperties)
+  } else if (propertyName === 'isForCompensation') {
+    setIsForCompensation(propertyValue, element, modeler, updateProperties)
   } else {
     const _property = {}
     _property[propertyName] = getPropertyValue(propertyValue)
@@ -254,6 +260,8 @@ export function getValues (type, element) {
   } else if (type === 'completionCondition') {
     const multiInstanceLoopCharacteristics = Parse(getMultiInstanceLoopCharacteristics(element))
     return multiInstanceLoopCharacteristics && multiInstanceLoopCharacteristics.completionCondition
+  } else if (type === 'isForCompensation') {
+    return getIsForCompensation(element)
   }
   return undefined
 }
@@ -308,6 +316,9 @@ export function removeBusinessObject (element, modeler) {
     if (!isSupportMultiInstanceLoopCharacteristics(element)) {
       setMultiInstanceLoopCharacteristics(undefined, element, modeler, updateProperties)
     }
+    if (!isSupportIsForCompensation(element)) {
+      setIsForCompensation(undefined, element, modeler, updateProperties)
+    }
   }
   return element
 }
@@ -359,6 +370,8 @@ export function supportProperty (type, element) {
     return isSupportMultiInstanceLoopCharacteristics(element)
   } else if (type === 'completionCondition') {
     return isSupportMultiInstanceLoopCharacteristics(element)
+  } else if (type === 'isForCompensation') {
+    return isSupportIsForCompensation(element)
   }
   return false
 }

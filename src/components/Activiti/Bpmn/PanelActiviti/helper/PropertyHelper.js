@@ -77,6 +77,10 @@ import {
   getRules, isSupportRules,
   setRules
 } from './props/Rules'
+import {
+  getInputVariables, isSupportInputVariables,
+  setInputVariables
+} from './props/InputVariables'
 /**
  * 设置element properties
  * @param element
@@ -217,6 +221,8 @@ function setProperty (propertyName, propertyValue, element, modeler) {
     setTaskListeners(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'rules') {
     setRules(propertyValue, element, modeler, updateProperties)
+  } else if (propertyName === 'inputVariables') {
+    setInputVariables(propertyValue, element, modeler, updateProperties)
   } else {
     const _property = {}
     _property[propertyName] = getPropertyValue(propertyValue)
@@ -310,6 +316,8 @@ export function getValues (type, element) {
     return getTaskListeners(element)
   } else if (type === 'rules') {
     return getRules(element)
+  } else if (type === 'inputVariables') {
+    return getInputVariables(element)
   }
   return undefined
 }
@@ -385,6 +393,9 @@ export function removeBusinessObject (element, modeler) {
     if (!isSupportRules(element)) {
       setRules(undefined, element, modeler, updateProperties)
     }
+    if (!isSupportInputVariables(element)) {
+      setInputVariables(undefined, element, modeler, updateProperties)
+    }
   }
   return element
 }
@@ -450,6 +461,8 @@ export function supportProperty (type, element) {
     return isSupportTaskListeners(element)
   } else if (type === 'rules') {
     return isSupportRules(element)
+  } else if (type === 'inputVariables') {
+    return isSupportInputVariables(element)
   }
   return false
 }

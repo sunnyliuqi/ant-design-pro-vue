@@ -89,6 +89,18 @@ import {
   getResultVariables, isSupportResultVariables,
   setResultVariables
 } from './props/ResultVariables'
+import {
+  getClass, isSupportClass,
+  setClass
+} from './props/Class'
+import {
+  getExpression, isSupportExpression,
+  setExpression
+} from './props/Expression'
+import {
+  getDelegateExpression, isSupportDelegateExpression,
+  setDelegateExpression
+} from './props/DelegateExpression'
 /**
  * 设置element properties
  * @param element
@@ -235,6 +247,12 @@ function setProperty (propertyName, propertyValue, element, modeler) {
     setExclude(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'resultVariables') {
     setResultVariables(propertyValue, element, modeler, updateProperties)
+  } else if (propertyName === 'class') {
+    setClass(propertyValue, element, modeler, updateProperties)
+  } else if (propertyName === 'expression') {
+    setExpression(propertyValue, element, modeler, updateProperties)
+  } else if (propertyName === 'delegateExpression') {
+    setDelegateExpression(propertyValue, element, modeler, updateProperties)
   } else {
     const _property = {}
     _property[propertyName] = getPropertyValue(propertyValue)
@@ -334,6 +352,12 @@ export function getValues (type, element) {
     return getExclude(element)
   } else if (type === 'resultVariables') {
     return getResultVariables(element)
+  } else if (type === 'class') {
+    return getClass(element)
+  } else if (type === 'expression') {
+    return getExpression(element)
+  } else if (type === 'delegateExpression') {
+    return getDelegateExpression(element)
   }
   return undefined
 }
@@ -418,6 +442,15 @@ export function removeBusinessObject (element, modeler) {
     if (!isSupportResultVariables(element)) {
       setResultVariables(undefined, element, modeler, updateProperties)
     }
+    if (!isSupportClass(element)) {
+      setClass(undefined, element, modeler, updateProperties)
+    }
+    if (!isSupportExpression(element)) {
+      setExpression(undefined, element, modeler, updateProperties)
+    }
+    if (!isSupportDelegateExpression(element)) {
+      setDelegateExpression(undefined, element, modeler, updateProperties)
+    }
   }
   return element
 }
@@ -489,6 +522,12 @@ export function supportProperty (type, element) {
     return isSupportExclude(element)
   } else if (type === 'resultVariables') {
     return isSupportResultVariables(element)
+  } else if (type === 'class') {
+    return isSupportClass(element)
+  } else if (type === 'expression') {
+    return isSupportExpression(element)
+  } else if (type === 'delegateExpression') {
+    return isSupportDelegateExpression(element)
   }
   return false
 }

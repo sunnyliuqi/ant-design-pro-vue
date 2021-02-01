@@ -440,6 +440,45 @@
                 placeholder="请输入结果变量"/>
             </a-form-item>
           </a-col>
+          <a-col :span="24" v-show="supportProperty('class', element)">
+            <a-form-item
+              label="类名"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-input
+                v-decorator="[
+                  'class',
+                  {initialValue: getValues('class',element)}
+                ]"
+                placeholder="请输入类名"/>
+            </a-form-item>
+          </a-col>
+          <a-col :span="24" v-show="supportProperty('expression', element)">
+            <a-form-item
+              label="表达式"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-input
+                v-decorator="[
+                  'expression',
+                  {initialValue: getValues('expression',element)}
+                ]"
+                placeholder="请输入表达式"/>
+            </a-form-item>
+          </a-col>
+          <a-col :span="24" v-show="supportProperty('delegateExpression', element)">
+            <a-form-item
+              label="代理表达式"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-input
+                v-decorator="[
+                  'delegateExpression',
+                  {initialValue: getValues('delegateExpression',element)}
+                ]"
+                placeholder="请输入代理表达式"/>
+            </a-form-item>
+          </a-col>
         </a-row>
       </a-tab-pane>
       <a-tab-pane key="2" tab="流程属性">

@@ -74,7 +74,7 @@
               label="条件事件"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
-              <a-textarea
+              <a-input
                 v-decorator="[
                   'conditionalEventDefinition',
                   {initialValue: getValues('conditionalEventDefinition',element)}
@@ -100,7 +100,7 @@
               label="定时周期"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
-              <a-textarea
+              <a-input
                 v-decorator="[
                   'timeCycle',
                   {initialValue: getValues('timeCycle',element)}
@@ -113,7 +113,7 @@
               label="定时时间"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
-              <a-textarea
+              <a-input
                 v-decorator="[
                   'timeDate',
                   {initialValue: getValues('timeDate',element)}
@@ -126,7 +126,7 @@
               label="定时期间"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
-              <a-textarea
+              <a-input
                 v-decorator="[
                   'timeDuration',
                   {initialValue: getValues('timeDuration',element)}
@@ -139,7 +139,7 @@
               label="错误事件"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
-              <a-textarea
+              <a-input
                 v-decorator="[
                   'errorEventDefinition',
                   {initialValue: getValues('errorEventDefinition',element)}
@@ -152,7 +152,7 @@
               label="程条件"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
-              <a-textarea
+              <a-input
                 v-decorator="[
                   'conditionExpression',
                   {initialValue: getValues('conditionExpression',element)}
@@ -484,7 +484,7 @@
               label="字段"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
-              <a-input
+              <a-textarea
                 v-decorator="[
                   'fields',
                   {initialValue: getValues('fields',element)}

@@ -74,7 +74,9 @@ export function getAssignments (element) {
     if (bo.candidateGroups) {
       assignments.candidateGroups = bo.candidateGroups
     }
-    return JSON.stringify(assignments)
+    if (Object.keys(assignments).length > 0) {
+      return JSON.stringify(assignments)
+    }
   }
   return undefined
 }

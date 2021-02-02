@@ -4,7 +4,7 @@ import {
   getBusinessObject, removeByType, getEventDefinitionType,
   getIntermediateEventType,
   getStartEventType, getPropertyValue,
-  getEventSubProcessType
+  getSubProcessType
 } from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 /**
@@ -101,7 +101,7 @@ export function isSupportMultiInstanceLoopCharacteristics (element) {
   if (element.type.includes('Task')) {
     return true
   }
-  if (getEventSubProcessType(element)) {
+  if (getSubProcessType(element)) {
     return true
   }
   return false

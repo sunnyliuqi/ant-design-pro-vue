@@ -1,5 +1,5 @@
 import { isEmpty } from '@/utils/common'
-import { getBpmnFactory, getBusinessObject, getEventSubProcessType, getStartEventType } from '../PropertyHelper'
+import { getBpmnFactory, getBusinessObject, getSubProcessType, getStartEventType } from '../PropertyHelper'
 
 /**
  * 设置/创建 IsForCompensation 属性
@@ -45,7 +45,7 @@ export function isSupportIsForCompensation (element) {
   if (element.type.includes('Task')) {
     return true
   }
-  if (getEventSubProcessType(element)) {
+  if (getSubProcessType(element)) {
     return true
   }
   return false

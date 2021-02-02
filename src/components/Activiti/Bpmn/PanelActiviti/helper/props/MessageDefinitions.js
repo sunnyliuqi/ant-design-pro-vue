@@ -1,4 +1,13 @@
-import { getBpmnFactory, createElement, getBusinessObject, getPropertyValue } from '../PropertyHelper'
+import {
+  getBpmnFactory,
+  createElement,
+  getBusinessObject,
+  getPropertyValue,
+  filterByType,
+  removeByType,
+  getCommandStack,
+  getRoot
+} from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 /**
  * 设置/创建 MessageDefinitions 元素
@@ -31,7 +40,14 @@ export function setMessageDefinitions (propertyValue, element, modeler, updatePr
   if (updateProperties) {
     const _property = {}
     _property.messages = bo.messages
-    updateProperties(modeler, element, _property)
+    let rootElements = modeler.getDefinitions().rootElements
+    rootElements = removeByType(rootElements, 'bpmn:Message')
+    if (bo.messages && bo.messages.length > 0) {
+      modeler.getDefinitions().rootElements = [...rootElements, ...bo.messages]
+    } else {
+      modeler.getDefinitions().rootElements = [...rootElements]
+    }
+    getCommandStack(modeler)._fire('changed')
   } else {
     return bo.messages
   }
@@ -41,26 +57,30 @@ function createElementSignal (message, element, modeler) {
   property.id = getPropertyValue(message.id)
   property.name = getPropertyValue(message.name)
   property.itemRef = getPropertyValue(message.itemRef)
-  return createElement('activiti:Message', property, element, getBpmnFactory(modeler))
+  return createElement('bpmn:Message', property, element, getBpmnFactory(modeler))
 }
 /**
  * 获取
  * @param element
  */
 export function getMessageDefinitions (element) {
-  const messageElements = getBusinessObject(element).messages
+  const rootElements = getRoot(getBusinessObject(element)).rootElements
+  if (!rootElements) {
+    return undefined
+  }
+  const messageElements = filterByType(rootElements, 'bpmn:Message')
   if (messageElements && messageElements.length > 0) {
     const messages = []
     messageElements.forEach(property => {
       const message = {}
-      if (property.$attrs.id) {
-        message.id = property.$attrs.id
+      if (property.id) {
+        message.id = property.id
       }
-      if (property.$attrs.name) {
-        message.name = property.$attrs.name
+      if (property.name) {
+        message.name = property.name
       }
-      if (property.$attrs.itemRef) {
-        message.itemRef = property.$attrs.itemRef
+      if (property.itemRef) {
+        message.itemRef = property.itemRef
       }
       messages.push(message)
     })

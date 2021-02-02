@@ -1,4 +1,11 @@
-import { getBpmnFactory, createElement, getBusinessObject, getPropertyValue } from '../PropertyHelper'
+import {
+  getBpmnFactory,
+  createElement,
+  getBusinessObject,
+  getPropertyValue,
+  removeByType,
+  getCommandStack, getRoot, filterByType
+} from '../PropertyHelper'
 import { isEmpty } from '@/utils/common'
 /**
  * 设置/创建 SignalDefinitions 元素
@@ -31,7 +38,14 @@ export function setSignalDefinitions (propertyValue, element, modeler, updatePro
   if (updateProperties) {
     const _property = {}
     _property.signals = bo.signals
-    updateProperties(modeler, element, _property)
+    let rootElements = modeler.getDefinitions().rootElements
+    rootElements = removeByType(rootElements, 'bpmn:Signal')
+    if (bo.signals && bo.signals.length > 0) {
+      modeler.getDefinitions().rootElements = [...rootElements, ...bo.signals]
+    } else {
+      modeler.getDefinitions().rootElements = [...rootElements]
+    }
+    getCommandStack(modeler)._fire('changed')
   } else {
     return bo.signals
   }
@@ -41,26 +55,30 @@ function createElementSignal (signal, element, modeler) {
   property.id = getPropertyValue(signal.id)
   property.name = getPropertyValue(signal.name)
   property.scop = getPropertyValue(signal.scop)
-  return createElement('activiti:Signal', property, element, getBpmnFactory(modeler))
+  return createElement('bpmn:Signal', property, element, getBpmnFactory(modeler))
 }
 /**
  * 获取
  * @param element
  */
 export function getSignalDefinitions (element) {
-  const signalElements = getBusinessObject(element).signals
+  const rootElements = getRoot(getBusinessObject(element)).rootElements
+  if (!rootElements) {
+    return undefined
+  }
+  const signalElements = filterByType(rootElements, 'bpmn:Signal')
   if (signalElements && signalElements.length > 0) {
     const signals = []
     signalElements.forEach(property => {
       const signal = {}
-      if (property.$attrs.id) {
-        signal.id = property.$attrs.id
+      if (property.id) {
+        signal.id = property.id
       }
-      if (property.$attrs.name) {
-        signal.name = property.$attrs.name
+      if (property.name) {
+        signal.name = property.name
       }
-      if (property.$attrs.scop) {
-        signal.scop = property.$attrs.scop
+      if (property.scop) {
+        signal.scop = property.scop
       }
       signals.push(signal)
     })

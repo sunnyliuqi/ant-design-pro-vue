@@ -1127,34 +1127,6 @@
       ]
     },
     {
-      "name": "Process",
-      "superClass": [
-        "Element"
-      ],
-      "extends": [
-        "bpmn:Process"
-      ],
-      "properties": [
-        {
-          "name": "signals",
-          "type": "Signal",
-          "isMany": true
-        },
-        {
-          "name": "messages",
-          "type": "Message",
-          "isMany": true
-        }
-      ]
-    },
-    {
-      "name": "Message",
-      "superClass": [ "Element" ],
-      "extends": [
-        "bpmn:Message"
-      ]
-    },
-    {
       "name": "MessageEventDefinition",
       "superClass": [
         "bpmn:EventDefinition"

@@ -54,7 +54,9 @@ export function getErrorEventDefinition (element) {
       if (property.errorRef) {
         errorRefEventDefinition.errorRef = property.errorRef
       }
-      return JSON.stringify(errorRefEventDefinition)
+      if (Object.keys(errorRefEventDefinition).length > 0) {
+        return JSON.stringify(errorRefEventDefinition)
+      }
     }
   }
   return undefined

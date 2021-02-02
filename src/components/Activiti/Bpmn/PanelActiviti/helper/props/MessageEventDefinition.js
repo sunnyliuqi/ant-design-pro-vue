@@ -56,7 +56,9 @@ export function getMessageEventDefinition (element) {
       if (property.messageRef) {
         messageEventDefinition.messageRef = property.messageRef
       }
-      return JSON.stringify(messageEventDefinition)
+      if (Object.keys(messageEventDefinition).length > 0) {
+        return JSON.stringify(messageEventDefinition)
+      }
     }
   }
   return undefined

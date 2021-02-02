@@ -56,7 +56,9 @@ export function getSignalEventDefinition (element) {
       if (property.signalRef) {
         signalRefEventDefinition.signalRef = property.signalRef
       }
-      return JSON.stringify(signalRefEventDefinition)
+      if (Object.keys(signalRefEventDefinition).length > 0) {
+        return JSON.stringify(signalRefEventDefinition)
+      }
     }
   }
   return undefined

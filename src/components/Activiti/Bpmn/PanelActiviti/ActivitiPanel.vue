@@ -43,7 +43,7 @@
                 placeholder="请输入描述"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('executionlisteners', element)">
+          <a-col :span="24" v-if="supportProperty('executionlisteners', element)">
             <a-form-item
               label="执行监听器"
               :labelCol="{ span: 8 }"
@@ -56,7 +56,7 @@
                 placeholder="请选择执行监听器"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('messageEventDefinition',element)">
+          <a-col :span="24" v-if="supportProperty('messageEventDefinition',element)">
             <a-form-item
               label="消息事件"
               :labelCol="{ span: 8 }"
@@ -69,7 +69,7 @@
                 placeholder="请选择消息事件"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('conditionalEventDefinition',element)">
+          <a-col :span="24" v-if="supportProperty('conditionalEventDefinition',element)">
             <a-form-item
               label="条件事件"
               :labelCol="{ span: 8 }"
@@ -82,7 +82,7 @@
                 placeholder="请输入条件事件"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('signalEventDefinition',element)">
+          <a-col :span="24" v-if="supportProperty('signalEventDefinition',element)">
             <a-form-item
               label="信号事件"
               :labelCol="{ span: 8 }"
@@ -95,7 +95,7 @@
                 placeholder="请选择信号事件"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('timeCycle',element)">
+          <a-col :span="24" v-if="supportProperty('timeCycle',element)">
             <a-form-item
               label="定时周期"
               :labelCol="{ span: 8 }"
@@ -108,7 +108,7 @@
                 placeholder="请输入定时周期"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('timeDate',element)">
+          <a-col :span="24" v-if="supportProperty('timeDate',element)">
             <a-form-item
               label="定时时间"
               :labelCol="{ span: 8 }"
@@ -121,7 +121,7 @@
                 placeholder="请输入定时时间"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('timeDuration',element)">
+          <a-col :span="24" v-if="supportProperty('timeDuration',element)">
             <a-form-item
               label="定时期间"
               :labelCol="{ span: 8 }"
@@ -134,7 +134,7 @@
                 placeholder="请输入定时期间"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('errorEventDefinition',element)">
+          <a-col :span="24" v-if="supportProperty('errorEventDefinition',element)">
             <a-form-item
               label="错误事件"
               :labelCol="{ span: 8 }"
@@ -147,7 +147,7 @@
                 placeholder="请输入错误事件"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('conditionExpression',element)">
+          <a-col :span="24" v-if="supportProperty('conditionExpression',element)">
             <a-form-item
               label="程条件"
               :labelCol="{ span: 8 }"
@@ -160,7 +160,7 @@
                 placeholder="请输入程条件"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('defaultFlow',element)">
+          <a-col :span="24" v-if="supportProperty('defaultFlow',element)">
             <a-form-item
               label="设为默认"
               :labelCol="{ span: 8 }"
@@ -174,7 +174,7 @@
               </a-checkbox-group>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('asynchronous',element)">
+          <a-col :span="24" v-if="supportProperty('asynchronous',element)">
             <a-form-item
               label="设为异步"
               :labelCol="{ span: 8 }"
@@ -188,7 +188,7 @@
               </a-checkbox-group>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('exclusive',element)">
+          <a-col :span="24" v-if="supportProperty('exclusive',element)">
             <a-form-item
               label="设为排他"
               :labelCol="{ span: 8 }"
@@ -202,7 +202,7 @@
               </a-checkbox-group>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('isSequential',element)">
+          <a-col :span="24" v-if="supportProperty('isSequential',element)">
             <a-form-item
               label="是否有序[多]"
               :labelCol="{ span: 8 }"
@@ -216,7 +216,7 @@
               </a-checkbox-group>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('loopCardinality',element)">
+          <a-col :span="24" v-if="supportProperty('loopCardinality',element)">
             <a-form-item
               label="循环基数[多]"
               :labelCol="{ span: 8 }"
@@ -229,7 +229,7 @@
                 placeholder="请输入循环基数"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('collection',element)">
+          <a-col :span="24" v-if="supportProperty('collection',element)">
             <a-form-item
               label="集合[多]"
               :labelCol="{ span: 8 }"
@@ -242,7 +242,7 @@
                 placeholder="请输入集合"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('elementVariable',element)">
+          <a-col :span="24" v-if="supportProperty('elementVariable',element)">
             <a-form-item
               label="变量[多]"
               :labelCol="{ span: 8 }"
@@ -255,7 +255,7 @@
                 placeholder="请输入变量"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('completionCondition',element)">
+          <a-col :span="24" v-if="supportProperty('completionCondition',element)">
             <a-form-item
               label="完成条件[多]"
               :labelCol="{ span: 8 }"
@@ -268,7 +268,7 @@
                 placeholder="请输入完成条件"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('isForCompensation',element)">
+          <a-col :span="24" v-if="supportProperty('isForCompensation',element)">
             <a-form-item
               label="是否补偿"
               :labelCol="{ span: 8 }"
@@ -282,7 +282,7 @@
               </a-checkbox-group>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('initiator',element)">
+          <a-col :span="24" v-if="supportProperty('initiator',element)">
             <a-form-item
               label="发起人"
               :labelCol="{ span: 8 }"
@@ -295,7 +295,7 @@
                 placeholder="请选择发起人"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('formKey',element)">
+          <a-col :span="24" v-if="supportProperty('formKey',element)">
             <a-form-item
               label="外置表单"
               :labelCol="{ span: 8 }"
@@ -308,7 +308,7 @@
                 placeholder="请选择外置表单"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('formProperties',element)">
+          <a-col :span="24" v-if="supportProperty('formProperties',element)">
             <a-form-item
               label="动态表单字段"
               :labelCol="{ span: 8 }"
@@ -321,7 +321,7 @@
                 placeholder="请设置动态表单字段"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('assignments', element)">
+          <a-col :span="24" v-if="supportProperty('assignments', element)">
             <a-form-item
               label="分配"
               :labelCol="{ span: 8 }"
@@ -334,7 +334,7 @@
                 placeholder="请选择分配"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('initiatorCanComplete',element)">
+          <a-col :span="24" v-if="supportProperty('initiatorCanComplete',element)">
             <a-form-item
               label="初始人完成"
               :labelCol="{ span: 8 }"
@@ -348,7 +348,7 @@
               </a-checkbox-group>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('dueDate',element)">
+          <a-col :span="24" v-if="supportProperty('dueDate',element)">
             <a-form-item
               label="到期日"
               :labelCol="{ span: 8 }"
@@ -361,7 +361,7 @@
                 placeholder="请输入到期日"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('priority',element)">
+          <a-col :span="24" v-if="supportProperty('priority',element)">
             <a-form-item
               label="优先级"
               :labelCol="{ span: 8 }"
@@ -374,7 +374,7 @@
                 placeholder="请输入优先级"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('taskListeners', element)">
+          <a-col :span="24" v-if="supportProperty('taskListeners', element)">
             <a-form-item
               label="任务监听器"
               :labelCol="{ span: 8 }"
@@ -387,7 +387,7 @@
                 placeholder="请选择任务监听器"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('rules', element)">
+          <a-col :span="24" v-if="supportProperty('rules', element)">
             <a-form-item
               label="规则"
               :labelCol="{ span: 8 }"
@@ -400,7 +400,7 @@
                 placeholder="请输入规则"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('inputVariables', element)">
+          <a-col :span="24" v-if="supportProperty('inputVariables', element)">
             <a-form-item
               label="输入变量"
               :labelCol="{ span: 8 }"
@@ -413,7 +413,7 @@
                 placeholder="请输入输入变量"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('exclude',element)">
+          <a-col :span="24" v-if="supportProperty('exclude',element)">
             <a-form-item
               label="排除"
               :labelCol="{ span: 8 }"
@@ -427,7 +427,7 @@
               </a-checkbox-group>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('resultVariables', element)">
+          <a-col :span="24" v-if="supportProperty('resultVariables', element)">
             <a-form-item
               label="结果变量"
               :labelCol="{ span: 8 }"
@@ -440,7 +440,7 @@
                 placeholder="请输入结果变量"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('class', element)">
+          <a-col :span="24" v-if="supportProperty('class', element)">
             <a-form-item
               label="类名"
               :labelCol="{ span: 8 }"
@@ -453,7 +453,7 @@
                 placeholder="请输入类名"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('expression', element)">
+          <a-col :span="24" v-if="supportProperty('expression', element)">
             <a-form-item
               label="表达式"
               :labelCol="{ span: 8 }"
@@ -466,7 +466,7 @@
                 placeholder="请输入表达式"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('delegateExpression', element)">
+          <a-col :span="24" v-if="supportProperty('delegateExpression', element)">
             <a-form-item
               label="代理表达式"
               :labelCol="{ span: 8 }"
@@ -479,7 +479,7 @@
                 placeholder="请输入代理表达式"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('fields', element)">
+          <a-col :span="24" v-if="supportProperty('fields', element)">
             <a-form-item
               label="字段"
               :labelCol="{ span: 8 }"
@@ -492,7 +492,7 @@
                 placeholder="请输入字段"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-show="supportProperty('resultVariableName', element)">
+          <a-col :span="24" v-if="supportProperty('resultVariableName', element)">
             <a-form-item
               label="结果变量名"
               :labelCol="{ span: 8 }"

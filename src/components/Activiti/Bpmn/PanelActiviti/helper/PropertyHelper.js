@@ -101,6 +101,14 @@ import {
   getDelegateExpression, isSupportDelegateExpression,
   setDelegateExpression
 } from './props/DelegateExpression'
+import {
+  getServiceFields, isSupportServiceFields,
+  setServiceFields
+} from './props/ServiceFields'
+import {
+  getResultVariableName, isSupportResultVariableName,
+  setResultVariableName
+} from './props/ResultVariableName'
 /**
  * 设置element properties
  * @param element
@@ -253,6 +261,10 @@ function setProperty (propertyName, propertyValue, element, modeler) {
     setExpression(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'delegateExpression') {
     setDelegateExpression(propertyValue, element, modeler, updateProperties)
+  } else if (propertyName === 'fields') {
+    setServiceFields(propertyValue, element, modeler, updateProperties)
+  } else if (propertyName === 'resultVariableName') {
+    setResultVariableName(propertyValue, element, modeler, updateProperties)
   } else {
     const _property = {}
     _property[propertyName] = getPropertyValue(propertyValue)
@@ -358,6 +370,10 @@ export function getValues (type, element) {
     return getExpression(element)
   } else if (type === 'delegateExpression') {
     return getDelegateExpression(element)
+  } else if (type === 'fields') {
+    return getServiceFields(element)
+  } else if (type === 'resultVariableName') {
+    return getResultVariableName(element)
   }
   return undefined
 }
@@ -451,6 +467,12 @@ export function removeBusinessObject (element, modeler) {
     if (!isSupportDelegateExpression(element)) {
       setDelegateExpression(undefined, element, modeler, updateProperties)
     }
+    if (!isSupportServiceFields(element)) {
+      setServiceFields(undefined, element, modeler, updateProperties)
+    }
+    if (!isSupportResultVariableName(element)) {
+      setResultVariableName(undefined, element, modeler, updateProperties)
+    }
   }
   return element
 }
@@ -528,6 +550,10 @@ export function supportProperty (type, element) {
     return isSupportExpression(element)
   } else if (type === 'delegateExpression') {
     return isSupportDelegateExpression(element)
+  } else if (type === 'fields') {
+    return isSupportServiceFields(element)
+  } else if (type === 'resultVariableName') {
+    return isSupportResultVariableName(element)
   }
   return false
 }

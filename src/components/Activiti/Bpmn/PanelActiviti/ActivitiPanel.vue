@@ -479,6 +479,32 @@
                 placeholder="请输入代理表达式"/>
             </a-form-item>
           </a-col>
+          <a-col :span="24" v-show="supportProperty('fields', element)">
+            <a-form-item
+              label="字段"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-input
+                v-decorator="[
+                  'fields',
+                  {initialValue: getValues('fields',element)}
+                ]"
+                placeholder="请输入字段"/>
+            </a-form-item>
+          </a-col>
+          <a-col :span="24" v-show="supportProperty('resultVariableName', element)">
+            <a-form-item
+              label="结果变量名"
+              :labelCol="{ span: 8 }"
+              :wrapperCol="{ span: 16 }">
+              <a-input
+                v-decorator="[
+                  'resultVariableName',
+                  {initialValue: getValues('resultVariableName',element)}
+                ]"
+                placeholder="请输入结果变量名"/>
+            </a-form-item>
+          </a-col>
         </a-row>
       </a-tab-pane>
       <a-tab-pane key="2" tab="流程属性">

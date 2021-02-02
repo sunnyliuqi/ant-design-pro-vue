@@ -17,6 +17,16 @@ export function setFields (propertyValue, element, modeler, updateProperties) {
   if (isEmpty(propertyValue)) {
     bo.fields = null
   }
+  try {
+    if (!(propertyValue instanceof Array)) {
+      propertyValue = JSON.parse(propertyValue)
+    }
+  } catch (e) {
+    throw new Error('字段内容格式不正确，请重新输入')
+  }
+  if (!bo.fields) {
+    bo.fields = []
+  }
   propertyValue.forEach(field => {
     bo.fields.push(createElementField(field, element, modeler))
   })

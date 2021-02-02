@@ -13,7 +13,7 @@ export function setAsync (propertyValue, element, modeler, updateProperties) {
   if (isEmpty(propertyValue)) {
     bo.async = undefined
   } else {
-    bo.async = propertyValue
+    bo.async = propertyValue[0]
   }
   if (updateProperties) {
     const _property = {}

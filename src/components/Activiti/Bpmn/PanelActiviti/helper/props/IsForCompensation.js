@@ -13,7 +13,7 @@ export function setIsForCompensation (propertyValue, element, modeler, updatePro
   if (isEmpty(propertyValue)) {
     bo.isForCompensation = undefined
   } else {
-    bo.isForCompensation = propertyValue
+    bo.isForCompensation = propertyValue[0]
   }
   if (updateProperties) {
     const _property = {}

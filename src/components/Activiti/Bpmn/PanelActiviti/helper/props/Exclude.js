@@ -13,7 +13,7 @@ export function setExclude (propertyValue, element, modeler, updateProperties) {
   if (isEmpty(propertyValue)) {
     bo.exclude = undefined
   } else {
-    bo.exclude = propertyValue
+    bo.exclude = propertyValue[0]
   }
   if (updateProperties) {
     const _property = {}

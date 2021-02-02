@@ -713,5 +713,8 @@
 <style scoped lang="less">
   .panelProperties {
     padding: 4px;
+    max-height: 740px;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 </style>

@@ -135,5 +135,8 @@ export function isSupportExecutionListeners (element) {
   if (element.type.includes('Task')) {
     return true
   }
+  if (element.type === 'bpmn:SubProcess') {
+    return true
+  }
   return false
 }

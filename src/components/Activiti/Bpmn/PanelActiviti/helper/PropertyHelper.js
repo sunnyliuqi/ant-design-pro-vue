@@ -699,7 +699,18 @@ export function getConnectType (element) {
   }
   return false
 }
-
+export function getSubProcessType (element) {
+  if (element.type === 'bpmn:SubProcess' && (!element.businessObject.triggeredByEvent || element.businessObject.triggeredByEvent === false)) {
+    return true
+  }
+  return false
+}
+export function getEventSubProcessType (element) {
+  if (element.type === 'bpmn:SubProcess' && element.businessObject.triggeredByEvent === true) {
+    return true
+  }
+  return false
+}
 /**
  * 更新元素
  * @param modeler

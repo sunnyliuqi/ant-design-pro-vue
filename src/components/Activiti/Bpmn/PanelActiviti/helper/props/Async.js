@@ -1,5 +1,5 @@
 import { isEmpty } from '@/utils/common'
-import { getBpmnFactory, getBusinessObject, getStartEventType } from '../PropertyHelper'
+import { getBpmnFactory, getBusinessObject, getSubProcessType } from '../PropertyHelper'
 
 /**
  * 设置/创建 Async 属性
@@ -43,6 +43,12 @@ export function getAsync (element) {
  */
 export function isSupportAsync (element) {
   if (element.type.includes('Task')) {
+    return true
+  }
+  if (element.type.includes('Gateway')) {
+    return true
+  }
+  if (element.type === 'bpmn:SubProcess') {
     return true
   }
   return false

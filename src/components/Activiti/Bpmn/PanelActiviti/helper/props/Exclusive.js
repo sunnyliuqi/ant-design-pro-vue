@@ -47,5 +47,11 @@ export function isSupportExclusive (element) {
   if (element.type.includes('Task')) {
     return true
   }
+  if (element.type.includes('Gateway')) {
+    return true
+  }
+  if (element.type === 'bpmn:SubProcess') {
+    return true
+  }
   return false
 }

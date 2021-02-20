@@ -43,15 +43,15 @@
                 placeholder="请输入描述"/>
             </a-form-item>
           </a-col>
-          <a-col :span="24" v-if="supportProperty('executionlisteners', element)">
+          <a-col :span="24" v-if="supportProperty('executionListeners', element)">
             <a-form-item
               label="执行监听器"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
               <a-textarea
                 v-decorator="[
-                  'executionlisteners',
-                  {initialValue: getValues('executionlisteners',element)}
+                  'executionListeners',
+                  {initialValue: getValues('executionListeners',element)}
                 ]"
                 placeholder="请选择执行监听器"/>
             </a-form-item>
@@ -530,7 +530,7 @@
               :wrapperCol="{ span: 16 }">
               <a-input
                 v-decorator="[
-                  'processname',
+                  'process-name',
                   {initialValue: getValues('name',processElement)}
                 ]"
                 placeholder="请输入流程名称"/>
@@ -543,7 +543,7 @@
               :wrapperCol="{ span: 16 }">
               <a-textarea
                 v-decorator="[
-                  'processdocumentation',
+                  'process-documentation',
                   {initialValue: getValues('documentation',processElement)}
                 ]"
                 placeholder="请输入流程描述"/>
@@ -556,7 +556,7 @@
               :wrapperCol="{ span: 16 }">
               <a-input
                 v-decorator="[
-                  'processauthor',
+                  'process-author',
                   {initialValue: getValues('author',processElement)}
                 ]"
                 placeholder="请输入流程作者"/>
@@ -569,7 +569,7 @@
               :wrapperCol="{ span: 16 }">
               <a-input
                 v-decorator="[
-                  'processversion',
+                  'process-version',
                   {initialValue: getValues('version',processElement)}
                 ]"
                 placeholder="请输入流程版本"/>
@@ -582,8 +582,8 @@
               :wrapperCol="{ span: 16 }">
               <a-textarea
                 v-decorator="[
-                  'processexecutionlisteners',
-                  {initialValue: getValues('executionlisteners',processElement)}
+                  'process-executionListeners',
+                  {initialValue: getValues('executionListeners',processElement)}
                 ]"
                 placeholder="请选择流程执行监听器"/>
             </a-form-item>
@@ -595,8 +595,8 @@
               :wrapperCol="{ span: 16 }">
               <a-textarea
                 v-decorator="[
-                  'processeventlisteners',
-                  {initialValue: getValues('eventlisteners',processElement)}
+                  'process-eventListeners',
+                  {initialValue: getValues('eventListeners',processElement)}
                 ]"
                 placeholder="请选择流程事件监听"/>
             </a-form-item>
@@ -608,8 +608,8 @@
               :wrapperCol="{ span: 16 }">
               <a-textarea
                 v-decorator="[
-                  'processsignaldefinitions',
-                  {initialValue: getValues('signaldefinitions',processElement)}
+                  'process-signalDefinitions',
+                  {initialValue: getValues('signalDefinitions',processElement)}
                 ]"
                 placeholder="请选择流程信号定义"/>
             </a-form-item>
@@ -621,8 +621,8 @@
               :wrapperCol="{ span: 16 }">
               <a-textarea
                 v-decorator="[
-                  'processmessagedefinitions',
-                  {initialValue: getValues('messagedefinitions',processElement)}
+                  'process-messageDefinitions',
+                  {initialValue: getValues('messageDefinitions',processElement)}
                 ]"
                 placeholder="请选择流程消息定义"/>
             </a-form-item>
@@ -645,7 +645,9 @@
       },
       getValues: {
         type: Function,
-        default: undefined
+        default: function (propertyName, element) {
+          return undefined
+        }
       },
       element: {
         type: Object,
@@ -699,7 +701,7 @@
               if (key === 'dueDate') {
                 properties[key] = formatDate(values[key], 'YYYY-MM-DD')
               } else {
-                properties[key.replace('process', '')] = values[key]
+                properties[key.replace('process-', '')] = values[key]
               }
             })
             this.updateBpmn(this.element, properties)

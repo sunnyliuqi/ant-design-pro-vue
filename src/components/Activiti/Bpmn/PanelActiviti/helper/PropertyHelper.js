@@ -141,13 +141,13 @@ export function setProperties (element, properties, modeler) {
 function setProperty (propertyName, propertyValue, element, modeler) {
   if (propertyName === 'documentation') {
     setDocumentation(propertyValue, element, modeler, updateProperties)
-  } else if (propertyName === 'executionlisteners') {
+  } else if (propertyName === 'executionListeners') {
     setExecutionListeners(propertyValue, element, modeler, updateProperties)
-  } else if (propertyName === 'eventlisteners') {
+  } else if (propertyName === 'eventListeners') {
     setEventListeners(propertyValue, element, modeler, updateProperties)
-  } else if (propertyName === 'signaldefinitions') {
+  } else if (propertyName === 'signalDefinitions') {
     setSignalDefinitions(propertyValue, element, modeler, updateProperties)
-  } else if (propertyName === 'messagedefinitions') {
+  } else if (propertyName === 'messageDefinitions') {
     setMessageDefinitions(propertyValue, element, modeler, updateProperties)
   } else if (propertyName === 'initiator') {
     setInitiator(propertyValue, element, modeler, updateProperties)
@@ -285,13 +285,13 @@ export function getValues (type, element) {
     return element.businessObject && element.businessObject.$attrs && element.businessObject.$attrs.author
   } else if (type === 'version') {
     return element.businessObject && element.businessObject.$attrs && element.businessObject.$attrs.version
-  } else if (type === 'executionlisteners') {
+  } else if (type === 'executionListeners') {
     return getExecutionListeners(element)
-  } else if (type === 'eventlisteners') {
+  } else if (type === 'eventListeners') {
     return getEventListeners(element)
-  } else if (type === 'signaldefinitions') {
+  } else if (type === 'signalDefinitions') {
     return getSignalDefinitions(element)
-  } else if (type === 'messagedefinitions') {
+  } else if (type === 'messageDefinitions') {
     return getMessageDefinitions(element)
   } else if (type === 'initiator') {
     return getInitiator(element)
@@ -484,7 +484,7 @@ export function removeBusinessObject (element, modeler) {
  * @constructor
  */
 export function supportProperty (type, element) {
-  if (type === 'executionlisteners') {
+  if (type === 'executionListeners') {
     return isSupportExecutionListeners(element)
   } else if (type === 'initiator') {
     return isSupportInitiator(element)

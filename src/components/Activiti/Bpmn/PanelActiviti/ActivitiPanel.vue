@@ -48,12 +48,9 @@
               label="执行监听器"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
-              <a-textarea
-                v-decorator="[
-                  'executionListeners',
-                  {initialValue: getValues('executionListeners',element)}
-                ]"
-                placeholder="请选择执行监听器"/>
+              <execution-listeners
+                v-model="executionListenersValues"
+              />
             </a-form-item>
           </a-col>
           <a-col :span="24" v-if="supportProperty('messageEventDefinition',element)">
@@ -636,8 +633,12 @@
 <script>
   import { supportProperty } from './helper/PropertyHelper'
   import { getMoment, formatDate } from '@/utils/common'
+  import ExecutionListeners from './components/ExecutionListeners'
   export default {
     name: 'ActivitiPanel',
+    components: {
+      ExecutionListeners
+    },
     props: {
       updateBpmn: {
         type: Function,
@@ -661,12 +662,14 @@
         getMoment,
         formatDate,
         processElement: {},
-        supportProperty
+        supportProperty,
+        executionListenersValues: undefined
       }
     },
     mounted () {
     },
-    computed: {},
+    computed: {
+    },
     watch: {
       element: function (val) {
         if (val && val.type && val.type !== 'bpmn:Process') {
@@ -676,6 +679,10 @@
           this.tabKey = '2'
         }
         this.formPanel.resetFields()
+        this.executionListenersValues = this.getValues('executionListeners', this.element)
+      },
+      executionListenersValues: function (val) {
+        this.onPanelValuesChange(undefined, { 'executionListeners': val })
       }
     },
     methods: {

@@ -59,7 +59,7 @@
               </span>
             </span>
             <template slot="footer">
-              <a-button type="dashed" class="footer-button">新增监听器</a-button>
+              <a-button type="dashed" class="footer-button" @click="handleAddListener">新增监听器</a-button>
             </template>
             <p slot="expandedRowRender" slot-scope="record" class="table-expanded">
               <a-table
@@ -108,7 +108,7 @@
                   </span>
                 </span>
                 <template slot="footer">
-                  <a-button type="dashed" class="footer-button">新增字段</a-button>
+                  <a-button type="dashed" class="footer-button" @click="handleAddField(record.key)">新增字段</a-button>
                 </template>
               </a-table>
             </p>
@@ -236,6 +236,10 @@
         this.stateValue = targets
       },
       handleAddListener () {
+        const listener = { key: uuid() }
+        const newData = [...this.stateValue]
+        newData.push(listener)
+        this.stateValue = newData
       },
       editField (parentKey, key) {
         const newData = [...this.stateValue]
@@ -286,6 +290,17 @@
         }
       },
       handleAddField (parentKey) {
+        const targetListener = this.stateValue.filter(item => parentKey === item.key)[0]
+        if (targetListener) {
+          const field = { key: uuid() }
+          const newData = [...targetListener.fields]
+          newData.push(field)
+          this.stateValue.forEach(item => {
+            if (parentKey === item.key) {
+              item.fields = newData
+            }
+          })
+        }
       },
       wrapperToObj (str) {
         if (!isEmpty(str)) {

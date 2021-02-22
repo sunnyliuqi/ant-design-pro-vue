@@ -3,7 +3,7 @@
     <a-button v-if="isEmpty(executionListeners)" icon="select" @click="handleExecutionListener">未配置执行监听器</a-button>
     <a-button icon="check" v-else @click="handleExecutionListener">{{ getSelectedExecutionListeners() }}</a-button>
     <a-drawer
-      wrapClassName="custom-drawer"
+      wrapClassName="custom-drawer custom-drawer-6"
       :maskClosable="false"
       title="配置执行监听器"
       @close="onClose"
@@ -16,7 +16,7 @@
             class="table-footer"
             :pagination="false"
             :columns="columns"
-            :data-source="statsValue"
+            :data-source="stateValue"
             :rowKey="(record, index)=>{return record.key}">
             <span slot="event" slot-scope="text, record">
               <a-input v-if="record.editable" v-model="record.event" placeholder="请选择事件类型"/>
@@ -67,10 +67,42 @@
                 :columns="columnFields"
                 :data-source="record.fields"
                 :rowKey="(field, indexField)=>{return indexField}">
-                <span slot="sequence" slot-scope="textField, recordField, indexField">
-                  {{ indexField+1 }}
+                <span slot="name" slot-scope="textField, recordField">
+                  <a-input v-if="recordField.editable" v-model="recordField.name" placeholder="请输入字段名称"/>
+                  <template v-else>
+                    {{ textField }}
+                  </template>
+                </span>
+                <span slot="string" slot-scope="textField, recordField">
+                  <a-input v-if="recordField.editable" v-model="recordField.string" placeholder="请输入字符串"/>
+                  <template v-else>
+                    {{ textField }}
+                  </template>
+                </span>
+                <span slot="stringValue" slot-scope="textField, recordField">
+                  <a-input v-if="recordField.editable" v-model="recordField.stringValue" placeholder="请输入字符串值"/>
+                  <template v-else>
+                    {{ textField }}
+                  </template>
+                </span>
+                <span slot="expression" slot-scope="textField, recordField">
+                  <a-input v-if="recordField.editable" v-model="recordField.expression" placeholder="请输入表达式"/>
+                  <template v-else>
+                    {{ textField }}
+                  </template>
                 </span>
                 <span slot="action" slot-scope="textField, recordField">
+                  <span v-if="recordField.editable">
+                    <a @click="() => saveField(record.key, recordField.key)">保存</a>
+                    <a-divider type="vertical"/>
+                    <a-popconfirm title="确定取消吗?" @confirm="() => cancelField(record.key, recordField.key)">
+                      <a href="javascript:void(0)">取消</a>
+                    </a-popconfirm>
+                  </span>
+                  <span v-else>
+                    <a @click="() => editField(record.key, recordField.key)">编辑</a>
+                  </span>
+                  <a-divider type="vertical"/>
                   <a-popconfirm title="您确认删除吗?" @confirm="handleDelete(recordField)" okText="确认" cancelText="取消">
                     <a href="javascript:void(0)">删除</a>
                   </a-popconfirm>
@@ -123,11 +155,10 @@
     }
   ]
   const columnFields = [
-    { title: '序号', dataIndex: 'sequence', key: 'sequence', scopedSlots: { customRender: 'sequence' } },
-    { title: '名称', dataIndex: 'name', key: 'name' },
-    { title: '字符串', dataIndex: 'string', key: 'string' },
-    { title: '字符串值', dataIndex: 'stringValue', key: 'stringValue' },
-    { title: '表达式', dataIndex: 'expression', key: 'expression' },
+    { title: '名称', dataIndex: 'name', key: 'name', scopedSlots: { customRender: 'name' } },
+    { title: '字符串', dataIndex: 'string', key: 'string', scopedSlots: { customRender: 'string' } },
+    { title: '字符串值', dataIndex: 'stringValue', key: 'stringValue', scopedSlots: { customRender: 'stringValue' } },
+    { title: '表达式', dataIndex: 'expression', key: 'expression', scopedSlots: { customRender: 'expression' } },
     {
       title: '操作',
       key: 'action',
@@ -150,9 +181,11 @@
     data () {
       return {
         isEmpty,
-        statsValue: undefined,
+        stateValue: undefined,
         cacheData: undefined,
         editingKey: '',
+        cacheFieldData: undefined,
+        editingFieldKey: '',
         visible: false,
         columns,
         columnFields
@@ -160,41 +193,92 @@
     },
     watch: {
       executionListeners: function (newVal, oldVal) {
-        this.statsValue = this.wrapperToObj(newVal)
-        this.cacheData = this.statsValue.map(item => ({ ...item }))
+        this.synData(newVal)
       }
     },
     methods: {
+      synData (val) {
+        this.stateValue = this.wrapperToObj(val)
+        this.cacheData = this.stateValue.map(item => {
+          return { ...item }
+        })
+        if (this.cacheData) {
+          this.cacheData.forEach(item => {
+            if (item.fields && item.fields.length && item.fields.length > 0) {
+              item.fields = item.fields.map(childrenItem => {
+                childrenItem.key = uuid()
+                return Object.assign({}, childrenItem)
+              })
+            }
+          })
+        }
+      },
       editListener (key) {
-        const newData = [...this.statsValue]
+        const newData = [...this.stateValue]
         const target = newData.filter(item => key === item.key)[0]
         this.editingKey = key
         if (target) {
           target.editable = true
-          this.statsValue = newData
+          this.stateValue = newData
         }
       },
       saveListener (key) {
-        const newData = [...this.statsValue]
+        const newData = [...this.stateValue]
         const newCacheData = [...this.cacheData]
         const target = newData.filter(item => key === item.key)[0]
         const targetCache = newCacheData.filter(item => key === item.key)[0]
         if (target && targetCache) {
           delete target.editable
-          this.statsValue = newData
+          this.stateValue = newData
           Object.assign(targetCache, target)
           this.cacheData = newCacheData
         }
         this.editingKey = ''
       },
       cancelListener (key) {
-        const newData = [...this.statsValue]
+        const newData = [...this.stateValue]
         const target = newData.filter(item => key === item.key)[0]
         this.editingKey = ''
         if (target) {
           Object.assign(target, this.cacheData.filter(item => key === item.key)[0])
           delete target.editable
-          this.statsValue = newData
+          this.stateValue = newData
+        }
+      },
+      editField (parentKey, key) {
+        const newData = [...this.stateValue]
+        const target = newData.filter(item => parentKey === item.key)[0]
+        this.editingKey = key
+        if (target && target.fields && target.fields.length && target.fields.length > 0) {
+          const targetField = target.fields.filter(item => key === item.key)[0]
+          targetField.editable = true
+          this.stateValue = newData
+        }
+      },
+      saveField (parentKey, key) {
+        const newData = [...this.stateValue]
+        const newCacheData = [...this.cacheData]
+        const target = newData.filter(item => parentKey === item.key)[0]
+        const targetCache = newCacheData.filter(item => parentKey === item.key)[0]
+        if (target && targetCache && target.fields && target.fields.length && target.fields.length > 0) {
+          const targetField = target.fields.filter(item => key === item.key)[0]
+          delete targetField.editable
+          this.stateValue = newData
+          Object.assign(targetCache, target)
+          this.cacheData = newCacheData
+        }
+        this.editingKey = ''
+      },
+      cancelField (parentKey, key) {
+        const newData = [...this.stateValue]
+        const target = newData.filter(item => parentKey === item.key)[0]
+        this.editingKey = ''
+        if (target && target.fields && target.fields.length && target.fields.length > 0) {
+          const targetField = target.fields.filter(item => key === item.key)[0]
+          const cacheField = this.cacheData.filter(item => parentKey === item.key)[0]
+          delete targetField.editable
+          Object.assign(targetField, cacheField.fields.filter(item => key === item.key)[0])
+          this.stateValue = newData
         }
       },
       handleDelete (record) {
@@ -232,8 +316,7 @@
         return `已配置${eLength}个执行监听器`
       },
       handleExecutionListener () {
-        this.statsValue = this.wrapperToObj(this.executionListeners)
-        this.cacheData = this.statsValue.map(item => ({ ...item }))
+        this.synData(this.executionListeners)
         this.show()
       },
       handleSubmit (e) {
@@ -244,9 +327,10 @@
       },
       onClose () {
         this.visible = false
-        this.$emit('change', this.unWrapperToString(this.statsValue))
-        this.statsValue = undefined
+        this.$emit('change', this.unWrapperToString(this.stateValue))
+        this.stateValue = undefined
         this.cacheData = undefined
+        this.cacheFieldData = undefined
       }
     }
   }

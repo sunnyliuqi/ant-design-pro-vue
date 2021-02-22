@@ -3,7 +3,7 @@
     <a-button v-if="isEmpty(executionListeners)" icon="select" @click="handleExecutionListener">未配置执行监听器</a-button>
     <a-button icon="check" v-else @click="handleExecutionListener">{{ getSelectedExecutionListeners() }}</a-button>
     <a-drawer
-      wrapClassName="custom-drawer custom-drawer-6"
+      wrapClassName="custom-drawer custom-drawer-7"
       :maskClosable="false"
       title="配置执行监听器"
       @close="onClose"
@@ -52,11 +52,11 @@
               </span>
               <span v-else>
                 <a @click="() => editListener(record.key)">编辑</a>
+                <a-divider type="vertical"/>
+                <a-popconfirm title="您确认删除吗?" @confirm="handleDeleteListener(record.key)" okText="确认" cancelText="取消">
+                  <a href="javascript:void(0)">删除</a>
+                </a-popconfirm>
               </span>
-              <a-divider type="vertical"/>
-              <a-popconfirm title="您确认删除吗?" @confirm="handleDeleteListener(record.key)" okText="确认" cancelText="取消">
-                <a href="javascript:void(0)">删除</a>
-              </a-popconfirm>
             </span>
             <template slot="footer">
               <a-button type="dashed" class="footer-button">新增监听器</a-button>
@@ -101,11 +101,11 @@
                   </span>
                   <span v-else>
                     <a @click="() => editField(record.key, recordField.key)">编辑</a>
+                    <a-divider type="vertical"/>
+                    <a-popconfirm title="您确认删除吗?" @confirm="handleDeleteField(record.key, recordField.key)" okText="确认" cancelText="取消">
+                      <a href="javascript:void(0)">删除</a>
+                    </a-popconfirm>
                   </span>
-                  <a-divider type="vertical"/>
-                  <a-popconfirm title="您确认删除吗?" @confirm="handleDeleteField(record.key, recordField.key)" okText="确认" cancelText="取消">
-                    <a href="javascript:void(0)">删除</a>
-                  </a-popconfirm>
                 </span>
                 <template slot="footer">
                   <a-button type="dashed" class="footer-button">新增字段</a-button>
@@ -229,6 +229,11 @@
         this.editingKey = ''
       },
       handleDeleteListener (key) {
+        const newData = [...this.stateValue]
+        const targets = newData.filter(item => {
+          return key !== item.key
+        })
+        this.stateValue = targets
       },
       handleAddListener () {
       },
@@ -273,6 +278,12 @@
         }
       },
       handleDeleteField (parentKey, key) {
+        const newData = [...this.stateValue]
+        const targetListener = newData.filter(item => parentKey === item.key)[0]
+        if (targetListener && targetListener.fields && targetListener.fields.length && targetListener.fields.length > 0) {
+          const targets = targetListener.fields.filter(item => key !== item.key)
+          targetListener.fields = targets
+        }
       },
       handleAddField (parentKey) {
       },

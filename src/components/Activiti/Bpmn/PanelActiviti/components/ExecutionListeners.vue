@@ -54,7 +54,7 @@
                 <a @click="() => editListener(record.key)">编辑</a>
               </span>
               <a-divider type="vertical"/>
-              <a-popconfirm title="您确认删除吗?" @confirm="handleDelete(record)" okText="确认" cancelText="取消">
+              <a-popconfirm title="您确认删除吗?" @confirm="handleDeleteListener(record.key)" okText="确认" cancelText="取消">
                 <a href="javascript:void(0)">删除</a>
               </a-popconfirm>
             </span>
@@ -103,7 +103,7 @@
                     <a @click="() => editField(record.key, recordField.key)">编辑</a>
                   </span>
                   <a-divider type="vertical"/>
-                  <a-popconfirm title="您确认删除吗?" @confirm="handleDelete(recordField)" okText="确认" cancelText="取消">
+                  <a-popconfirm title="您确认删除吗?" @confirm="handleDeleteField(record.key, recordField.key)" okText="确认" cancelText="取消">
                     <a href="javascript:void(0)">删除</a>
                   </a-popconfirm>
                 </span>
@@ -182,9 +182,9 @@
       return {
         isEmpty,
         stateValue: undefined,
-        cacheData: undefined,
+        cacheListener: undefined,
         editingKey: '',
-        cacheFieldData: undefined,
+        cacheField: undefined,
         editingFieldKey: '',
         visible: false,
         columns,
@@ -193,95 +193,88 @@
     },
     watch: {
       executionListeners: function (newVal, oldVal) {
-        this.synData(newVal)
+        this.stateValue = this.wrapperToObj(newVal)
       }
     },
     methods: {
-      synData (val) {
-        this.stateValue = this.wrapperToObj(val)
-        this.cacheData = this.stateValue.map(item => {
-          return { ...item }
-        })
-        if (this.cacheData) {
-          this.cacheData.forEach(item => {
-            if (item.fields && item.fields.length && item.fields.length > 0) {
-              item.fields = item.fields.map(childrenItem => {
-                childrenItem.key = uuid()
-                return Object.assign({}, childrenItem)
-              })
-            }
-          })
-        }
-      },
       editListener (key) {
         const newData = [...this.stateValue]
         const target = newData.filter(item => key === item.key)[0]
         this.editingKey = key
         if (target) {
+          this.cacheListener = { ...target }
           target.editable = true
           this.stateValue = newData
         }
       },
       saveListener (key) {
         const newData = [...this.stateValue]
-        const newCacheData = [...this.cacheData]
         const target = newData.filter(item => key === item.key)[0]
-        const targetCache = newCacheData.filter(item => key === item.key)[0]
-        if (target && targetCache) {
+        if (target) {
           delete target.editable
           this.stateValue = newData
-          Object.assign(targetCache, target)
-          this.cacheData = newCacheData
+          this.cacheListener = undefined
         }
         this.editingKey = ''
       },
       cancelListener (key) {
         const newData = [...this.stateValue]
         const target = newData.filter(item => key === item.key)[0]
-        this.editingKey = ''
         if (target) {
-          Object.assign(target, this.cacheData.filter(item => key === item.key)[0])
+          Object.assign(target, this.cacheListener)
           delete target.editable
           this.stateValue = newData
+          this.cacheListener = undefined
         }
+        this.editingKey = ''
+      },
+      handleDeleteListener (key) {
+      },
+      handleAddListener () {
       },
       editField (parentKey, key) {
         const newData = [...this.stateValue]
-        const target = newData.filter(item => parentKey === item.key)[0]
-        this.editingKey = key
-        if (target && target.fields && target.fields.length && target.fields.length > 0) {
-          const targetField = target.fields.filter(item => key === item.key)[0]
-          targetField.editable = true
-          this.stateValue = newData
+        const targetListener = newData.filter(item => parentKey === item.key)[0]
+        if (targetListener && targetListener.fields && targetListener.fields.length && targetListener.fields.length > 0) {
+          const target = targetListener.fields.filter(item => key === item.key)[0]
+          this.editingFieldKey = key
+          if (target) {
+            this.cacheField = { ...target }
+            target.editable = true
+            this.stateValue = newData
+          }
         }
       },
       saveField (parentKey, key) {
         const newData = [...this.stateValue]
-        const newCacheData = [...this.cacheData]
-        const target = newData.filter(item => parentKey === item.key)[0]
-        const targetCache = newCacheData.filter(item => parentKey === item.key)[0]
-        if (target && targetCache && target.fields && target.fields.length && target.fields.length > 0) {
-          const targetField = target.fields.filter(item => key === item.key)[0]
-          delete targetField.editable
-          this.stateValue = newData
-          Object.assign(targetCache, target)
-          this.cacheData = newCacheData
+        const targetListener = newData.filter(item => parentKey === item.key)[0]
+        if (targetListener && targetListener.fields && targetListener.fields.length && targetListener.fields.length > 0) {
+          const target = targetListener.fields.filter(item => key === item.key)[0]
+          if (target) {
+            delete target.editable
+            this.stateValue = newData
+            this.cacheField = undefined
+          }
+          this.editingFieldKey = ''
         }
-        this.editingKey = ''
       },
       cancelField (parentKey, key) {
         const newData = [...this.stateValue]
-        const target = newData.filter(item => parentKey === item.key)[0]
-        this.editingKey = ''
-        if (target && target.fields && target.fields.length && target.fields.length > 0) {
-          const targetField = target.fields.filter(item => key === item.key)[0]
-          const cacheField = this.cacheData.filter(item => parentKey === item.key)[0]
-          delete targetField.editable
-          Object.assign(targetField, cacheField.fields.filter(item => key === item.key)[0])
-          this.stateValue = newData
+        const targetListener = newData.filter(item => parentKey === item.key)[0]
+        if (targetListener && targetListener.fields && targetListener.fields.length && targetListener.fields.length > 0) {
+          const target = targetListener.fields.filter(item => key === item.key)[0]
+          if (target) {
+            Object.assign(target, this.cacheField)
+            delete target.editable
+            this.stateValue = newData
+            this.cacheField = undefined
+          }
+          this.editingFieldKey = ''
         }
       },
-      handleDelete (record) {
+      handleDeleteField (parentKey, key) {
+      },
+      handleAddField (parentKey) {
       },
       wrapperToObj (str) {
         if (!isEmpty(str)) {
@@ -290,6 +283,12 @@
             if (obj) {
               obj.forEach(item => {
                 item.key = uuid()
+                if (item.fields && item.fields.length && item.fields.length > 0) {
+                  item.fields = item.fields.map(childrenItem => {
+                    childrenItem.key = uuid()
+                    return Object.assign({}, childrenItem)
+                  })
+                }
               })
             }
           return obj
@@ -316,7 +315,7 @@
         return `已配置${eLength}个执行监听器`
       },
       handleExecutionListener () {
-        this.synData(this.executionListeners)
+        this.stateValue = this.wrapperToObj(this.executionListeners)
         this.show()
       },
       handleSubmit (e) {
@@ -329,8 +328,10 @@
         this.visible = false
         this.$emit('change', this.unWrapperToString(this.stateValue))
         this.stateValue = undefined
-        this.cacheData = undefined
-        this.cacheFieldData = undefined
+        this.cacheListener = undefined
+        this.cacheField = undefined
+        this.editingKey = ''
+        this.editingFieldKey = ''
       }
     }
   }

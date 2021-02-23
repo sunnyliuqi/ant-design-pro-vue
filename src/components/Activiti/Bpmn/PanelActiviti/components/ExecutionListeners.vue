@@ -367,6 +367,7 @@
         this.show()
       },
       handleSubmit (e) {
+        this.$emit('change', this.unWrapperToString(this.stateValue))
         this.onClose()
       },
       show () {
@@ -374,7 +375,6 @@
       },
       onClose () {
         this.visible = false
-        this.$emit('change', this.unWrapperToString(this.stateValue))
         this.stateValue = undefined
         this.cacheListener = undefined
         this.cacheField = undefined

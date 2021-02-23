@@ -236,7 +236,7 @@
         this.stateValue = targets
       },
       handleAddListener () {
-        const listener = { key: uuid() }
+        const listener = { key: uuid(), event: undefined, class: undefined, expression: undefined, delegateExpression: undefined }
         const newData = [...this.stateValue]
         newData.push(listener)
         this.stateValue = newData
@@ -292,14 +292,20 @@
       handleAddField (parentKey) {
         const targetListener = this.stateValue.filter(item => parentKey === item.key)[0]
         if (targetListener) {
-          const field = { key: uuid() }
-          const newData = [...targetListener.fields]
+          const field = { key: uuid(), name: undefined, string: undefined, stringValue: undefined, expression: undefined }
+          let newData
+          if (targetListener.fields) {
+            newData = [...targetListener.fields]
+          } else {
+            newData = []
+          }
           newData.push(field)
           this.stateValue.forEach(item => {
             if (parentKey === item.key) {
               item.fields = newData
             }
           })
+          this.stateValue = [...this.stateValue]
         }
       },
       wrapperToObj (str) {

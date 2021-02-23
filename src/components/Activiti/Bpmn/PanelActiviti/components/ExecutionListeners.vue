@@ -19,7 +19,17 @@
             :data-source="stateValue"
             :rowKey="(record, index)=>{return record.key}">
             <span slot="event" slot-scope="text, record">
-              <a-input v-if="record.editable" v-model="record.event" placeholder="请选择事件类型"/>
+              <a-select v-if="record.editable" v-model="record.event" placeholder="请选择事件类型">
+                <a-select-option value="start">
+                  start
+                </a-select-option>
+                <a-select-option value="end">
+                  end
+                </a-select-option>
+                <a-select-option value="take">
+                  take
+                </a-select-option>
+              </a-select>
               <template v-else>
                 {{ text }}
               </template>
@@ -236,7 +246,7 @@
         this.stateValue = targets
       },
       handleAddListener () {
-        const listener = { key: uuid(), event: undefined, class: undefined, expression: undefined, delegateExpression: undefined }
+        const listener = { key: uuid(), event: 'start', class: undefined, expression: undefined, delegateExpression: undefined }
         let newData
         if (this.stateValue) {
           newData = [...this.stateValue]

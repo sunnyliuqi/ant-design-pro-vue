@@ -577,12 +577,9 @@
               label="流程执行监听器"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
-              <a-textarea
-                v-decorator="[
-                  'process-executionListeners',
-                  {initialValue: getValues('executionListeners',processElement)}
-                ]"
-                placeholder="请选择流程执行监听器"/>
+              <execution-listeners
+                v-model="processExecutionListenersValues"
+              />
             </a-form-item>
           </a-col>
           <a-col :span="24">
@@ -663,7 +660,8 @@
         formatDate,
         processElement: {},
         supportProperty,
-        executionListenersValues: undefined
+        executionListenersValues: undefined,
+        processExecutionListenersValues: undefined
       }
     },
     mounted () {
@@ -680,9 +678,13 @@
         }
         this.formPanel.resetFields()
         this.executionListenersValues = this.getValues('executionListeners', this.element)
+        this.processExecutionListenersValues = this.getValues('executionListeners', this.processElement)
       },
       executionListenersValues: function (val) {
         this.onPanelValuesChange(undefined, { 'executionListeners': val })
+      },
+      processExecutionListenersValues: function (val) {
+        this.onPanelValuesChange(undefined, { 'process-executionListeners': val })
       }
     },
     methods: {

@@ -237,7 +237,12 @@
       },
       handleAddListener () {
         const listener = { key: uuid(), event: undefined, class: undefined, expression: undefined, delegateExpression: undefined }
-        const newData = [...this.stateValue]
+        let newData
+        if (this.stateValue) {
+          newData = [...this.stateValue]
+        } else {
+          newData = []
+        }
         newData.push(listener)
         this.stateValue = newData
       },
@@ -288,6 +293,7 @@
           const targets = targetListener.fields.filter(item => key !== item.key)
           targetListener.fields = targets
         }
+        this.stateValue = newData
       },
       handleAddField (parentKey) {
         const targetListener = this.stateValue.filter(item => parentKey === item.key)[0]

@@ -54,7 +54,7 @@ function createElementSignal (signal, element, modeler) {
   const property = {}
   property.id = getPropertyValue(signal.id)
   property.name = getPropertyValue(signal.name)
-  property.scop = getPropertyValue(signal.scop)
+  property.scope = getPropertyValue(signal.scope)
   return createElement('bpmn:Signal', property, element, getBpmnFactory(modeler))
 }
 /**
@@ -77,8 +77,8 @@ export function getSignalDefinitions (element) {
       if (property.name) {
         signal.name = property.name
       }
-      if (property.scop) {
-        signal.scop = property.scop
+      if (property.scope) {
+        signal.scope = property.scope
       }
       signals.push(signal)
     })

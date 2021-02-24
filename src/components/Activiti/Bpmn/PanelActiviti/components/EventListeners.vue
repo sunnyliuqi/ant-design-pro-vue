@@ -82,10 +82,10 @@
             </span>
             <span slot="action" slot-scope="text, record">
               <span v-if="record.editable">
-                <a @click="() => saveListener(record.key)">保存</a>
+                <a @click="() => saveListener(record.key)">关闭编辑</a>
                 <a-divider type="vertical"/>
-                <a-popconfirm title="确定取消吗?" @confirm="() => cancelListener(record.key)">
-                  <a href="javascript:void(0)">取消</a>
+                <a-popconfirm title="确定撤销吗?" @confirm="() => cancelListener(record.key)">
+                  <a href="javascript:void(0)">撤销</a>
                 </a-popconfirm>
               </span>
               <span v-else>
@@ -201,7 +201,10 @@
       },
       editListener (key) {
         const newData = [...this.stateValue]
-        const target = newData.filter(item => key === item.key)[0]
+        const target = newData.filter(item => {
+          delete item.editable
+          return key === item.key
+        })[0]
         this.editingKey = key
         if (target) {
           this.cacheListener = { ...target }

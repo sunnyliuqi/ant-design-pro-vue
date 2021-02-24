@@ -1,11 +1,11 @@
 <template>
   <div>
-    <a-button v-if="isEmpty(signals)" icon="select" @click="handleSignals">未配置信号</a-button>
-    <a-button icon="check" v-else @click="handleSignals">{{ getSelectedSignals() }}</a-button>
+    <a-button v-if="isEmpty(messages)" icon="select" @click="handleMessages">未配置消息</a-button>
+    <a-button icon="check" v-else @click="handleMessages">{{ getSelectedMessages() }}</a-button>
     <a-drawer
       wrapClassName="custom-drawer custom-drawer-7"
       :maskClosable="false"
-      title="配置信号"
+      title="配置消息"
       @close="onClose"
       :visible="visible"
       :wrapStyle="{ overflow: 'auto' }"
@@ -30,34 +30,24 @@
                 {{ text }}
               </template>
             </span>
-            <span slot="scope" slot-scope="text, record">
-              <a-select style="width: 100%" v-if="record.editable" v-model="record.scope" placeholder="请选择范围">
-                <a-select-option v-for="o in scopeOptions" :key="o" :value="o">
-                  {{ o }}
-                </a-select-option>
-              </a-select>
-              <template v-else>
-                {{ text }}
-              </template>
-            </span>
             <span slot="action" slot-scope="text, record">
               <span v-if="record.editable">
-                <a @click="() => saveSignal(record.key)">关闭编辑</a>
+                <a @click="() => saveMessage(record.key)">关闭编辑</a>
                 <a-divider type="vertical"/>
-                <a-popconfirm title="确定撤销吗?" @confirm="() => cancelSignal(record.key)">
+                <a-popconfirm title="确定撤销吗?" @confirm="() => cancelMessage(record.key)">
                   <a href="javascript:void(0)">撤销</a>
                 </a-popconfirm>
               </span>
               <span v-else>
-                <a @click="() => editSignal(record.key)">编辑</a>
+                <a @click="() => editMessage(record.key)">编辑</a>
                 <a-divider type="vertical"/>
-                <a-popconfirm title="您确认删除吗?" @confirm="handleDeleteSignal(record.key)" okText="确认" cancelText="取消">
+                <a-popconfirm title="您确认删除吗?" @confirm="handleDeleteMessage(record.key)" okText="确认" cancelText="取消">
                   <a href="javascript:void(0)">删除</a>
                 </a-popconfirm>
               </span>
             </span>
             <template slot="footer">
-              <a-button type="dashed" class="footer-button" @click="handleAddSignal">新增信号</a-button>
+              <a-button type="dashed" class="footer-button" @click="handleAddMessage">新增信号</a-button>
             </template>
           </a-table>
         </a-col>
@@ -92,7 +82,6 @@
   const columns = [
     { title: 'id', dataIndex: 'id', key: 'id', scopedSlots: { customRender: 'id' } },
     { title: '名称', dataIndex: 'name', key: 'name', scopedSlots: { customRender: 'name' } },
-    { title: '范围', dataIndex: 'scope', key: 'scope', width: 150, scopedSlots: { customRender: 'scope' } },
     {
       title: '操作',
       key: 'action',
@@ -100,16 +89,15 @@
       scopedSlots: { customRender: 'action' }
     }
   ]
-  const scopeOptions = ['Global', 'processInstance']
   export default {
-    name: 'Signals',
+    name: 'Messages',
     inheritAttrs: false,
     model: {
-      prop: 'signals',
+      prop: 'messages',
       event: 'change'
     },
     props: {
-      signals: {
+      messages: {
         type: String,
         default: undefined
       }
@@ -118,20 +106,19 @@
       return {
         isEmpty,
         stateValue: undefined,
-        cacheSignal: undefined,
+        cacheMessage: undefined,
         editingKey: '',
         visible: false,
-        columns,
-        scopeOptions
+        columns
       }
     },
     watch: {
-      signals: function (newVal, oldVal) {
+      messages: function (newVal, oldVal) {
         this.stateValue = this.wrapperToObj(newVal)
       }
     },
     methods: {
-      editSignal (key) {
+      editMessage (key) {
         const newData = [...this.stateValue]
         const target = newData.filter(item => {
           delete item.editable
@@ -139,48 +126,48 @@
         })[0]
         this.editingKey = key
         if (target) {
-          this.cacheSignal = { ...target }
+          this.cacheMessage = { ...target }
           target.editable = true
           this.stateValue = newData
         }
       },
-      saveSignal (key) {
+      saveMessage (key) {
         const newData = [...this.stateValue]
         const target = newData.filter(item => key === item.key)[0]
         if (target) {
           delete target.editable
           this.stateValue = newData
-          this.cacheSignal = undefined
+          this.cacheMessage = undefined
         }
         this.editingKey = ''
       },
-      cancelSignal (key) {
+      cancelMessage (key) {
         const newData = [...this.stateValue]
         const target = newData.filter(item => key === item.key)[0]
         if (target) {
-          Object.assign(target, this.cacheSignal)
+          Object.assign(target, this.cacheMessage)
           delete target.editable
           this.stateValue = newData
-          this.cacheSignal = undefined
+          this.cacheMessage = undefined
         }
         this.editingKey = ''
       },
-      handleDeleteSignal (key) {
+      handleDeleteMessage (key) {
         const newData = [...this.stateValue]
         const targets = newData.filter(item => {
           return key !== item.key
         })
         this.stateValue = targets
       },
-      handleAddSignal () {
-        const signal = { key: uuid(), id: undefined, name: undefined, scope: 'Global' }
+      handleAddMessage () {
+        const message = { key: uuid(), id: undefined, name: undefined }
         let newData
         if (this.stateValue) {
           newData = [...this.stateValue]
         } else {
           newData = []
         }
-        newData.push(signal)
+        newData.push(message)
         this.stateValue = newData
       },
       wrapperToObj (str) {
@@ -216,13 +203,13 @@
         }
         return ''
       },
-      getSelectedSignals () {
-        const _signals = this.signals && JSON.parse(this.signals)
-        const eLength = _signals.length
-        return `已配置${eLength}个信号`
+      getSelectedMessages () {
+        const _messages = this.messages && JSON.parse(this.messages)
+        const eLength = _messages.length
+        return `已配置${eLength}个消息`
       },
-      handleSignals () {
-        this.stateValue = this.wrapperToObj(this.signals)
+      handleMessages () {
+        this.stateValue = this.wrapperToObj(this.messages)
         this.show()
       },
       handleSubmit (e) {
@@ -235,7 +222,7 @@
       onClose () {
         this.visible = false
         this.stateValue = undefined
-        this.cacheSignal = undefined
+        this.cacheMessage = undefined
         this.editingKey = ''
       }
     }

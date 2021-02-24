@@ -597,7 +597,7 @@
               label="流程信号定义"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
-             <Signals v-model="signalsValues" />
+              <Signals v-model="signalsValues" />
             </a-form-item>
           </a-col>
           <a-col :span="24">
@@ -605,12 +605,7 @@
               label="流程消息定义"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
-              <a-textarea
-                v-decorator="[
-                  'process-messageDefinitions',
-                  {initialValue: getValues('messageDefinitions',processElement)}
-                ]"
-                placeholder="请选择流程消息定义"/>
+              <Messages v-model="messageValues" />
             </a-form-item>
           </a-col>
         </a-row>
@@ -625,11 +620,13 @@
   import ExecutionListeners from './components/ExecutionListeners'
   import EventListeners from './components/EventListeners'
   import Signals from './components/Signals'
+  import Messages from './components/Messages'
   export default {
     name: 'ActivitiPanel',
     components: {
       ExecutionListeners,
       EventListeners,
+      Messages,
       Signals
     },
     props: {
@@ -659,6 +656,7 @@
         executionListenersValues: undefined,
         processExecutionListenersValues: undefined,
         processEventListenersValues: undefined,
+        messageValues: undefined,
         signalsValues: undefined
       }
     },
@@ -679,6 +677,7 @@
         this.processExecutionListenersValues = this.getValues('executionListeners', this.processElement)
         this.processEventListenersValues = this.getValues('eventListeners', this.processElement)
         this.signalsValues = this.getValues('signalDefinitions', this.processElement)
+        this.messageValues = this.getValues('messageDefinitions', this.processElement)
       },
       executionListenersValues: function (val) {
         this.onPanelValuesChange(undefined, { 'executionListeners': val })
@@ -691,6 +690,9 @@
       },
       signalsValues: function (val) {
         this.onPanelValuesChange(undefined, { 'process-signalDefinitions': val })
+      },
+      messageValues: function (val) {
+        this.onPanelValuesChange(undefined, { 'process-messageDefinitions': val })
       }
     },
     methods: {

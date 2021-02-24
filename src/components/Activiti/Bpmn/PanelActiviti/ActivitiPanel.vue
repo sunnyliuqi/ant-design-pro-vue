@@ -587,12 +587,9 @@
               label="流程事件监听"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
-              <a-textarea
-                v-decorator="[
-                  'process-eventListeners',
-                  {initialValue: getValues('eventListeners',processElement)}
-                ]"
-                placeholder="请选择流程事件监听"/>
+              <event-listeners
+                v-model="processEventListenersValues"
+              />
             </a-form-item>
           </a-col>
           <a-col :span="24">
@@ -631,10 +628,12 @@
   import { supportProperty } from './helper/PropertyHelper'
   import { getMoment, formatDate } from '@/utils/common'
   import ExecutionListeners from './components/ExecutionListeners'
+  import EventListeners from './components/EventListeners'
   export default {
     name: 'ActivitiPanel',
     components: {
-      ExecutionListeners
+      ExecutionListeners,
+      EventListeners
     },
     props: {
       updateBpmn: {
@@ -661,7 +660,8 @@
         processElement: {},
         supportProperty,
         executionListenersValues: undefined,
-        processExecutionListenersValues: undefined
+        processExecutionListenersValues: undefined,
+        processEventListenersValues: undefined
       }
     },
     mounted () {
@@ -679,12 +679,16 @@
         this.formPanel.resetFields()
         this.executionListenersValues = this.getValues('executionListeners', this.element)
         this.processExecutionListenersValues = this.getValues('executionListeners', this.processElement)
+        this.processEventListenersValues = this.getValues('eventListeners', this.processElement)
       },
       executionListenersValues: function (val) {
         this.onPanelValuesChange(undefined, { 'executionListeners': val })
       },
       processExecutionListenersValues: function (val) {
         this.onPanelValuesChange(undefined, { 'process-executionListeners': val })
+      },
+      processEventListenersValues: function (val) {
+        this.onPanelValuesChange(undefined, { 'process-eventListeners': val })
       }
     },
     methods: {

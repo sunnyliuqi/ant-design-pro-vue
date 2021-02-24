@@ -141,7 +141,7 @@
               <a-input
                 v-decorator="[
                   'errorEventDefinition',
-                  {initialValue: getValues('errorEventDefinition',element)}
+                  {initialValue: getErrorEventDefinition(element)}
                 ]"
                 placeholder="请输入错误事件"/>
             </a-form-item>
@@ -747,8 +747,17 @@
       },
       getConditionalEventDefinition (element) {
         const condition = this.getValues('conditionalEventDefinition', element)
-        if (condition && condition.condition) {
-          return condition.condition
+        if (condition) {
+          const value = JSON.parse(condition)
+          return value && value.condition
+        }
+        return ''
+      },
+      getErrorEventDefinition (element) {
+        const error = this.getValues('errorEventDefinition', element)
+        if (error) {
+          const value = JSON.parse(error)
+          return value && value.errorRef
         }
         return ''
       },
@@ -768,6 +777,8 @@
                 properties[key] = formatDate(values[key], 'YYYY-MM-DD')
               } else if (key === 'conditionalEventDefinition') {
                 properties[key] = { 'condition': values[key] }
+              } else if (key === 'errorEventDefinition') {
+                properties[key] = { 'errorRef': values[key] }
               } else {
                 properties[key.replace('process-', '')] = values[key]
               }

@@ -85,10 +85,11 @@
               label="信号事件"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
-              <a-textarea
+              <a-select
+                :options="signalOptions"
                 v-decorator="[
                   'signalEventDefinition',
-                  {initialValue: getValues('signalEventDefinition',element)}
+                  {initialValue: getSignalEventDefinition(element)}
                 ]"
                 placeholder="请选择信号事件"/>
             </a-form-item>
@@ -673,6 +674,18 @@
           }
         }
         return opts
+      },
+      signalOptions () {
+        const opts = [{ label: '请选择', value: `{"signalRef":""}` }]
+        if (this.signalsValues) {
+          const _signalsValues = JSON.parse(this.signalsValues)
+          if (_signalsValues.length && _signalsValues.length > 0) {
+            _signalsValues.forEach(item => {
+              opts.push({ label: item.name, value: `{"signalRef":"${item.id}"}` })
+            })
+          }
+        }
+        return opts
       }
     },
     watch: {
@@ -724,6 +737,13 @@
           return '{"messageRef":""}'
         }
         return message
+      },
+      getSignalEventDefinition (element) {
+        const signal = this.getValues('signalEventDefinition', element)
+        if (!signal) {
+          return '{"signalRef":""}'
+        }
+        return signal
       },
       getConditionalEventDefinition (element) {
         const condition = this.getValues('conditionalEventDefinition', element)

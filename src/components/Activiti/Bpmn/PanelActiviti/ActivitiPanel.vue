@@ -373,12 +373,7 @@
               label="任务监听器"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
-              <a-textarea
-                v-decorator="[
-                  'taskListeners',
-                  {initialValue: getValues('taskListeners',element)}
-                ]"
-                placeholder="请选择任务监听器"/>
+              <TaskListeners v-model="taskListenersValues" />
             </a-form-item>
           </a-col>
           <a-col :span="24" v-if="supportProperty('rules', element)">
@@ -615,6 +610,7 @@
   import { supportProperty } from './helper/PropertyHelper'
   import { getMoment, formatDate } from '@/utils/common'
   import ExecutionListeners from './components/ExecutionListeners'
+  import TaskListeners from './components/TaskListeners'
   import EventListeners from './components/EventListeners'
   import Signals from './components/Signals'
   import Messages from './components/Messages'
@@ -626,7 +622,8 @@
       EventListeners,
       Messages,
       Signals,
-      FormProperties
+      FormProperties,
+      TaskListeners
     },
     props: {
       updateBpmn: {
@@ -657,6 +654,7 @@
         processEventListenersValues: undefined,
         messageValues: undefined,
         formPropertiesValues: undefined,
+        taskListenersValues: undefined,
         signalsValues: undefined
       }
     },
@@ -703,9 +701,13 @@
         this.signalsValues = this.getValues('signalDefinitions', this.processElement)
         this.messageValues = this.getValues('messageDefinitions', this.processElement)
         this.formPropertiesValues = this.getValues('formProperties', this.element)
+        this.taskListenersValues = this.getValues('taskListeners', this.element)
       },
       executionListenersValues: function (val) {
         this.onPanelValuesChange(undefined, { 'executionListeners': val })
+      },
+      taskListenersValues: function (val) {
+        this.onPanelValuesChange(undefined, { 'taskListeners': val })
       },
       processExecutionListenersValues: function (val) {
         this.onPanelValuesChange(undefined, { 'process-executionListeners': val })

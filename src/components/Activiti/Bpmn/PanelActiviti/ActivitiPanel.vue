@@ -58,10 +58,11 @@
               label="消息事件"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
-              <a-textarea
+              <a-select
+                :options="messageOptions"
                 v-decorator="[
                   'messageEventDefinition',
-                  {initialValue: getValues('messageEventDefinition',element)}
+                  {initialValue: getMessageEventDefinition(element)}
                 ]"
                 placeholder="请选择消息事件"/>
             </a-form-item>
@@ -661,6 +662,18 @@
     mounted () {
     },
     computed: {
+      messageOptions () {
+        const opts = [{ label: '请选择', value: `{"messageRef":""}` }]
+        if (this.messageValues) {
+          const _messageValues = JSON.parse(this.messageValues)
+          if (_messageValues.length && _messageValues.length > 0) {
+            _messageValues.forEach(item => {
+              opts.push({ label: item.name, value: `{"messageRef":"${item.id}"}` })
+            })
+          }
+        }
+        return opts
+      }
     },
     watch: {
       element: function (val) {
@@ -704,6 +717,13 @@
         } else {
           this.$message.info('没有选中的节点')
         } */
+      },
+      getMessageEventDefinition (element) {
+        const message = this.getValues('messageEventDefinition', element)
+        if (!message) {
+          return '{"messageRef":""}'
+        }
+        return message
       },
       getDueDate (value) {
         if (value) {

@@ -75,7 +75,7 @@
               <a-input
                 v-decorator="[
                   'conditionalEventDefinition',
-                  {initialValue: getValues('conditionalEventDefinition',element)}
+                  {initialValue: getConditionalEventDefinition(element)}
                 ]"
                 placeholder="请输入条件事件"/>
             </a-form-item>
@@ -725,6 +725,13 @@
         }
         return message
       },
+      getConditionalEventDefinition (element) {
+        const condition = this.getValues('conditionalEventDefinition', element)
+        if (condition && condition.condition) {
+          return condition.condition
+        }
+        return ''
+      },
       getDueDate (value) {
         if (value) {
           return getMoment(value, 'YYYY-MM-DD')
@@ -739,6 +746,8 @@
             fieldKeys.forEach(key => {
               if (key === 'dueDate') {
                 properties[key] = formatDate(values[key], 'YYYY-MM-DD')
+              } else if (key === 'conditionalEventDefinition') {
+                properties[key] = { 'condition': values[key] }
               } else {
                 properties[key.replace('process-', '')] = values[key]
               }

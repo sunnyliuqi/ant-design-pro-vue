@@ -310,12 +310,7 @@
               label="动态表单字段"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
-              <a-textarea
-                v-decorator="[
-                  'formProperties',
-                  {initialValue: getValues('formProperties',element)}
-                ]"
-                placeholder="请设置动态表单字段"/>
+              <form-properties v-model="formPropertiesValues" />
             </a-form-item>
           </a-col>
           <a-col :span="24" v-if="supportProperty('assignments', element)">
@@ -621,13 +616,15 @@
   import EventListeners from './components/EventListeners'
   import Signals from './components/Signals'
   import Messages from './components/Messages'
+  import FormProperties from './components/FormProperties'
   export default {
     name: 'ActivitiPanel',
     components: {
       ExecutionListeners,
       EventListeners,
       Messages,
-      Signals
+      Signals,
+      FormProperties
     },
     props: {
       updateBpmn: {
@@ -657,6 +654,7 @@
         processExecutionListenersValues: undefined,
         processEventListenersValues: undefined,
         messageValues: undefined,
+        formPropertiesValues: undefined,
         signalsValues: undefined
       }
     },
@@ -678,6 +676,7 @@
         this.processEventListenersValues = this.getValues('eventListeners', this.processElement)
         this.signalsValues = this.getValues('signalDefinitions', this.processElement)
         this.messageValues = this.getValues('messageDefinitions', this.processElement)
+        this.formPropertiesValues = this.getValues('formProperties', this.element)
       },
       executionListenersValues: function (val) {
         this.onPanelValuesChange(undefined, { 'executionListeners': val })
@@ -693,6 +692,9 @@
       },
       messageValues: function (val) {
         this.onPanelValuesChange(undefined, { 'process-messageDefinitions': val })
+      },
+      formPropertiesValues: function (val) {
+        this.onPanelValuesChange(undefined, { 'formProperties': val })
       }
     },
     methods: {

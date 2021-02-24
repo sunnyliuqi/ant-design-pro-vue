@@ -597,12 +597,7 @@
               label="流程信号定义"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
-              <a-textarea
-                v-decorator="[
-                  'process-signalDefinitions',
-                  {initialValue: getValues('signalDefinitions',processElement)}
-                ]"
-                placeholder="请选择流程信号定义"/>
+             <Signals v-model="signalsValues" />
             </a-form-item>
           </a-col>
           <a-col :span="24">
@@ -629,11 +624,13 @@
   import { getMoment, formatDate } from '@/utils/common'
   import ExecutionListeners from './components/ExecutionListeners'
   import EventListeners from './components/EventListeners'
+  import Signals from './components/Signals'
   export default {
     name: 'ActivitiPanel',
     components: {
       ExecutionListeners,
-      EventListeners
+      EventListeners,
+      Signals
     },
     props: {
       updateBpmn: {
@@ -661,7 +658,8 @@
         supportProperty,
         executionListenersValues: undefined,
         processExecutionListenersValues: undefined,
-        processEventListenersValues: undefined
+        processEventListenersValues: undefined,
+        signalsValues: undefined
       }
     },
     mounted () {
@@ -680,6 +678,7 @@
         this.executionListenersValues = this.getValues('executionListeners', this.element)
         this.processExecutionListenersValues = this.getValues('executionListeners', this.processElement)
         this.processEventListenersValues = this.getValues('eventListeners', this.processElement)
+        this.signalsValues = this.getValues('signalDefinitions', this.processElement)
       },
       executionListenersValues: function (val) {
         this.onPanelValuesChange(undefined, { 'executionListeners': val })
@@ -689,6 +688,9 @@
       },
       processEventListenersValues: function (val) {
         this.onPanelValuesChange(undefined, { 'process-eventListeners': val })
+      },
+      signalsValues: function (val) {
+        this.onPanelValuesChange(undefined, { 'process-signalDefinitions': val })
       }
     },
     methods: {

@@ -473,12 +473,7 @@
               label="字段"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
-              <a-textarea
-                v-decorator="[
-                  'fields',
-                  {initialValue: getValues('fields',element)}
-                ]"
-                placeholder="请输入字段"/>
+              <fields v-model="fieldsValues" />
             </a-form-item>
           </a-col>
           <a-col :span="24" v-if="supportProperty('resultVariableName', element)">
@@ -615,6 +610,7 @@
   import Signals from './components/Signals'
   import Messages from './components/Messages'
   import FormProperties from './components/FormProperties'
+  import Fields from './components/Fields'
   export default {
     name: 'ActivitiPanel',
     components: {
@@ -623,7 +619,8 @@
       Messages,
       Signals,
       FormProperties,
-      TaskListeners
+      TaskListeners,
+      Fields
     },
     props: {
       updateBpmn: {
@@ -655,6 +652,7 @@
         messageValues: undefined,
         formPropertiesValues: undefined,
         taskListenersValues: undefined,
+        fieldsValues: undefined,
         signalsValues: undefined
       }
     },
@@ -702,6 +700,7 @@
         this.messageValues = this.getValues('messageDefinitions', this.processElement)
         this.formPropertiesValues = this.getValues('formProperties', this.element)
         this.taskListenersValues = this.getValues('taskListeners', this.element)
+        this.fieldsValues = this.getValues('fields', this.element)
       },
       executionListenersValues: function (val) {
         this.onPanelValuesChange(undefined, { 'executionListeners': val })
@@ -723,6 +722,9 @@
       },
       formPropertiesValues: function (val) {
         this.onPanelValuesChange(undefined, { 'formProperties': val })
+      },
+      fieldsValues: function (val) {
+        this.onPanelValuesChange(undefined, { 'fields': val })
       }
     },
     methods: {

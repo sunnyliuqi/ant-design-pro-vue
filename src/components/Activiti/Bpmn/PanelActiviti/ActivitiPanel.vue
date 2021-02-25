@@ -299,7 +299,8 @@
               label="外置表单"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
-              <a-input
+              <a-select
+                :options="formLists"
                 v-decorator="[
                   'formKey',
                   {initialValue: getValues('formKey',element)}
@@ -626,6 +627,12 @@
       updateBpmn: {
         type: Function,
         default: undefined
+      },
+      formLists: {
+        type: Array,
+        default: () => {
+          return []
+        }
       },
       getValues: {
         type: Function,

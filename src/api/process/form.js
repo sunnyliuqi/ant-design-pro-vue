@@ -12,6 +12,19 @@ export function queryList (data) {
     params: parsePageParams(data)
   })
 }
+
+/**
+ * 表单列表
+ * @param data
+ * @returns {AxiosPromise}
+ */
+export function list (data) {
+  return axios({
+    url: path.process + '/form/lists',
+    method: 'POST',
+    data: data
+  })
+}
 // 表单key唯一性校验
 export function checkKey (params) {
   return axios({

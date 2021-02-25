@@ -18,6 +18,7 @@
         :element="current"
         :update-bpmn="updateBpmn"
         :get-values="getValues"
+        :form-lists="formLists"
       />
     </a-layout-sider>
 
@@ -42,6 +43,12 @@
       xml: {
         type: String,
         default: undefined
+      },
+      formLists: {
+        type: Array,
+        default: () => {
+          return []
+        }
       },
       change: {
         type: Function,

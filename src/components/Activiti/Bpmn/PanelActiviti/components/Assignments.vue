@@ -195,7 +195,8 @@
         return `查看指派`
       },
       handleAssignments () {
-        this.stateValue = this.wrapperToObj(this.signals)
+        this.stateValue = this.wrapperToObj(this.assignments)
+        this.type = this.getTypeValue()
         this.show()
       },
       handleSubmit (e) {

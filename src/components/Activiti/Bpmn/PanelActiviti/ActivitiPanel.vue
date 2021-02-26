@@ -286,7 +286,9 @@
               label="发起人"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
-              <a-input
+              <a-select
+                allowClear
+                :options="userLists"
                 v-decorator="[
                   'initiator',
                   {initialValue: getValues('initiator',element)}
@@ -300,6 +302,7 @@
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
               <a-select
+                allowClear
                 :options="formLists"
                 v-decorator="[
                   'formKey',
@@ -321,12 +324,11 @@
               label="分配"
               :labelCol="{ span: 8 }"
               :wrapperCol="{ span: 16 }">
-              <a-textarea
-                v-decorator="[
-                  'assignments',
-                  {initialValue: getValues('assignments',element)}
-                ]"
-                placeholder="请选择分配"/>
+              <Assignments
+                v-model="assignmentsValues"
+                :user-lists="userLists"
+                :group-lists="groupLists"
+              />
             </a-form-item>
           </a-col>
           <a-col :span="24" v-if="supportProperty('initiatorCanComplete',element)">
@@ -612,6 +614,7 @@
   import Messages from './components/Messages'
   import FormProperties from './components/FormProperties'
   import Fields from './components/Fields'
+  import Assignments from './components/Assignments'
   export default {
     name: 'ActivitiPanel',
     components: {
@@ -621,7 +624,8 @@
       Signals,
       FormProperties,
       TaskListeners,
-      Fields
+      Fields,
+      Assignments
     },
     props: {
       updateBpmn: {
@@ -629,6 +633,18 @@
         default: undefined
       },
       formLists: {
+        type: Array,
+        default: () => {
+          return []
+        }
+      },
+      userLists: {
+        type: Array,
+        default: () => {
+          return []
+        }
+      },
+      groupLists: {
         type: Array,
         default: () => {
           return []
@@ -660,7 +676,8 @@
         formPropertiesValues: undefined,
         taskListenersValues: undefined,
         fieldsValues: undefined,
-        signalsValues: undefined
+        signalsValues: undefined,
+        assignmentsValues: undefined
       }
     },
     mounted () {
@@ -708,6 +725,7 @@
         this.formPropertiesValues = this.getValues('formProperties', this.element)
         this.taskListenersValues = this.getValues('taskListeners', this.element)
         this.fieldsValues = this.getValues('fields', this.element)
+        this.assignmentsValues = this.getValues('assignments', this.element)
       },
       executionListenersValues: function (val) {
         this.onPanelValuesChange(undefined, { 'executionListeners': val })
@@ -732,6 +750,9 @@
       },
       fieldsValues: function (val) {
         this.onPanelValuesChange(undefined, { 'fields': val })
+      },
+      assignmentsValues: function (val) {
+        this.onPanelValuesChange(undefined, { 'assignments': val })
       }
     },
     methods: {

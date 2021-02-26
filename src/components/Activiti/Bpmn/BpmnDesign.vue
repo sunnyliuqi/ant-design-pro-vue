@@ -19,6 +19,8 @@
         :update-bpmn="updateBpmn"
         :get-values="getValues"
         :form-lists="formLists"
+        :user-lists="userLists"
+        :group-lists="groupLists"
       />
     </a-layout-sider>
 
@@ -45,6 +47,18 @@
         default: undefined
       },
       formLists: {
+        type: Array,
+        default: () => {
+          return []
+        }
+      },
+      userLists: {
+        type: Array,
+        default: () => {
+          return []
+        }
+      },
+      groupLists: {
         type: Array,
         default: () => {
           return []

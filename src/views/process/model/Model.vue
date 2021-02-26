@@ -2,6 +2,8 @@
   <a-card :bordered="false">
     <bpmn-design
       :form-lists="formLists"
+      :user-lists="userLists"
+      :group-lists="groupLists"
       :xml="xml"
     />
   </a-card>
@@ -10,12 +12,15 @@
 <script>
   import BpmnDesign from '@/components/Activiti/Bpmn/BpmnDesign'
   import { list } from '@/api/process/form'
+  import { users, groups } from '@/api/process/model'
 export default {
   name: 'Model',
   components: { BpmnDesign },
   data () {
     return {
-      formLists: [{ label: '请选择', value: '' }],
+      formLists: [],
+      userLists: [],
+      groupLists: [],
       xml: `<?xml version="1.0" encoding="UTF-8"?>
 <bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:activiti="http://activiti.org/bpmn" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
   <bpmn2:process id="process1567044459787" name="process15670444597879" author="111" version="1111">
@@ -58,6 +63,26 @@ export default {
         if (result && result.length && result.length > 0) {
            result.forEach(item => {
              this.formLists.push({ label: `${item.name}`, value: `${item.modelKey}` })
+          })
+        }
+      }
+    })
+    users().then((res) => {
+      if (res.code === 10000) {
+        const result = res.result
+        if (result && result.length && result.length > 0) {
+          result.forEach(item => {
+            this.userLists.push({ label: `${item.id}`, value: `${item.id}` })
+          })
+        }
+      }
+    })
+    groups().then((res) => {
+      if (res.code === 10000) {
+        const result = res.result
+        if (result && result.length && result.length > 0) {
+          result.forEach(item => {
+            this.groupLists.push({ label: `${item.name}`, value: `${item.id}` })
           })
         }
       }

@@ -3,7 +3,7 @@
     <a-button v-if="isEmpty(signals)" icon="select" @click="handleSignals">未配置信号</a-button>
     <a-button icon="check" v-else @click="handleSignals">{{ getSelectedSignals() }}</a-button>
     <a-drawer
-      wrapClassName="custom-drawer custom-drawer-7"
+      wrapClassName="custom-drawer custom-drawer-3"
       :maskClosable="false"
       title="配置信号"
       @close="onClose"

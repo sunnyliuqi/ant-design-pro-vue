@@ -3,7 +3,7 @@
     <a-button v-if="isEmpty(messages)" icon="select" @click="handleMessages">未配置消息</a-button>
     <a-button icon="check" v-else @click="handleMessages">{{ getSelectedMessages() }}</a-button>
     <a-drawer
-      wrapClassName="custom-drawer custom-drawer-7"
+      wrapClassName="custom-drawer custom-drawer-3"
       :maskClosable="false"
       title="配置消息"
       @close="onClose"

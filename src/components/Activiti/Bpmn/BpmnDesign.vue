@@ -46,6 +46,14 @@
         type: String,
         default: undefined
       },
+      modelKey: {
+        type: String,
+        default: undefined
+      },
+      description: {
+        type: String,
+        default: undefined
+      },
       formLists: {
         type: Array,
         default: () => {
@@ -75,7 +83,6 @@
       return {
         bpmnModeler: null,
         getValues: getValues,
-        defaultXml: emptyBpmn,
         current: undefined
       }
     },
@@ -107,7 +114,7 @@
         /**
          * 导入流程图
          */
-        this.importDiagram(this.xml || this.defaultXml)
+        this.importDiagram(this.xml || emptyBpmn(this.modelKey, this.description))
       },
       /**
        * 操作bpmn动态激活panel

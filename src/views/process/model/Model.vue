@@ -5,6 +5,8 @@
       :user-lists="userLists"
       :group-lists="groupLists"
       :xml="xml"
+      :model-key="modelKey"
+      :description="description"
     />
   </a-card>
 </template>

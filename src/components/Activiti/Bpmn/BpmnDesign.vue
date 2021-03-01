@@ -50,6 +50,10 @@
         type: String,
         default: undefined
       },
+      modelName: {
+        type: String,
+        default: undefined
+      },
       description: {
         type: String,
         default: undefined
@@ -114,7 +118,7 @@
         /**
          * 导入流程图
          */
-        this.importDiagram(this.xml || emptyBpmn(this.modelKey, this.description))
+        this.importDiagram(this.xml || emptyBpmn(this.modelKey, this.modelName, this.description))
       },
       /**
        * 操作bpmn动态激活panel

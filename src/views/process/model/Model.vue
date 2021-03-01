@@ -6,6 +6,7 @@
       :group-lists="groupLists"
       :xml="xml"
       :model-key="modelKey"
+      :model-name="modelName"
       :description="description"
     />
   </a-card>
@@ -25,6 +26,7 @@ export default {
       groupLists: [],
       xml: undefined,
       modelKey: undefined,
+      modelName: undefined,
       description: undefined
     }
   },

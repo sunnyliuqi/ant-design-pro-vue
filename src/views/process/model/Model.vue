@@ -4,7 +4,7 @@
       :form-lists="formLists"
       :user-lists="userLists"
       :group-lists="groupLists"
-      :xml="xml"
+      v-model="xml"
       :model-key="modelKey"
       :model-name="modelName"
       :description="description"

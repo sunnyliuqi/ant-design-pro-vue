@@ -38,8 +38,9 @@
   export default {
     name: 'BpmnDesign',
     components: { ActivitiPanel },
-    compents: {
-      ActivitiPanel
+    model: {
+      prop: 'xml',
+      event: 'change'
     },
     props: {
       xml: {
@@ -230,7 +231,7 @@
           'callback': e => {
             that.bpmnModeler.saveXML({ format: true }).then(result => {
               const { xml } = result
-              that.change(xml)
+              that.$emit('change', xml)
             }).catch(err => {
               that.$message.error('更新xml错误：' + err)
             })

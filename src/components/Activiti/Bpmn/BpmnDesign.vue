@@ -314,7 +314,8 @@
       padding: 0px;
       line-height:48px;
       height: 48px;
-      border-bottom: 2px solid #e4e7ed;
+      border-bottom: 1px solid #e4e7ed;
+      background-color: white;
       .bpmn-header{
         display: -webkit-flex;
         display: flex;

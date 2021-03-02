@@ -95,6 +95,16 @@
     },
     mounted () {
       this.initModeler()
+      this.importDiagram(this.xml || emptyBpmn(this.modelKey, this.modelName, this.description))
+    },
+    watch: {
+      xml (val, oldVal) {
+        /**
+         * 导入流程图
+         */
+        this.importDiagram(this.xml || emptyBpmn(this.modelKey, this.modelName, this.description))
+      }
+
     },
     methods: {
       /**
@@ -145,10 +155,6 @@
          * 添加事件监听
          */
         this.addEventListener()
-        /**
-         * 导入流程图
-         */
-        this.importDiagram(this.xml || emptyBpmn(this.modelKey, this.modelName, this.description))
       },
       /**
        * 操作bpmn动态激活panel

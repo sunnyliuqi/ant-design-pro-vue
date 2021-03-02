@@ -196,9 +196,6 @@ export default {
       this.$refs.modelForm.resetFields()
       this.customActiveKey = '1'
       this.xml = undefined
-      this.modelKey = undefined
-      this.modelName = undefined
-      this.description = undefined
     },
     handleSubmit () {
       this.formLoading = true

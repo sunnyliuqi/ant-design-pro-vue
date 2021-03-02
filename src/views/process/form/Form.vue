@@ -49,9 +49,9 @@
           </template>
           <a-card-meta :title="item.name" @click="viewForm(item)">
             <div slot="description">
-              <p style="margin-bottom: 0px;">{{ item.modelKey }}</p>
-              <p style="margin-bottom: 0px;">{{ item.description }}</p>
-              <p style="margin-bottom: 0px;">{{ item.lastUpdated }}</p>
+              <p class="oneLine">{{ item.modelKey }}</p>
+              <p class="oneLine">{{ item.description }}</p>
+              <p class="oneLine">{{ item.lastUpdated }}</p>
             </div>
           </a-card-meta>
         </a-card>
@@ -352,7 +352,18 @@ export default {
 </script>
 
 <style scoped lang="less">
-  .formList /deep/ .ant-card-body {
-    background-color: #e8edf1;
+  .formList {
+    /deep/ .ant-card-body {
+      background-color: #e8edf1;
+    }
+    /deep/ .oneLine{
+      margin-bottom: 0px;
+      height: 21px;
+      display: inline-block;
+      white-space: nowrap;
+      width: 100%;
+      overflow: hidden;
+      text-overflow:ellipsis;
+    }
   }
 </style>

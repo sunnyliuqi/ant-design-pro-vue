@@ -70,9 +70,9 @@
             :user-lists="userLists"
             :group-lists="groupLists"
             v-model="xml"
-            :model-key="modelKey"
-            :model-name="modelName"
-            :description="description"
+            :model-key="form.modelKey"
+            :model-name="form.name"
+            :description="form.description"
           />
         </a-tab-pane>
       </a-tabs>
@@ -178,10 +178,7 @@ export default {
         ]
       },
       formLoading: false,
-      xml: undefined,
-      modelKey: undefined,
-      modelName: undefined,
-      description: undefined
+      xml: undefined
     }
   },
   computed: {
@@ -198,13 +195,17 @@ export default {
       this.formLoading = false
       this.$refs.modelForm.resetFields()
       this.customActiveKey = '1'
+      this.xml = undefined
+      this.modelKey = undefined
+      this.modelName = undefined
+      this.description = undefined
     },
     handleSubmit () {
       this.formLoading = true
       this.$refs.modelForm.validate(valid => {
         if (valid) {
              this.$refs.bpmnDesign.generatePicture(pic => {
-              const designValue = { 'base64Thumbnail': pic }
+              const designValue = { 'base64Thumbnail': pic, 'modelEditorJson': this.xml }
               this.save(Object.assign({}, designValue, this.form)).then(res => {
                 if (res.code === 10000) {
                   this.$message.info(res.msg)

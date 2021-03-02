@@ -35,6 +35,8 @@
   import activitiModelerDescriptor from './PanelActiviti/lib/moddle/modeler'
   import { setProperties, getValues, removeBusinessObject } from './PanelActiviti/helper/PropertyHelper'
   import { emptyBpmn } from './store/defaultBpmn'
+  import html2canvas from 'html2canvas'
+
   export default {
     name: 'BpmnDesign',
     components: { ActivitiPanel },
@@ -95,6 +97,33 @@
       this.initModeler()
     },
     methods: {
+      /**
+       * 页面内容生成base64图片
+       */
+      generatePicture (callback) {
+        const canvasDom = this.$refs.canvas
+        const paletteDom = canvasDom.getElementsByClassName('djs-palette')[0]
+        if (paletteDom) {
+          paletteDom.style.display = 'none'
+        }
+        html2canvas(canvasDom).then(canvas => {
+          /**
+           * 以下是尺寸压缩处理，会降低图片质量
+           * @type {number}
+           * @private
+           */
+          const _width = 240
+          const scale = canvas.width / _width
+          const _heigth = (canvas.height / scale) + 60
+          const extraCanvas = document.createElement('canvas')
+          extraCanvas.setAttribute('width', _width)
+          extraCanvas.setAttribute('height', _heigth)
+          const ctx = extraCanvas.getContext('2d')
+          ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, _width, _heigth)
+          paletteDom.style.display = 'block'
+          callback(extraCanvas.toDataURL('image/png'))
+        })
+      },
       /**
        * 初始化modeler
        */
@@ -226,15 +255,15 @@
         const eventBus = this.bpmnModeler.get('eventBus')
         const events = [
           {
-          'name': 'commandStack.changed',
-          'priority': 1000,
-          'callback': e => {
-            that.bpmnModeler.saveXML({ format: true }).then(result => {
-              const { xml } = result
-              that.$emit('change', xml)
-            }).catch(err => {
-              that.$message.error('更新xml错误：' + err)
-            })
+            'name': 'commandStack.changed',
+            'priority': 1000,
+            'callback': e => {
+              that.bpmnModeler.saveXML({ format: true }).then(result => {
+                const { xml } = result
+                that.$emit('change', xml)
+              }).catch(err => {
+                that.$message.error('更新xml错误：' + err)
+              })
             }
           },
           {
@@ -293,7 +322,7 @@
               console.info(e)
             }
           }
-          ]
+        ]
         events.forEach(e => {
           eventBus.on(e.name, e.priority, e.callback)
         })
@@ -308,42 +337,49 @@
   @import '~bpmn-js/dist/assets/bpmn-font/css/bpmn.css';
   @import '~bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css';
   @import '~bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css';
+
   .bpmnDesign {
     width: 100%;
-    /deep/ .ant-layout-header{
+
+    /deep/ .ant-layout-header {
       padding: 0px;
-      line-height:48px;
+      line-height: 48px;
       height: 48px;
       border-bottom: 1px solid #e4e7ed;
       background-color: white;
-      .bpmn-header{
+
+      .bpmn-header {
         display: -webkit-flex;
         display: flex;
         flex-direction: row-reverse;
         flex-wrap: wrap;
         justify-content: flex-start;
         align-items: flex-start;
+
         button {
           margin: 4px 0px 0px 8px;
-          i svg{
+
+          i svg {
             min-height: 12px;
           }
         }
       }
     }
+
     /deep/ .ant-layout-content {
       background-color: white;
       padding: 8px;
       border-left: 1px solid #f1e8e8;
       border-right: 1px solid #f1e8e8;
       min-height: 300px;
+
       .canvas {
         width: 100%;
         height: 100%;
+
         /deep/ svg {
           min-height: 700px;
         }
-
         /deep/ .djs-palette {
           width: 130px;
 
@@ -376,6 +412,7 @@
         }
       }
     }
+
     /deep/ .ant-layout-sider {
       background-color: white;
       padding: 0px;
@@ -383,6 +420,7 @@
       max-width: 340px !important;
       min-height: 300px;
     }
+
     /deep/ .bjs-powered-by {
       display: none;
     }

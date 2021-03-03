@@ -101,3 +101,15 @@ export function rollback (data) {
     data: data
   })
 }
+
+/**
+ * 部署模型
+ * @param data
+ * @returns {AxiosPromise}
+ */
+export function publish (data) {
+  return axios({
+    url: path.process + '/modeler/model/publish/' + data.id,
+    method: 'GET'
+  })
+}

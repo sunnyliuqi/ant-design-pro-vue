@@ -46,6 +46,7 @@
               <a-icon key="delete" type="delete"/>
             </a-popconfirm>
             <a-icon v-if="item.version>1" key="history" type="history" @click="historyModel(item)"/>
+            <a-icon key="publish" type="deployment-unit" @click="publishModel(item)"/>
           </template>
           <a-card-meta :title="item.name" @click="viewModel(item)">
             <div slot="description">
@@ -102,7 +103,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import { list } from '@/api/process/form'
-  import { users, groups, queryList, checkKey, save, get, update, del, histories, rollback } from '@/api/process/model'
+  import { users, groups, queryList, checkKey, save, get, update, del, histories, rollback, publish } from '@/api/process/model'
   import Add from './components/Add'
   import Detail from './components/Detail'
   import Edit from './components/Edit'
@@ -253,6 +254,17 @@
        */
       deleteModel (item) {
         del(item).then(res => {
+          if (res.code && res.code === 10000) {
+            this.$message.info(res.msg)
+            this.refresh()
+          }
+        })
+      },
+      /**
+       * 部署模型
+       */
+      publishModel (item) {
+        publish(item).then(res => {
           if (res.code && res.code === 10000) {
             this.$message.info(res.msg)
             this.refresh()

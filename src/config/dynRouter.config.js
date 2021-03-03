@@ -176,7 +176,7 @@ export const dynRouterMap = [{
         name: 'definition',
         component: () => import('@/views/process/definition/Definition'),
         meta: {
-          title: '流程定义',
+          title: '流程部署',
           keepAlive: true,
           static: true
         }

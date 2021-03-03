@@ -40,12 +40,12 @@
             />
           </p>
           <template slot="actions" class="ant-card-actions">
-            <a-icon key="form" type="form" @click="editForm(item)"/>
-            <a-icon key="copy" type="copy" @click="cloneForm(item)"/>
+            <a-icon title="编辑" key="form" type="form" @click="editForm(item)"/>
+            <a-icon title="复制" key="copy" type="copy" @click="cloneForm(item)"/>
             <a-popconfirm title="你确定要删除该表单吗？" @confirm="deleteForm(item)">
-              <a-icon key="delete" type="delete"/>
+              <a-icon title="删除" key="delete" type="delete"/>
             </a-popconfirm>
-            <a-icon v-if="item.version>1" key="history" type="history" @click="historyForm(item)"/>
+            <a-icon title="历史" v-if="item.version>1" key="history" type="history" @click="historyForm(item)"/>
           </template>
           <a-card-meta :title="item.name" @click="viewForm(item)">
             <div slot="description">

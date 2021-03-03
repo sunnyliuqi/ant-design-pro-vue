@@ -69,6 +69,7 @@
             :form-lists="formLists"
             :user-lists="userLists"
             :group-lists="groupLists"
+            :xml-state="xmlState"
             v-model="xml"
             :model-key="form.modelKey"
             :model-name="form.name"
@@ -168,6 +169,7 @@ export default {
       customActiveKey: '1',
       addVisible: false,
       form: initForm,
+      xmlState: 0,
       rules: {
         name: [
           { required: true, message: '名称不能为空', trigger: 'blur' }
@@ -189,6 +191,7 @@ export default {
     },
     show () {
       this.addVisible = true
+      this.xmlState = this.xmlState + 1
     },
     onClose () {
       this.addVisible = false

@@ -45,6 +45,10 @@
       event: 'change'
     },
     props: {
+      xmlState: {
+        type: Number,
+        default: undefined
+      },
       xml: {
         type: String,
         default: undefined
@@ -98,7 +102,7 @@
       this.importDiagram(this.xml || emptyBpmn(this.modelKey, this.modelName, this.description))
     },
     watch: {
-      xml (val, oldVal) {
+      xmlState () {
         /**
          * 导入流程图
          */

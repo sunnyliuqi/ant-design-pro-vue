@@ -66,6 +66,7 @@
         <a-tab-pane key="2" tab="设计器" force-render>
           <bpmn-design
             ref="bpmnDesign"
+            :xml-state="xmlState"
             :form-lists="formLists"
             :user-lists="userLists"
             :group-lists="groupLists"
@@ -176,7 +177,8 @@ export default {
           { validator: validatorCheckKey, trigger: 'blur' }
         ]
       },
-      formLoading: false
+      formLoading: false,
+      xmlState: 0
     }
   },
   computed: {
@@ -187,6 +189,7 @@ export default {
     },
     show () {
       this.addVisible = true
+      this.xmlState = this.xmlState + 1
     },
     onClose () {
       this.addVisible = false

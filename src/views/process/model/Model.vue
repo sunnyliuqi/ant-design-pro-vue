@@ -107,8 +107,7 @@
   import Detail from './components/Detail'
   import Edit from './components/Edit'
   import Clone from './components/Clone'
-  import Histories from './components/Histories'
-  import ModelHistory from '@/views/process/model/components/Histories'
+  import ModelHistory from './components/Histories'
   /**
    * 初始化分页
    * @type {{current: number, total: number, pageSize: number}}

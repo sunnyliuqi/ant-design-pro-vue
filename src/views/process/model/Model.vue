@@ -67,6 +67,20 @@
       :group-lists="groupLists"
       :save="save"
     />
+    <detail
+      ref="detailModel"
+      :record="recordActive"
+    />
+    <edit
+      ref="editModel"
+      :record="recordActive"
+      :check-key="checkKey"
+      :refresh="refresh"
+      :form-lists="formLists"
+      :user-lists="userLists"
+      :group-lists="groupLists"
+      :update="update"
+    />
   </a-card>
 </template>
 
@@ -75,6 +89,8 @@
   import { list } from '@/api/process/form'
   import { users, groups, queryList, checkKey, save, get, update, del, histories, rollback } from '@/api/process/model'
   import Add from './components/Add'
+  import Detail from './components/Detail'
+  import Edit from './components/Edit'
   /**
    * 初始化分页
    * @type {{current: number, total: number, pageSize: number}}
@@ -86,7 +102,7 @@
   }
   export default {
   name: 'Model',
-  components: { Add },
+  components: { Add, Detail, Edit },
   data () {
     return {
       formLists: [],

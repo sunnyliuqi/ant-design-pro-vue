@@ -169,8 +169,8 @@ export default {
       this.formLoading = true
       this.form.validateFields((err, values) => {
         if (!err) {
-          this.$refs.vformDesign.generatePicture(pic => {
-            const designValue = { name: this.activeObject.name, modelKey: this.activeObject.modelKey, modelId: this.activeObject.modelId, id: this.activeObject.id, 'base64Thumbnail': pic, 'modelEditorJson': undefined }
+          this.$refs.viewBpmnDesign.generatePicture(pic => {
+            const designValue = { name: this.activeObject.name, modelKey: this.activeObject.modelKey, modelId: this.activeObject.modelId, id: this.activeObject.id, 'base64Thumbnail': pic, 'modelEditorJson': this.activeObject.modelEditorJson }
             this.rollback(Object.assign({}, values, designValue)).then(res => {
               if (res.code === 10000) {
                 this.$message.info(res.msg)

@@ -81,6 +81,16 @@
       :group-lists="groupLists"
       :update="update"
     />
+    <clone
+      ref="cloneModel"
+      :record="recordActive"
+      :check-key="checkKey"
+      :refresh="refresh"
+      :form-lists="formLists"
+      :user-lists="userLists"
+      :group-lists="groupLists"
+      :save="save"
+    />
   </a-card>
 </template>
 
@@ -91,6 +101,7 @@
   import Add from './components/Add'
   import Detail from './components/Detail'
   import Edit from './components/Edit'
+  import Clone from './components/Clone'
   /**
    * 初始化分页
    * @type {{current: number, total: number, pageSize: number}}
@@ -102,7 +113,7 @@
   }
   export default {
   name: 'Model',
-  components: { Add, Detail, Edit },
+  components: { Add, Detail, Edit, Clone },
   data () {
     return {
       formLists: [],
@@ -213,6 +224,7 @@
         get(item).then(res => {
           if (res.code === 10000) {
             this.recordActive = res.result
+            this.recordActive.modelKey = undefined
             this.$refs.cloneModel.show()
           }
         })

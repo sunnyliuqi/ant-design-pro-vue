@@ -91,6 +91,11 @@
       :group-lists="groupLists"
       :save="save"
     />
+    <model-history
+      ref="historyModel"
+      :refresh="refresh"
+      :rollback="rollback"
+      :record="historyModels"/>
   </a-card>
 </template>
 
@@ -102,6 +107,8 @@
   import Detail from './components/Detail'
   import Edit from './components/Edit'
   import Clone from './components/Clone'
+  import Histories from './components/Histories'
+  import ModelHistory from '@/views/process/model/components/Histories'
   /**
    * 初始化分页
    * @type {{current: number, total: number, pageSize: number}}
@@ -113,7 +120,7 @@
   }
   export default {
   name: 'Model',
-  components: { Add, Detail, Edit, Clone },
+  components: { ModelHistory, Add, Detail, Edit, Clone },
   data () {
     return {
       formLists: [],

@@ -30,6 +30,10 @@
     <a-divider orientation="left">
       模型信息
     </a-divider>
+    <view-bpmn-design
+      ref="viewBpmnDesign"
+      :xml="record.modelEditorJson"
+    />
     <div
       :style="{
         position: 'absolute',
@@ -55,9 +59,10 @@
 
 <script>
 import ACol from 'ant-design-vue/es/grid/Col'
+import { ViewBpmnDesign } from '@/components/Activiti/Bpmn'
 export default {
   name: 'ModelDetail',
-  components: { ACol },
+  components: { ACol, ViewBpmnDesign },
   props: {
     record: {
       type: Object,

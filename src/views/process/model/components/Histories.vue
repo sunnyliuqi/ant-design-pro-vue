@@ -48,6 +48,11 @@
       <a-divider orientation="left" v-if="activeObject">
         模型信息
       </a-divider>
+      <view-bpmn-design
+        v-if="activeObject"
+        ref="viewBpmnDesign"
+        :xml="activeObject.modelEditorJson"
+      />
       <a-divider orientation="left" v-if="activeObject">
         评论
       </a-divider>
@@ -90,10 +95,11 @@
 <script>
 import ACol from 'ant-design-vue/es/grid/Col'
 import { formatDate } from '@/utils/common'
+import { ViewBpmnDesign } from '@/components/Activiti/Bpmn'
 
 export default {
   name: 'ModelHistory',
-  components: { ACol },
+  components: { ACol, ViewBpmnDesign },
   props: {
     record: {
       type: Array,

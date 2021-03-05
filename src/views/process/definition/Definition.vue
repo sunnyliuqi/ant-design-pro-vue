@@ -200,10 +200,7 @@ export default {
     handleSuspended (record) {
       executeProcessDefinitionAction(this.getParams(record)).then(res => {
         if (res.code === 10000) {
-          this.$message.info('处理成功')
-          setTimeout(() => {
-            this.refresh()
-          }, 3000)
+          this.$message.info('操作成功，请稍后手动刷新')
         }
       })
     },

@@ -42,11 +42,13 @@
           <template slot="actions" class="ant-card-actions">
             <a-icon title="编辑" key="form" type="form" @click="editModel(item)"/>
             <a-icon title="复制" key="copy" type="copy" @click="cloneModel(item)"/>
-            <a-popconfirm title="你确定要删除该表单吗？" @confirm="deleteModel(item)">
+            <a-popconfirm title="你确定要删除该模型吗？" @confirm="deleteModel(item)">
               <a-icon title="删除" key="delete" type="delete"/>
             </a-popconfirm>
             <a-icon title="历史" v-if="item.version>1" key="history" type="history" @click="historyModel(item)"/>
-            <a-icon title="部署" key="publish" type="deployment-unit" @click="publishModel(item)"/>
+            <a-popconfirm title="你确定要发布该模型吗？" @confirm="publishModel(item)">
+              <a-icon title="发布" key="publish" type="deployment-unit"/>
+            </a-popconfirm>
           </template>
           <a-card-meta :title="item.name" @click="viewModel(item)">
             <div slot="description">

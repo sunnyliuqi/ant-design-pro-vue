@@ -52,15 +52,15 @@ export default {
     refresh (queryParams) {
       listTasksCurrentUser(Object.assign({}, queryParams, this.page)).then(res => {
         if (res.code === 10000) {
-          const task = { 'label': '待办任务', 'count': res.result.total, 'url': '/process/user/tasks' }
-          this.activiti.list = { ...this.activiti.list, task }
+          const task = { sort: 1, 'label': '待办任务', 'count': res.result.total, 'url': '/process/user/tasks' }
+          this.activiti.list = [ ...this.activiti.list, task ]
           this.cardComplete()
         }
       })
       listProcessInstancesCurrentUser(Object.assign(this.instanceQueryParams, queryParams, this.page)).then(res => {
         if (res.code === 10000) {
-          const instance = { 'label': '流程实例', 'count': res.result.total, 'url': '/process/user/processInstances' }
-          this.activiti.list = { ...this.activiti.list, instance }
+          const instance = { sort: 2, 'label': '流程实例', 'count': res.result.total, 'url': '/process/user/processInstances' }
+          this.activiti.list = [ ...this.activiti.list, instance ]
           this.cardComplete()
         }
       })

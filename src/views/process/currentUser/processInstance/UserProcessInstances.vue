@@ -6,7 +6,7 @@
           <a-row :gutter="48">
             <a-col :md="8" :sm="12" :xs="24">
               <a-form-item label="流程">
-                <a-select :options="getProcessDefinitions" v-model="queryParam.processDefinitionId" placeholder="全部"/>
+                <a-select allowClear :options="getProcessDefinitions" v-model="queryParam.processDefinitionId" placeholder="全部"/>
               </a-form-item>
             </a-col>
             <a-col :md="8" :sm="12" :xs="24">
@@ -102,7 +102,7 @@ export default {
       formatDate: formatDate,
       allStatus: _allStatus,
       // 查询参数
-      getProcessDefinitions: [{ label: '全部', value: '' }],
+      getProcessDefinitions: [],
       queryParam: { state: 'running' },
       // 列表表头
       columns: [

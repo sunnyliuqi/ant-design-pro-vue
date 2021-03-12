@@ -51,21 +51,21 @@ export default {
          * 时间
          */
         return (<a-date-picker showTime format={'YYYY-MM-DD HH:mm:ss'} {...this.getDisabled(field)} v-decorator={[`values.${field.id}`, { initialValue: field.value ? moment(field.value, 'YYYY-MM-DD HH:mm:ss') : null, rules: this.getRules(field) }]} placeholder={`请选择${field.name}`}/>)
-      } else if (type === 'select') {
+      } else if (type === 'select' || type === 'dropdown') {
         /**
          * 选择框
          */
-        return (<a-select {...this.getDisabled(field)} v-decorator={[`values.${field.id}`, { initialValue: field.value ? field.value : null, rules: this.getRules(field) }]} placeholder={`请选择${field.name}`}>{this.getOpts(field)}</a-select>)
+        return (<a-select {...this.getDisabled(field)} v-decorator={[`values.${field.id}`, { initialValue: this.getOptValue(field), rules: this.getRules(field) }]} placeholder={`请选择${field.name}`}>{this.getOpts(field)}</a-select>)
       } else if (type === 'radio-buttons') {
         /**
          * 单选
          */
         return (<a-radio-group {...this.getDisabled(field)} v-decorator={[`values.${field.id}`, { initialValue: field.value, rules: this.getRules(field) }]}>{this.getRadioOpts(field.options)}</a-radio-group>)
-      } else if (type === 'check-box') {
+      } else if (type === 'check-box' || type === 'checkbox') {
         /**
          * 多选
          */
-        return (<a-checkbox-group options={this.getCheckboxOpts(field)} {...this.getDisabled(field)} v-decorator={[`values.${field.id}`, { initialValue: field.value, rules: this.getRules(field) }]} />)
+        return (<a-checkbox-group options={this.getCheckboxOpts(field)} {...this.getDisabled(field)} v-decorator={[`values.${field.id}`, { initialValue: this.getOptValue(field), rules: this.getRules(field) }]} />)
       } else if (type === 'integer') {
         /**
          * 数字
@@ -86,6 +86,24 @@ export default {
       }] */
       return (<a-radio-group button-style={'solid'} v-decorator={[`outcome`, { initialValue: outcomes[0].name }]}>{this.getRadioButtonOpts(outcomes)}</a-radio-group>)
     },
+    getOptValue (field) {
+      const value = field.value
+      if (value) {
+        if (typeof (value) === 'string') {
+          if ((value.startsWith('[') && value.endsWith(']')) || (value.startsWith('{') && value.endsWith('}'))) {
+            return JSON.parse(value)
+          }
+          return value
+        } else if (typeof (value) === 'object') {
+          return value
+        }
+      } else {
+        if (field.required && field.required === true && field.options && field.options.length > 0) {
+          return field.options[0].name
+        }
+        return undefined
+      }
+    },
     getCheckboxOpts (field) {
       /* "options": [{
         "name": "0",
@@ -94,10 +112,10 @@ export default {
       const opts = []
       if (field.options && field.options.length > 0) {
         field.options.forEach(i => {
-          if (i.name && i.value) {
+          if (i.name) {
             opts.push({
               label: i.name,
-              value: i.value
+              value: i.name
             })
           }
         })
@@ -143,8 +161,8 @@ export default {
       }
       if (field.options && field.options.length > 0) {
         field.options.forEach(i => {
-          if (i.value && i.name) {
-            opts.push(<a-select-option value={i.value}>{i.name}</a-select-option>)
+          if (i.name) {
+            opts.push(<a-select-option value={i.name}>{i.name}</a-select-option>)
           }
         })
       }

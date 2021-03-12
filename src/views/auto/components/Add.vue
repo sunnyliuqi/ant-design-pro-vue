@@ -493,7 +493,7 @@ export default {
   },
   created () {
     this.tableInfo().then(res => {
-      if (res.code === 10000) {
+      if (res.code && res.code === 10000) {
         this.tableNameList = res.result
       }
     })

@@ -152,11 +152,15 @@ export function setActivitiFormDateFormat (formProps, fields) {
   const values = formProps.values
   if (values) {
     if (fields && fields.length > 0) {
-      const dateFields = fields.map(i => {
+      fields.forEach(i => {
         if (i.type === 'date') {
           values[i.id] = formatDate(values[i.id], 'YYYY-MM-DD')
         } else if (i.type === 'datetime') {
           values[i.id] = formatDate(values[i.id])
+        } else if (i.type === 'checkbox') {
+          if (values[i.id]) {
+            values[i.id] = JSON.stringify(values[i.id])
+          }
         }
       })
     }

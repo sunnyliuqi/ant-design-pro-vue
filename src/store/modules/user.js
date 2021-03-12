@@ -85,6 +85,10 @@ const user = {
         logout().then(() => {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
+          commit('SET_AUTH', { serviceMenus: undefined, operationCodes: undefined })
+          commit('SET_INFO', {})
+          commit('SET_NAME', { name: undefined, welcome: welcome() })
+          commit('SET_AVATAR', undefined)
           storage.remove(ACCESS_TOKEN)
           resolve()
         }).catch(() => {

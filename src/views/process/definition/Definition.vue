@@ -46,11 +46,12 @@
           :showUploadList="false"
           :customRequest="handleImport"
         >
-          <a-button :icon="fileLoading ? 'loading' : 'upload'">上传部署文件</a-button>
+          <a-button v-authorize:PROCESS_DEPOLY_UPLOAD :icon="fileLoading ? 'loading' : 'upload'">上传部署文件</a-button>
         </a-upload>
       </div>
     </div>
     <s-table
+      v-if="$authorize('PROCESS_DEPOLY_LIST')"
       ref="definitionTable"
       size="default"
       :rowKey="(recordActive) => recordActive.id"
@@ -66,14 +67,14 @@
       </span>
       <span slot="action" slot-scope="text, record">
         <template>
-          <a v-if="record.suspended" @click="handleSuspended(record)">激活</a>
-          <a v-else @click="handleSuspended(record)">挂起</a>
-          <a-divider type="vertical"/>
-          <a @click="handleDelete(record)">删除部署</a>
-          <a-divider type="vertical"/>
-          <a @click="lookImg(record)">流程图</a>
-          <a-divider type="vertical"/>
-          <a @click="downBpmn(record)">流程文件下载</a>
+          <a v-authorize:PROCESS_DEPOLY_SUSPENDED v-if="record.suspended" @click="handleSuspended(record)">激活</a>
+          <a v-authorize:PROCESS_DEPOLY_SUSPENDED v-else @click="handleSuspended(record)">挂起</a>
+          <a-divider v-authorize:PROCESS_DEPOLY_DEL type="vertical"/>
+          <a v-authorize:PROCESS_DEPOLY_DEL @click="handleDelete(record)">删除部署</a>
+          <a-divider v-authorize:PROCESS_DEPOLY_IMAGE type="vertical"/>
+          <a v-authorize:PROCESS_DEPOLY_IMAGE @click="lookImg(record)">流程图</a>
+          <a-divider v-authorize:PROCESS_DEPOLY_XML type="vertical"/>
+          <a v-authorize:PROCESS_DEPOLY_XML @click="downBpmn(record)">流程文件下载</a>
         </template>
       </span>
     </s-table>

@@ -14,7 +14,7 @@
                 class="table-page-search-submitButtons">
                 <a-button type="primary" @click="refresh">查询</a-button>
                 <a-button style="margin-left: 8px" @click="restQuery">重置</a-button>
-                <a-button type="danger" style="margin-left: 8px" @click="add">新建</a-button>
+                <a-button v-authorize:PROCESS_FORM_ADD type="danger" style="margin-left: 8px" @click="add">新建</a-button>
               </span>
             </a-col>
           </a-row>
@@ -25,6 +25,7 @@
       </div>
     </div>
     <a-list
+      v-if="$authorize('PROCESS_FORM_LIST')"
       class="formList"
       :grid="{ gutter: 16, xs: 1, sm: 2, md: 4, lg: 4 }"
       :loading="loading"
@@ -32,7 +33,7 @@
       :data-source="listData">
       <a-list-item slot="renderItem" slot-scope="item">
         <a-card hoverable :style="cardStyle(item)">
-          <p slot="cover" style="height: 100px" @click="viewForm(item)">
+          <p v-authorize:PROCESS_FORM_DETAILS slot="cover" style="height: 100px" @click="viewForm(item)">
             <a-badge
               :count="'v'+item.version"
               style="float: right; margin: 8px;"
@@ -40,14 +41,14 @@
             />
           </p>
           <template slot="actions" class="ant-card-actions">
-            <a-icon title="编辑" key="form" type="form" @click="editForm(item)"/>
-            <a-icon title="复制" key="copy" type="copy" @click="cloneForm(item)"/>
-            <a-popconfirm title="你确定要删除该表单吗？" @confirm="deleteForm(item)">
+            <a-icon v-authorize:PROCESS_FORM_EDIT title="编辑" key="form" type="form" @click="editForm(item)"/>
+            <a-icon v-authorize:PROCESS_FORM_CLONE title="复制" key="copy" type="copy" @click="cloneForm(item)"/>
+            <a-popconfirm v-authorize:PROCESS_FORM_DEL title="你确定要删除该表单吗？" @confirm="deleteForm(item)">
               <a-icon title="删除" key="delete" type="delete"/>
             </a-popconfirm>
-            <a-icon title="历史" v-if="item.version>1" key="history" type="history" @click="historyForm(item)"/>
+            <a-icon v-authorize:PROCESS_FORM_HISTORIES title="历史" v-if="item.version>1" key="history" type="history" @click="historyForm(item)"/>
           </template>
-          <a-card-meta :title="item.name" @click="viewForm(item)">
+          <a-card-meta v-authorize:PROCESS_FORM_DETAILS :title="item.name" @click="viewForm(item)">
             <div slot="description">
               <p class="oneLine">{{ item.modelKey }}</p>
               <p class="oneLine">{{ item.description }}</p>

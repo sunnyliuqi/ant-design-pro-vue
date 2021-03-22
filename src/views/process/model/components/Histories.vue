@@ -86,7 +86,7 @@
       >
         返回
       </a-button>
-      <a-button v-if="activeObject" @click="handleSubmit" type="primary" :loading="formLoading">设为新版本</a-button>
+      <a-button v-authorize:PROCESS_MODEL_HISTORIES v-if="activeObject" @click="handleSubmit" type="primary" :loading="formLoading">设为新版本</a-button>
     </div>
 
   </a-drawer>

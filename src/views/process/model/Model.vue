@@ -14,7 +14,7 @@
                 class="table-page-search-submitButtons">
                 <a-button type="primary" @click="refresh">查询</a-button>
                 <a-button style="margin-left: 8px" @click="restQuery">重置</a-button>
-                <a-button type="danger" style="margin-left: 8px" @click="add">新建</a-button>
+                <a-button v-authorize:PROCESS_MODEL_ADD type="danger" style="margin-left: 8px" @click="add">新建</a-button>
               </span>
             </a-col>
           </a-row>
@@ -25,6 +25,7 @@
       </div>
     </div>
     <a-list
+      v-if="$authorize('PROCESS_MODEL_LIST')"
       class="modelList"
       :grid="{ gutter: 16, xs: 1, sm: 2, md: 4, lg: 4 }"
       :loading="loading"
@@ -32,7 +33,7 @@
       :data-source="listData">
       <a-list-item slot="renderItem" slot-scope="item">
         <a-card hoverable :style="cardStyle(item)">
-          <p slot="cover" style="height: 100px" @click="viewModel(item)">
+          <p v-authorize:PROCESS_MODEL_DETAILS slot="cover" style="height: 100px" @click="viewModel(item)">
             <a-badge
               :count="'v'+item.version"
               style="float: right; margin: 8px;"
@@ -40,17 +41,17 @@
             />
           </p>
           <template slot="actions" class="ant-card-actions">
-            <a-icon title="编辑" key="form" type="form" @click="editModel(item)"/>
-            <a-icon title="复制" key="copy" type="copy" @click="cloneModel(item)"/>
-            <a-popconfirm title="你确定要删除该模型吗？" @confirm="deleteModel(item)">
+            <a-icon v-authorize:PROCESS_MODEL_EDIT title="编辑" key="form" type="form" @click="editModel(item)"/>
+            <a-icon v-authorize:PROCESS_MODEL_CLONE title="复制" key="copy" type="copy" @click="cloneModel(item)"/>
+            <a-popconfirm v-authorize:PROCESS_MODEL_DEL title="你确定要删除该模型吗？" @confirm="deleteModel(item)">
               <a-icon title="删除" key="delete" type="delete"/>
             </a-popconfirm>
-            <a-icon title="历史" v-if="item.version>1" key="history" type="history" @click="historyModel(item)"/>
-            <a-popconfirm title="你确定要发布该模型吗？" @confirm="publishModel(item)">
+            <a-icon v-authorize:PROCESS_MODEL_HISTORIES title="历史" v-if="item.version>1" key="history" type="history" @click="historyModel(item)"/>
+            <a-popconfirm v-authorize:PROCESS_MODEL_PUBLISH title="你确定要发布该模型吗？" @confirm="publishModel(item)">
               <a-icon title="发布" key="publish" type="deployment-unit"/>
             </a-popconfirm>
           </template>
-          <a-card-meta :title="item.name" @click="viewModel(item)">
+          <a-card-meta v-authorize:PROCESS_MODEL_DETAILS :title="item.name" @click="viewModel(item)">
             <div slot="description">
               <p class="oneLine">{{ item.modelKey }}</p>
               <p class="oneLine">{{ item.description || '' }}</p>

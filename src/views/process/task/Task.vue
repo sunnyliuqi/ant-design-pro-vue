@@ -67,6 +67,7 @@
       </div>
     </div>
     <s-table
+      v-if="$authorize('PROCESS_TASK_LIST')"
       ref="taskTable"
       size="default"
       :rowKey="(recordActive) => recordActive.id"
@@ -94,11 +95,11 @@
       </span>
       <span slot="action" slot-scope="text, record">
         <template>
-          <a @click="trace(record)">跟踪</a>
-          <a-divider v-if="!record.endTime" type="vertical"/>
-          <a v-if="!record.endTime"@click="complete(record)">完成</a>
-          <a-divider v-if="!record.endTime && !record.assignee" type="vertical"/>
-          <a v-if="!record.endTime && !record.assignee"@click="assign(record)">指派</a>
+          <a v-authorize:PROCESS_TASK_TRACE @click="trace(record)">跟踪</a>
+          <a-divider v-authorize:PROCESS_TASK_COMPLETE v-if="!record.endTime" type="vertical"/>
+          <a v-authorize:PROCESS_TASK_COMPLETE v-if="!record.endTime"@click="complete(record)">完成</a>
+          <a-divider v-authorize:PROCESS_TASK_ASSIGN v-if="!record.endTime && !record.assignee" type="vertical"/>
+          <a v-authorize:PROCESS_TASK_ASSIGN v-if="!record.endTime && !record.assignee"@click="assign(record)">指派</a>
         </template>
       </span>
     </s-table>

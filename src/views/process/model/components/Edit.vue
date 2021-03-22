@@ -128,7 +128,7 @@
         >
           取消
         </a-button>
-        <a-button @click="handleSubmit" type="primary" :loading="formLoading">保存</a-button>
+        <a-button v-authorize:PROCESS_MODEL_EDIT @click="handleSubmit" type="primary" :loading="formLoading">保存</a-button>
       </div>
 
     </a-form-model>

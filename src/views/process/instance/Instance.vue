@@ -56,6 +56,7 @@
       </div>
     </div>
     <s-table
+      v-if="$authorize('PROCESS_INSTANCE_LIST')"
       ref="instanceTable"
       size="default"
       :rowKey="(recordActive) => recordActive.id"
@@ -80,9 +81,9 @@
       </span>
       <span slot="action" slot-scope="text, record">
         <template>
-          <a @click="trace(record)">跟踪</a>
-          <a-divider v-if="!record.endTime" type="vertical"/>
-          <a v-if="!record.endTime" @click="cancel(record)">终止</a>
+          <a v-authorize:PROCESS_INSTANCE_TRACE @click="trace(record)">跟踪</a>
+          <a-divider v-authorize:PROCESS_INSTANCE_END v-if="!record.endTime" type="vertical"/>
+          <a v-authorize:PROCESS_INSTANCE_END v-if="!record.endTime" @click="cancel(record)">终止</a>
         </template>
       </span>
     </s-table>

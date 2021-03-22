@@ -41,13 +41,18 @@
             />
           </p>
           <template slot="actions" class="ant-card-actions">
-            <a-icon v-authorize:PROCESS_MODEL_EDIT title="编辑" key="form" type="form" @click="editModel(item)"/>
-            <a-icon v-authorize:PROCESS_MODEL_CLONE title="复制" key="copy" type="copy" @click="cloneModel(item)"/>
-            <a-popconfirm v-authorize:PROCESS_MODEL_DEL title="你确定要删除该模型吗？" @confirm="deleteModel(item)">
+            <a-icon v-if="$authorize('PROCESS_MODEL_EDIT')" title="编辑" key="form" type="form" @click="editModel(item)"/>
+            <a-icon v-if="$authorize('PROCESS_MODEL_CLONE')" title="复制" key="copy" type="copy" @click="cloneModel(item)"/>
+            <a-popconfirm v-if="$authorize('PROCESS_MODEL_DEL')" title="你确定要删除该模型吗？" @confirm="deleteModel(item)">
               <a-icon title="删除" key="delete" type="delete"/>
             </a-popconfirm>
-            <a-icon v-authorize:PROCESS_MODEL_HISTORIES title="历史" v-if="item.version>1" key="history" type="history" @click="historyModel(item)"/>
-            <a-popconfirm v-authorize:PROCESS_MODEL_PUBLISH title="你确定要发布该模型吗？" @confirm="publishModel(item)">
+            <a-icon
+              title="历史"
+              v-if="$authorize('PROCESS_MODEL_HISTORIES') && item.version>1"
+              key="history"
+              type="history"
+              @click="historyModel(item)"/>
+            <a-popconfirm v-if="$authorize('PROCESS_MODEL_PUBLISH')"  title="你确定要发布该模型吗？" @confirm="publishModel(item)">
               <a-icon title="发布" key="publish" type="deployment-unit"/>
             </a-popconfirm>
           </template>

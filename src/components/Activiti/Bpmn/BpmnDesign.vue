@@ -387,37 +387,40 @@
         width: 100%;
         height: 100%;
 
-        /deep/ svg {
-          min-height: 700px;
-        }
-        /deep/ .djs-palette {
-          width: 130px;
-
-          .djs-palette-entries {
-            width: 128px;
+        .bjs-container .djs-container {
+          svg {
+            min-height: 700px;
           }
 
-          .entry {
-            width: 128px;
-          }
+          .djs-palette {
+            width: 130px;
 
-          .custom-entry {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            width: 100%;
-            padding: 5px;
-          }
+            .djs-palette-entries {
+              width: 128px;
+            }
 
-          .custom-entry-content {
-            font-size: 14px;
-            font-weight: 500;
-            margin-left: 15px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
+            .entry {
+              width: 128px;
+            }
+
+            .custom-entry {
+              display: flex;
+              justify-content: flex-start;
+              align-items: center;
+              width: 100%;
+              padding: 5px;
+            }
+
+            .custom-entry-content {
+              font-size: 14px;
+              font-weight: 500;
+              margin-left: 15px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: -webkit-box;
+              -webkit-line-clamp: 1;
+              -webkit-box-orient: vertical;
+            }
           }
         }
       }

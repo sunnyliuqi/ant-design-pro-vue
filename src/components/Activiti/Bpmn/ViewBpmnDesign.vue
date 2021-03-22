@@ -189,44 +189,17 @@
     /deep/ .ant-layout-content {
       background-color: white;
       padding: 8px;
-      border: 1px solid #f1e8e8;
+      border-left: 1px solid #f1e8e8;
+      border-right: 1px solid #f1e8e8;
       min-height: 300px;
 
       .canvas {
         width: 100%;
         height: 100%;
 
-        /deep/ svg {
-          min-height: 700px;
-        }
-        /deep/ .djs-palette {
-          width: 130px;
-
-          .djs-palette-entries {
-            width: 128px;
-          }
-
-          .entry {
-            width: 128px;
-          }
-
-          .custom-entry {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            width: 100%;
-            padding: 5px;
-          }
-
-          .custom-entry-content {
-            font-size: 14px;
-            font-weight: 500;
-            margin-left: 15px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
+        .bjs-container .djs-container {
+          svg {
+            min-height: 300px;
           }
         }
       }

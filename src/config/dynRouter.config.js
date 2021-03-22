@@ -123,8 +123,7 @@ export const dynRouterMap = [{
     component: RouteView,
     meta: {
       title: '流程管理',
-      icon: process,
-      static: true
+      icon: process
     },
     children: [
       {
@@ -157,8 +156,7 @@ export const dynRouterMap = [{
         component: () => import('@/views/process/form/Form'),
         meta: {
           title: '表单设计',
-          keepAlive: true,
-          static: true
+          keepAlive: true
         }
       },
       {
@@ -167,8 +165,7 @@ export const dynRouterMap = [{
         component: () => import('@/views/process/model/Model'),
         meta: {
           title: '流程模型',
-          keepAlive: true,
-          static: true
+          keepAlive: true
         }
       },
       {
@@ -177,8 +174,7 @@ export const dynRouterMap = [{
         component: () => import('@/views/process/definition/Definition'),
         meta: {
           title: '流程部署',
-          keepAlive: true,
-          static: true
+          keepAlive: true
         }
       },
       {
@@ -187,8 +183,7 @@ export const dynRouterMap = [{
         component: () => import('@/views/process/instance/Instance'),
         meta: {
           title: '流程实例',
-          keepAlive: true,
-          static: true
+          keepAlive: true
         }
       },
       {
@@ -197,8 +192,7 @@ export const dynRouterMap = [{
         component: () => import('@/views/process/task/Task'),
         meta: {
           title: '流程任务',
-          keepAlive: true,
-          static: true
+          keepAlive: true
         }
       },
       {

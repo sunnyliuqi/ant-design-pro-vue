@@ -52,7 +52,7 @@
               key="history"
               type="history"
               @click="historyModel(item)"/>
-            <a-popconfirm v-if="$authorize('PROCESS_MODEL_PUBLISH')"  title="你确定要发布该模型吗？" @confirm="publishModel(item)">
+            <a-popconfirm v-if="$authorize('PROCESS_MODEL_PUBLISH')" title="你确定要发布该模型吗？" @confirm="publishModel(item)">
               <a-icon title="发布" key="publish" type="deployment-unit"/>
             </a-popconfirm>
           </template>

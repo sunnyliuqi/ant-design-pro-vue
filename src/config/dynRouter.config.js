@@ -194,16 +194,6 @@ export const dynRouterMap = [{
           title: '流程任务',
           keepAlive: true
         }
-      },
-      {
-        path: '/process/app',
-        name: 'app',
-        component: () => import('@/views/process/app/App'),
-        meta: {
-          title: 'App模块',
-          keepAlive: true,
-          static: true
-        }
       }
     ]
   }, {
@@ -240,16 +230,6 @@ export const dynRouterMap = [{
       component: () => import('@/views/example/PersonWorkFlow'),
       meta: {
         title: '待办',
-        keepAlive: true,
-        static: true
-      }
-    },
-    {
-      path: '/example/leave',
-      name: 'leave',
-      component: () => import('@/views/example/Leave'),
-      meta: {
-        title: '请假',
         keepAlive: true,
         static: true
       }

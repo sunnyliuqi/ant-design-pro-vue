@@ -364,17 +364,17 @@ export default {
         return getHistoricActivityInstances(this.record.id)
           .then(res => {
             if (res.code === 10000) {
-              return this.filterOutCome(res.result.data)
+              return this.filterVariable(res.result.data)
             }
           })
       },
-      filterOutCome (data) {
+      filterVariable (data) {
         if (data && data.length > 0) {
-          return data.filter(this.removeOutcome)
+          return data.filter(this.removeVariable)
         }
         return data
       },
-      removeOutcome (v) {
+      removeVariable (v) {
         if (v.variable.name === 'outcome') {
           return false
         }

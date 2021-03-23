@@ -364,9 +364,21 @@ export default {
         return getHistoricActivityInstances(this.record.id)
           .then(res => {
             if (res.code === 10000) {
-              return res.result.data
+              return this.filterOutCome(res.result.data)
             }
           })
+      },
+      filterOutCome (data) {
+        if (data && data.length > 0) {
+          return data.filter(this.removeOutcome)
+        }
+        return data
+      },
+      removeOutcome (v) {
+        if (v.variable.name === 'outcome') {
+          return false
+        }
+        return true
       },
       /**
        * 子流程

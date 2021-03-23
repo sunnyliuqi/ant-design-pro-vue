@@ -23,9 +23,6 @@ export default {
           return this.createFormItem(i.name, this.createItem(i))
         })
       }
-      if (outcomes && outcomes.length > 0) {
-        formFields.push(this.createFormItem('流程操作', this.getOutComes(outcomes)))
-      }
       return (
         formFields
       )
@@ -77,14 +74,6 @@ export default {
          */
         return (<a-input {...this.getDisabled(field)} v-decorator={[`values.${field.id}`, { initialValue: field.value, rules: this.getRules(field) }]} placeholder={`请输入${field.name}`}/>)
       }
-    },
-    getOutComes (outcomes) {
-      /* [{
-        "name": "通过"
-      }, {
-        "name": "不通过"
-      }] */
-      return (<a-radio-group button-style={'solid'} v-decorator={[`outcome`, { initialValue: outcomes[0].name }]}>{this.getRadioButtonOpts(outcomes)}</a-radio-group>)
     },
     getOptValue (field) {
       const value = field.value
@@ -169,7 +158,7 @@ export default {
       return (opts)
     },
     createFormItem (label, item) {
-      return (<a-col span={24}>
+      return (<a-col span={12}>
         <a-form-item
           label={ label }
           labelCol={{ span: 8 }}

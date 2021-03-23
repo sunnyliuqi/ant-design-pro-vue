@@ -118,13 +118,13 @@ export const selectComponents = [
 export const outcomesComponents = [
   {
     fieldType: 'outcomes',
-    name: '完成',
-    id: 'complete',
+    name: '通过',
+    id: 'approve',
     tagIcon: outcomes
   }, {
     fieldType: 'outcomes',
-    name: '取消',
-    id: 'cancel',
+    name: '不通过',
+    id: 'disprove',
     tagIcon: outcomes
   }
 ]

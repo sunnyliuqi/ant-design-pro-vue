@@ -1,6 +1,6 @@
 <template>
   <a-drawer
-    wrapClassName="custom-drawer custom-drawer-3"
+    wrapClassName="custom-drawer"
     :maskClosable="false"
     title="启动流程"
     @close="onClose"
@@ -11,8 +11,8 @@
       :form="form"
     >
       <a-row :gutter="16">
-        <a-divider orientation="left">流程定义</a-divider>
-        <a-col :span="24">
+        <a-divider orientation="left">流程</a-divider>
+        <a-col :span="12">
           <a-form-item
             label="流程名称"
             :labelCol="{ span: 8 }"
@@ -20,7 +20,7 @@
             <a-input v-decorator="['name',{ rules: [{required: true, message: '名称不能为空'}] } ]" placeholder="请输入名称"/>
           </a-form-item>
         </a-col>
-        <a-col :span="24">
+        <a-col :span="12">
           <a-form-item
             label="BusinessKey"
             :labelCol="{ span: 8 }"
@@ -28,7 +28,7 @@
             <a-input v-decorator="['businessKey',{ } ]" placeholder="请输入业务编码"/>
           </a-form-item>
         </a-col>
-        <a-col :span="24">
+        <a-col :span="12">
           <a-form-item
             label="流程"
             :labelCol="{ span: 8 }"
@@ -37,7 +37,7 @@
           </a-form-item>
         </a-col>
       </a-row>
-      <a-divider v-if="startFormVisible" orientation="left">表单变量</a-divider>
+      <a-divider v-if="startFormVisible" orientation="left">表单</a-divider>
       <dynamic-form :form-info="formInfo" v-if="startFormVisible" />
       <div
         :style="{
@@ -48,7 +48,7 @@
           borderTop: '1px solid #e9e9e9',
           padding: '10px 16px',
           background: '#fff',
-          textAlign: 'right',
+          textAlign: 'right'
         }"
       >
         <a-button

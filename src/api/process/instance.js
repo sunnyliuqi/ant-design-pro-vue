@@ -60,7 +60,7 @@ export function getProcessInstanceDiagram (id) {
  */
 export function getHistoricProcessTaskInstances (id) {
   return axios({
-    url: path.process + '/history/historic-task-instances',
+    url: path.process + '/extend/history/historic-task-instances',
     method: 'GET',
     params: { 'processInstanceId': id }
   })

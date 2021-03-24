@@ -69,6 +69,9 @@
           <span slot="status" slot-scope="text">
             {{ text?'结束':'进行' }}
           </span>
+          <span slot="comment" slot-scope="text">
+            {{ text&&text.message }}
+          </span>
         </s-table>
       </a-tab-pane>
       <a-tab-pane key="4" tab="实例变量">
@@ -209,6 +212,12 @@ const _taskColumns = [
     dataIndex: 'endTime',
     key: 'status',
     scopedSlots: { customRender: 'status' }
+  },
+  {
+    title: '批注',
+    dataIndex: 'comment',
+    key: 'comment',
+    scopedSlots: { customRender: 'comment' }
   }
 ]
 const _variableColumns = [
@@ -348,7 +357,7 @@ export default {
         return getHistoricProcessTaskInstances(this.record.id)
           .then(res => {
             if (res.code === 10000) {
-              return res.result.data
+              return res.result
             }
           })
       },

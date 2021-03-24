@@ -224,11 +224,6 @@ const _variableColumns = [
     key: 'name'
   },
   {
-    title: '变量类型',
-    dataIndex: 'variable.type',
-    key: 'type'
-  },
-  {
     title: '字段值',
     dataIndex: 'variable.value',
     key: 'value'

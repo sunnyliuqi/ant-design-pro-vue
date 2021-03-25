@@ -106,7 +106,7 @@ serviceFile.interceptors.response.use(response => {
     reader.readAsText(response.data, 'utf-8')
     reader.onload = function () {
       const data = JSON.parse(reader.result)
-      if (data.code && data.code !== 10000) {
+      if (data.code && data.code !== 10000 && !response.config.headers.check) {
         message.error(data.msg)
       }
     }

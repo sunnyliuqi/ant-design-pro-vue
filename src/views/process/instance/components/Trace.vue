@@ -75,13 +75,13 @@
           </span>
           <p slot="expandedRowRender" slot-scope="text" style="margin: 0">
             <a-table
-              v-if="text && text.formDefinition && text.formDefinition.fields && text.formDefinition.fields.length>0"
+              v-if="text && text.nodeForm && text.nodeForm.fields && text.nodeForm.fields.length>0"
               size="default"
               :pagination="false"
               :rowKey="(recordActive) => recordActive.id"
               :columns="formColumns"
               class="formTable"
-              :data-source="text.formDefinition.fields"
+              :data-source="text.nodeForm.fields"
             />
             <span v-else>无</span>
           </p>
@@ -206,7 +206,7 @@
       key: 'formKey'
     },
     {
-      title: '处理人',
+      title: '发起人/处理人',
       dataIndex: 'assignee',
       key: 'assignee'
     },
@@ -473,6 +473,8 @@
             res => {
               if (res.code === 10000) {
                 this.img = res.result
+              } else {
+                this.$message.warn('无法读取实例图表，可能流程定义已删除！')
               }
             }
           )

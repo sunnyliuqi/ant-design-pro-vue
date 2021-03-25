@@ -70,7 +70,9 @@
           <a v-authorize:PROCESS_DEPOLY_SUSPENDED v-if="record.suspended" @click="handleSuspended(record)">激活</a>
           <a v-authorize:PROCESS_DEPOLY_SUSPENDED v-else @click="handleSuspended(record)">挂起</a>
           <a-divider v-authorize:PROCESS_DEPOLY_DEL type="vertical"/>
-          <a v-authorize:PROCESS_DEPOLY_DEL @click="handleDelete(record)">删除部署</a>
+         <a-popconfirm v-if="$authorize('PROCESS_DEPOLY_DEL')" title="重要！删除部署会影响查看已完成业务的流程图，请谨慎操作！" cancelText="不删了" okText="依然删除" @confirm="handleDelete(record)">
+            <a v-authorize:PROCESS_DEPOLY_DEL href="javascript:void(0)">删除部署</a>
+          </a-popconfirm>
           <a-divider v-authorize:PROCESS_DEPOLY_IMAGE type="vertical"/>
           <a v-authorize:PROCESS_DEPOLY_IMAGE @click="lookImg(record)">流程图</a>
           <a-divider v-authorize:PROCESS_DEPOLY_XML type="vertical"/>

@@ -61,7 +61,7 @@ export function getProcessDefinitionResource (id) {
 export function getProcessDefinitionImage (id) {
   return axiosFile({
     url: path.process + '/repository/process-definitions/' + id + '/image',
-    headers: { 'Accept': '*/*' },
+    headers: { 'Accept': '*/*', 'check': true },
     method: 'GET',
     fileName: `${id}.png`,
     handleCallBack: createImgNode

@@ -44,12 +44,9 @@ export function getProcessInstance (id) {
  * @returns {AxiosPromise}
  */
 export function getProcessInstanceDiagram (id) {
-  return axiosFile({
-    url: path.process + '/runtime/process-instances/' + id + '/diagram',
-    headers: { 'Accept': '*/*' },
-    method: 'GET',
-    fileName: `${id}.png`,
-    handleCallBack: createImgNode
+  return axios({
+    url: path.process + '/extend/history/historic-diagram/' + id,
+    method: 'GET'
   })
 }
 

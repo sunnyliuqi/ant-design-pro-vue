@@ -39,7 +39,11 @@
       <a-tab-pane key="2" tab="实例图表">
         <a-row :gutter="16">
           <a-col :span="24">
-            <img v-if="img" :src="img.src" :alt="img.alt">
+            <view-bpmn-design
+              v-if="bpmnXml"
+              ref="viewBpmnDesign"
+              :xml="bpmnXml"
+            />
           </a-col>
         </a-row>
       </a-tab-pane>
@@ -176,7 +180,7 @@
     getHistoricSubprocessInstances,
     getJobs
   } from '@/api/process/instance'
-  import { getProcessDefinitionImage } from '@/api/process/definition'
+  import { ViewBpmnDesign } from '@/components/Activiti/Bpmn'
 
   const _formColumns = [{
     title: '字段名',
@@ -354,7 +358,8 @@
   export default {
     name: 'Trace',
     components: {
-      STable
+      STable,
+      ViewBpmnDesign
     },
     props: {
       record: {
@@ -375,7 +380,7 @@
     data () {
       return {
         visible: false,
-        img: undefined,
+        bpmnXml: undefined,
         taskColumns: _taskColumns,
         variableColumns: _variableColumns,
         subprocessColumns: _subprocessColumns,
@@ -450,7 +455,7 @@
     },
     methods: {
       refresh () {
-        this.getImg()
+        this.getDiagram()
         if (this.$refs.taskTable) {
           this.$refs.taskTable.refresh()
         }
@@ -467,26 +472,14 @@
       /**
        * 图表
        */
-      getImg () {
-        if (this.record.endTime) {
-          getProcessDefinitionImage(this.record.processDefinitionId).then(
-            res => {
-              if (res.code === 10000) {
-                this.img = res.result
-              } else {
-                this.$message.warn('无法读取实例图表，可能流程定义已删除！')
-              }
+      getDiagram () {
+        getProcessInstanceDiagram(this.record.id).then(
+          res => {
+            if (res.code === 10000) {
+              this.bpmnXml = res.result.bpmnXml
             }
-          )
-        } else {
-          getProcessInstanceDiagram(this.record.id).then(
-            res => {
-              if (res.code === 10000) {
-                this.img = res.result
-              }
-            }
-          )
-        }
+          }
+        )
       },
       show () {
         this.visible = true

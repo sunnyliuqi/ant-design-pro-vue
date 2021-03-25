@@ -11,8 +11,10 @@
 <script>
   import BpmnViewer from 'bpmn-js/lib/Viewer'
   import customTranslate from './i18n/customTranslate'
- import { emptyBpmn } from './store/defaultBpmn'
+  import { emptyBpmn } from './store/defaultBpmn'
   import html2canvas from 'html2canvas'
+  import MoveCanvasModule from 'diagram-js/lib/navigation/movecanvas'
+  import ZoomScrollModule from 'diagram-js/lib/navigation/zoomscroll'
 
   export default {
     name: 'BpmnDesign',
@@ -112,7 +114,9 @@
           additionalModules: [
             {
               translate: ['value', customTranslate]
-            }]
+            },
+            MoveCanvasModule,
+            ZoomScrollModule]
         })
       },
       /**
@@ -125,6 +129,7 @@
             console.warn(warnings)
           }
           this.adjustPalette()
+          this.getCanvas().zoom('fit-viewport', true)
         }).catch(err => {
           this.$message.error('流程文件错误：' + err.message)
         })
@@ -199,7 +204,7 @@
 
         .bjs-container .djs-container {
           svg {
-            min-height: 300px;
+            min-height: 500px;
           }
         }
       }

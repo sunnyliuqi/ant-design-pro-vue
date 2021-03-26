@@ -243,15 +243,22 @@
       scopedSlots: { customRender: 'durationInMillis' }
     },
     {
-      title: '状态',
+      title: '任务状态',
       dataIndex: 'endTime',
       key: 'status',
       scopedSlots: { customRender: 'status' }
     },
     {
+      title: '审批状态',
+      dataIndex: 'outcome',
+      fixed: 'right',
+      key: 'outcome'
+    },
+    {
       title: '批注',
       dataIndex: 'comment',
       key: 'comment',
+      fixed: 'right',
       scopedSlots: { customRender: 'comment' }
     }
   ]

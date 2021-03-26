@@ -254,7 +254,6 @@
     {
       title: '审批状态',
       dataIndex: 'outcome',
-      fixed: 'right',
       key: 'outcome',
       scopedSlots: { customRender: 'outcome' }
     },
@@ -262,7 +261,6 @@
       title: '批注',
       dataIndex: 'comment',
       key: 'comment',
-      fixed: 'right',
       scopedSlots: { customRender: 'comment' }
     }
   ]

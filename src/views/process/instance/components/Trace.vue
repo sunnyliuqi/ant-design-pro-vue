@@ -43,6 +43,7 @@
               v-if="bpmnXml"
               ref="viewBpmnDesign"
               :xml="bpmnXml"
+              :active-nodes="activeNodes"
             />
           </a-col>
         </a-row>
@@ -381,6 +382,7 @@
       return {
         visible: false,
         bpmnXml: undefined,
+        activeNodes: [],
         taskColumns: _taskColumns,
         variableColumns: _variableColumns,
         subprocessColumns: _subprocessColumns,
@@ -477,6 +479,7 @@
           res => {
             if (res.code === 10000) {
               this.bpmnXml = res.result.bpmnXml
+              this.activeNodes = res.result.activeNodes
             }
           }
         )

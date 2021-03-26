@@ -24,6 +24,12 @@
         type: String,
         default: undefined
       },
+      activeNodes: {
+        type: Array,
+        default: () => {
+          return []
+        }
+      },
       modelKey: {
         type: String,
         default: undefined
@@ -129,7 +135,8 @@
             console.warn(warnings)
           }
           this.adjustPalette()
-          this.getCanvas().zoom('fit-viewport', true)
+          this.getCanvas().zoom('fit-viewport', 'auto')
+          this.setHighlight()
         }).catch(err => {
           this.$message.error('流程文件错误：' + err.message)
         })
@@ -144,10 +151,40 @@
         }
       },
       /**
+       * 设置待处理节点高亮
+       */
+      setHighlight () {
+        if (this.activeNodes && this.activeNodes.length && this.activeNodes.length > 0) {
+          this.activeNodes.forEach(n => {
+            const shape = this.getElementRegistry().get(n.activeId)
+            const overlayHtml = `<div class="highlight" style="width: ${shape.width + 4}px;height: ${shape.height + 4}px">
+                                    <div class="highlight-overlay">
+                                        <p><span class="highlight-overlay-label">创建时间:</span><span>${n.startTime}</span></p>
+                                        <p><span class="highlight-overlay-label">有效期限:</span><span>${n.dueDate || '无'}</span></p>
+                                        <p><span class="highlight-overlay-label">处理人/组:</span><span>${n.assignments || '无'}</span></p>
+                                    </div>
+                                 </div>`
+            this.getOverlays().add(n.activeId, {
+              position: {
+                top: -2,
+                left: -2
+              },
+              html: overlayHtml
+            })
+          })
+        }
+      },
+      /**
        * 画布
        */
       getCanvas () {
         return this.bpmnViewer.get('canvas')
+      },
+      getOverlays () {
+        return this.bpmnViewer.get('overlays')
+      },
+      getElementRegistry () {
+        return this.bpmnViewer.get('elementRegistry')
       },
       isImplicitRoot (element) {
         return element.id === '__implicitroot'
@@ -205,6 +242,39 @@
         .bjs-container .djs-container {
           svg {
             min-height: 500px;
+          }
+        }
+        .highlight{
+          border-radius: 10px;
+          border: 4px solid red;
+          pointer-events: none;
+          .highlight-overlay{
+            position: absolute;
+            top:-102px;
+            left: -240px;
+            width: 240px;
+            border: 1px solid #f1e8e8;
+            background-color: #ff0f20;
+            opacity: 0.6;
+            color: white;
+            line-height: 28px;
+            border-radius: 10px;
+            p{
+              padding: 0;
+              margin: 0;
+            }
+            p:first-child{
+              margin-top: 8px;
+            }
+            p:last-child{
+              margin-bottom: 8px;
+            }
+            .highlight-overlay-label{
+              padding: 0 8px;
+              text-align: right;
+              width: 82px;
+              display: inline-block;
+            }
           }
         }
       }

@@ -75,6 +75,9 @@
           <span slot="status" slot-scope="text">
             {{ text?'结束':'进行' }}
           </span>
+          <span slot="outcome" slot-scope="text" style="color: red">
+            {{ text }}
+          </span>
           <span slot="comment" slot-scope="text">
             {{ text&&text.message }}
           </span>
@@ -252,7 +255,8 @@
       title: '审批状态',
       dataIndex: 'outcome',
       fixed: 'right',
-      key: 'outcome'
+      key: 'outcome',
+      scopedSlots: { customRender: 'outcome' }
     },
     {
       title: '批注',

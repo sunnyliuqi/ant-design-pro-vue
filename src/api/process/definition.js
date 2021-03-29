@@ -47,9 +47,8 @@ export function deleteDeployment (id) {
 export function getProcessDefinitionResource (id) {
   return axiosFile({
     url: path.process + '/repository/process-definitions/' + id + '/resourcedata',
-    headers: { 'Accept': '*/*' },
-    method: 'GET',
-    fileName: `${id}.xml`
+    headers: { 'Accept': '*/*', fileName: `${id}.xml` },
+    method: 'GET'
   })
 }
 
@@ -61,10 +60,8 @@ export function getProcessDefinitionResource (id) {
 export function getProcessDefinitionImage (id) {
   return axiosFile({
     url: path.process + '/repository/process-definitions/' + id + '/image',
-    headers: { 'Accept': '*/*', 'check': true },
-    method: 'GET',
-    fileName: `${id}.png`,
-    handleCallBack: createImgNode
+    headers: { 'Accept': '*/*', 'check': true, fileName: `${id}.png`, handleCallBack: createImgNode },
+    method: 'GET'
   })
 }
 

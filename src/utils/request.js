@@ -95,9 +95,10 @@ function checkType (type) {
 serviceFile.interceptors.response.use(response => {
   if (checkType(response.data.type)) {
     // 获取文件名
-    const fileName = response.config.fileName || response.headers['content-disposition'].split('=')[1] || uuid()
-    if (response.config.handleCallBack) {
-      return response.config.handleCallBack(response.data, fileName)
+    const content = response.headers['content-disposition']
+    const fileName = response.config.headers.fileName || (content && content.split('=')[1]) || uuid()
+    if (response.config.headers.handleCallBack) {
+      return response.config.headers.handleCallBack(response.data, fileName)
     } else {
       return downFile(response.data, fileName)
     }

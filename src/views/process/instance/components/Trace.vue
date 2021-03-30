@@ -426,7 +426,7 @@
           return data
         },
         removeVariable (v) {
-          if (v.variable.name === 'outcome') {
+          if (v.variable.name === 'outcome' || v.variable.name === '发起人') {
             return false
           }
           return true

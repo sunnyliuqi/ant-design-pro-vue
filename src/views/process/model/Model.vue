@@ -72,7 +72,8 @@
       :check-key="checkKey"
       :refresh="refresh"
       :form-lists="formLists"
-      :user-lists="userLists"
+      :assignee-opts="assigneeOpts"
+      :initiator-opts="initiatorOpts"
       :group-lists="groupLists"
       :save="save"
     />
@@ -86,7 +87,8 @@
       :check-key="checkKey"
       :refresh="refresh"
       :form-lists="formLists"
-      :user-lists="userLists"
+      :assignee-opts="assigneeOpts"
+      :initiator-opts="initiatorOpts"
       :group-lists="groupLists"
       :update="update"
     />
@@ -96,7 +98,8 @@
       :check-key="checkKey"
       :refresh="refresh"
       :form-lists="formLists"
-      :user-lists="userLists"
+      :assignee-opts="assigneeOpts"
+      :initiator-opts="initiatorOpts"
       :group-lists="groupLists"
       :save="save"
     />
@@ -132,7 +135,8 @@
   data () {
     return {
       formLists: [],
-      userLists: [],
+      initiatorOpts: [{ label: '发起人', value: '发起人' }],
+      assigneeOpts: [{ label: '发起人', value: '#{发起人}' }],
       groupLists: [],
       historyModels: [],
       recordActive: {},
@@ -186,7 +190,8 @@
         const result = res.result
         if (result && result.length && result.length > 0) {
           result.forEach(item => {
-            this.userLists.push({ label: `${item.id}`, value: `${item.id}` })
+            this.assigneeOpts.push({ label: `${item.id}`, value: `${item.id}` })
+            this.initiatorOpts.push({ label: `${item.id}`, value: `${item.id}` })
           })
         }
       }

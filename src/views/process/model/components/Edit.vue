@@ -101,7 +101,8 @@
             ref="bpmnDesign"
             :xml-state="xmlState"
             :form-lists="formLists"
-            :user-lists="userLists"
+            :assignee-opts="assigneeOpts"
+            :initiator-opts="initiatorOpts"
             :group-lists="groupLists"
             v-model="record.modelEditorJson"
             :model-key="record.modelKey"
@@ -157,7 +158,13 @@ export default {
         return []
       }
     },
-    userLists: {
+    assigneeOpts: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
+    initiatorOpts: {
       type: Array,
       default: () => {
         return []

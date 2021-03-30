@@ -48,18 +48,6 @@
           return []
         }
       },
-      userLists: {
-        type: Array,
-        default: () => {
-          return []
-        }
-      },
-      groupLists: {
-        type: Array,
-        default: () => {
-          return []
-        }
-      },
       change: {
         type: Function,
         default: function (xml) {

@@ -67,7 +67,8 @@
           <bpmn-design
             ref="bpmnDesign"
             :form-lists="formLists"
-            :user-lists="userLists"
+            :assignee-opts="assigneeOpts"
+            :initiator-opts="initiatorOpts"
             :group-lists="groupLists"
             :xml-state="xmlState"
             v-model="xml"
@@ -122,7 +123,13 @@ export default {
         return []
       }
     },
-    userLists: {
+    assigneeOpts: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
+    initiatorOpts: {
       type: Array,
       default: () => {
         return []

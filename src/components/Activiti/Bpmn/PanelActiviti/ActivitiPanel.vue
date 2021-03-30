@@ -288,7 +288,7 @@
               :wrapperCol="{ span: 16 }">
               <a-select
                 allowClear
-                :options="userLists"
+                :options="initiatorOpts"
                 v-decorator="[
                   'initiator',
                   {initialValue: getValues('initiator',element)}
@@ -326,7 +326,7 @@
               :wrapperCol="{ span: 16 }">
               <Assignments
                 v-model="assignmentsValues"
-                :user-lists="userLists"
+                :assignee-opts="assigneeOpts"
                 :group-lists="groupLists"
               />
             </a-form-item>
@@ -638,7 +638,13 @@
           return []
         }
       },
-      userLists: {
+      assigneeOpts: {
+        type: Array,
+        default: () => {
+          return []
+        }
+      },
+      initiatorOpts: {
         type: Array,
         default: () => {
           return []

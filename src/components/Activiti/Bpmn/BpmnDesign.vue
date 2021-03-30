@@ -19,7 +19,8 @@
         :update-bpmn="updateBpmn"
         :get-values="getValues"
         :form-lists="formLists"
-        :user-lists="userLists"
+        :assignee-opts="assigneeOpts"
+        :initiator-opts="initiatorOpts"
         :group-lists="groupLists"
       />
     </a-layout-sider>
@@ -71,7 +72,13 @@
           return []
         }
       },
-      userLists: {
+      assigneeOpts: {
+        type: Array,
+        default: () => {
+          return []
+        }
+      },
+      initiatorOpts: {
         type: Array,
         default: () => {
           return []

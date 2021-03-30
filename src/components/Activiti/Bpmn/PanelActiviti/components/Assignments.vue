@@ -32,7 +32,7 @@
               :wrapperCol="{ span: 16 }">
               <a-select
                 allowClear
-                :options="userLists"
+                :options="assigneeOpts"
                 v-decorator="['assignee',{initialValue: stateValue && stateValue.assignee,rules:[]}]"
                 placeholder="请选择用户"/>
             </a-form-item>
@@ -45,7 +45,7 @@
               <a-select
                 mode="multiple"
                 allowClear
-                :options="userLists"
+                :options="assigneeOpts"
                 v-decorator="['candidateUsers',{initialValue: getCandidateUsers,rules:[]}]"
                 placeholder="请选择候选用户"/>
             </a-form-item>
@@ -103,7 +103,7 @@
         type: String,
         default: undefined
       },
-      userLists: {
+      assigneeOpts: {
         type: Array,
         default: () => {
           return []

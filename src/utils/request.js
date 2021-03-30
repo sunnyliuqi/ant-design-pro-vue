@@ -7,6 +7,7 @@ import message from 'ant-design-vue/es/message'
 import { VueAxios } from './axios'
 import { ACCESS_TOKEN, API_NO_AUTHORIZATIONS } from '@/store/mutation-types'
 import { uuid, downFile } from './common'
+import { createImgNode } from '@/utils/common'
 // 创建 axios 实例
 const service = axios.create({
   baseURL: process.env.VUE_APP_API_BASE_URL, // api base_url
@@ -97,8 +98,8 @@ serviceFile.interceptors.response.use(response => {
     // 获取文件名
     const content = response.headers['content-disposition']
     const fileName = response.config.headers.fileName || (content && content.split('=')[1]) || uuid()
-    if (response.config.headers.handleCallBack) {
-      return response.config.headers.handleCallBack(response.data, fileName)
+    if (response.config.headers.isImage && response.config.headers.isImage === true) {
+      return createImgNode(response.data, fileName)
     } else {
       return downFile(response.data, fileName)
     }

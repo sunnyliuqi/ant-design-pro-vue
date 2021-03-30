@@ -3,7 +3,6 @@ import {
   axios, axiosFile
 } from '@/utils/request'
 import parsePageParams from '@/utils/page'
-import { createImgNode } from '@/utils/common'
 // 分页
 export function queryList (data) {
   return axios({
@@ -60,7 +59,7 @@ export function getProcessDefinitionResource (id) {
 export function getProcessDefinitionImage (id) {
   return axiosFile({
     url: path.process + '/repository/process-definitions/' + id + '/image',
-    headers: { 'Accept': '*/*', 'check': true, fileName: `${id}.png`, handleCallBack: createImgNode },
+    headers: { 'Accept': '*/*', fileName: `${id}.png`, isImage: true },
     method: 'GET'
   })
 }

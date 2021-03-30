@@ -26,7 +26,7 @@
       </div>
 
       <div class="table-operator">
-        <a-button v-authorize:SYS_API_ADD type="primary" icon="plus" @click="handleStart()">启动一个流程</a-button>
+        <a-button type="primary" icon="plus" @click="handleStart()">启动一个流程</a-button>
       </div>
     </div>
     <s-table

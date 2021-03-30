@@ -14,7 +14,7 @@ export const dynRouterMap = [{
     title: '首页',
     static: true
   },
-  redirect: '/auto/completeList',
+  redirect: '/example/workFlow',
   children: [{
     path: '/auto',
     name: 'auto',

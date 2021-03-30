@@ -31,7 +31,7 @@ router.beforeEach((to, from, next) => {
             // console.log('当前用户拥有的菜单：' + JSON.stringify(res.result.menus))
             // console.log('当前用户拥有的操作码：' + JSON.stringify(res.result.operationCodes))
             const menus = res.result.menus
-            store.dispatch('GenerateRoutes', { menus }).then(() => {
+            store.dispatch('GenerateDnyRoutes', { menus }).then(() => {
               // 根据roles权限生成可访问的路由表
               // 动态添加可访问路由表
               router.addRoutes(store.getters.addRouters)

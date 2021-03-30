@@ -72,7 +72,7 @@ const permission = {
     }
   },
   actions: {
-    GenerateRoutes ({ commit }, data) {
+    GenerateDnyRoutes ({ commit }, data) {
       return new Promise(resolve => {
         const { menus } = data
         const accessedRouters = filterAsyncRouter(asyncRouterMap, menus)

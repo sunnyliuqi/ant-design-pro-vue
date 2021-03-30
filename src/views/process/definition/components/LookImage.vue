@@ -8,7 +8,11 @@
   >
     <a-row :gutter="16">
       <a-col :span="24">
-        <img v-if="img" :src="img.src" :alt="img.alt">
+        <view-bpmn-design
+          v-if="xml"
+          ref="viewBpmnDesign"
+          :xml="xml"
+        />
       </a-col>
     </a-row>
     <div
@@ -34,11 +38,15 @@
 </template>
 
 <script>
+  import { ViewBpmnDesign } from '@/components/Activiti/Bpmn'
 export default {
   name: 'LookImage',
+  components: {
+    ViewBpmnDesign
+  },
   props: {
-    img: {
-      type: HTMLImageElement,
+    xml: {
+      type: String,
       default: undefined
     }
   },

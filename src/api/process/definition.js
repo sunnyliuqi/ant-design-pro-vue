@@ -57,9 +57,13 @@ export function getProcessDefinitionResource (id) {
  * @returns {*}
  */
 export function getProcessDefinitionImage (id) {
-  return axiosFile({
+  /* return axiosFile({
     url: path.process + '/repository/process-definitions/' + id + '/image',
-    headers: { 'Accept': '*/*', fileName: `${id}.png`, isImage: true },
+    headers: { 'Accept': '*!/!*', fileName: `${id}.png`, isImage: true },
+    method: 'GET'
+  }) */
+  return axios({
+    url: path.process + '/extend/definition/' + id,
     method: 'GET'
   })
 }

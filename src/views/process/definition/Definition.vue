@@ -80,7 +80,7 @@
         </template>
       </span>
     </s-table>
-    <look-image ref="lookImage" :img="definitionImg" />
+    <look-image ref="lookImage" :xml="definitionXml" />
   </a-card>
 </template>
 
@@ -97,7 +97,7 @@ export default {
   data () {
     return {
       fileLoading: false,
-      definitionImg: undefined,
+      definitionXml: undefined,
       allStatus: [{ label: '全部', value: '' }, { label: '活动', value: 'false' }, { label: '挂起', value: 'true' }],
       // 查询参数
       queryParam: { suspended: '', latest: true },
@@ -219,7 +219,7 @@ export default {
     lookImg (record) {
       getProcessDefinitionImage(record.id).then(res => {
         if (res.code === 10000) {
-          this.definitionImg = res.result
+          this.definitionXml = res.result
           this.$refs.lookImage.show()
         }
       })

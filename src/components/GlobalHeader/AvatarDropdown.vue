@@ -61,7 +61,7 @@ export default {
       this.$refs.updatePasswd.show()
     },
     handleToPersonal () {
-      this.$router.push({ path: '/sys/personal' })
+      this.$router.push({ path: '/user/personal' })
     },
     handleToCenter () {
       this.$router.push({ path: '/account/center' })

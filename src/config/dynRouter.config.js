@@ -14,8 +14,39 @@ export const dynRouterMap = [{
     title: '首页',
     static: true
   },
-  redirect: '/example/workFlow',
+  redirect: '/user/working',
   children: [{
+    path: '/home',
+    component: RouteView,
+    meta: {
+      title: '首页',
+      icon: 'home',
+      sort: 100000,
+      static: true
+    },
+    children: [
+      {
+        path: '/user/working',
+        name: 'working',
+        component: () => import('@/views/user/PersonWork'),
+        meta: {
+          title: '工作台',
+          keepAlive: true,
+          static: true
+        }
+      }, {
+        path: '/user/personal',
+        name: 'personal',
+        hidden: true,
+        component: () => import('@/views/user/UserInfo'),
+        meta: {
+          title: '个人资料',
+          keepAlive: true,
+          hidden: true,
+          static: true
+        }
+      }]
+  }, {
     path: '/auto',
     name: 'auto',
     redirect: '/auto/completeList',
@@ -49,17 +80,6 @@ export const dynRouterMap = [{
       meta: {
         title: '用户管理',
         keepAlive: true
-      }
-    }, {
-      path: '/sys/personal',
-      name: 'personal',
-      hidden: true,
-      component: () => import('@/views/user/UserInfo'),
-      meta: {
-        title: '个人资料',
-        keepAlive: true,
-        hidden: true,
-        static: true
       }
     }, {
       path: '/sys/role',
@@ -220,16 +240,6 @@ export const dynRouterMap = [{
       component: () => import('@/views/example/EditorExample'),
       meta: {
         title: '富文本',
-        keepAlive: true,
-        static: true
-      }
-    },
-    {
-      path: '/example/workFlow',
-      name: 'workFlow',
-      component: () => import('@/views/example/PersonWorkFlow'),
-      meta: {
-        title: '待办',
         keepAlive: true,
         static: true
       }

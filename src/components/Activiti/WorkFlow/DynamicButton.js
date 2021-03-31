@@ -38,7 +38,7 @@ export default {
           buttons.push(this.getOutCome(outcome))
         })
       } else {
-        buttons.push(<a-button style={{ marginLeft: '8px' }} onClick={this.callBack} loading={this.formLoading} type={'primary'}>完成</a-button>)
+        buttons.push(<a-button style={{ marginLeft: '8px' }} onClick={this.handleSubmit} loading={this.formLoading} type={'primary'}>完成</a-button>)
       }
       return buttons
     },

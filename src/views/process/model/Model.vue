@@ -135,8 +135,9 @@
   data () {
     return {
       formLists: [],
-      initiatorOpts: [{ label: '发起人', value: '发起人' }],
-      assigneeOpts: [{ label: '发起人', value: '#{发起人}' }],
+      initiatorOpts: [{ label: '发起人', value: 'initiator' }],
+      // eslint-disable-next-line no-template-curly-in-string
+      assigneeOpts: [{ label: '发起人', value: '#{initiator}' }],
       groupLists: [],
       historyModels: [],
       recordActive: {},

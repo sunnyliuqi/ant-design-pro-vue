@@ -410,7 +410,7 @@
           return data
         },
         removeVariable (v) {
-          if (v.variable.name === 'outcome' || v.variable.name === '发起人') {
+          if (v.variable.name === 'outcome' || v.variable.name === 'initiator') {
             return false
           }
           return true

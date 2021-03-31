@@ -132,7 +132,7 @@ const vueConfig = {
       },
       // 系统服务
       '/api/sys': {
-        target: 'http://10.110.1.179:68',
+        target: 'http://10.110.1.11:68',
         changeOrigin: true,
         pathRewrite: { '^/api': '' }
       },

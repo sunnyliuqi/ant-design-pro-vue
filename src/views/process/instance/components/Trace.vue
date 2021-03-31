@@ -84,7 +84,7 @@
           <p slot="expandedRowRender" slot-scope="text" style="margin: 0">
             <a-row :gutter="16" v-if="text && text.nodeForm && text.nodeForm.fields && text.nodeForm.fields.length>0">
               <a-col v-for="item in text.nodeForm.fields" :key="item.id" :lg="6" :md="8">
-                <span class="detail-label">{{item.name}}</span><span class="detail-content">{{ item.value }}</span>
+                <span class="detail-label">{{ item.name }}</span><span class="detail-content">{{ item.value }}</span>
               </a-col>
             </a-row>
             <span v-else>无</span>

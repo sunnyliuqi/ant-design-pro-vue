@@ -82,15 +82,11 @@
             {{ text&&text.message }}
           </span>
           <p slot="expandedRowRender" slot-scope="text" style="margin: 0">
-            <a-table
-              v-if="text && text.nodeForm && text.nodeForm.fields && text.nodeForm.fields.length>0"
-              size="default"
-              :pagination="false"
-              :rowKey="(recordActive) => recordActive.id"
-              :columns="formColumns"
-              class="formTable"
-              :data-source="text.nodeForm.fields"
-            />
+            <a-row :gutter="16" v-if="text && text.nodeForm && text.nodeForm.fields && text.nodeForm.fields.length>0">
+              <a-col v-for="item in text.nodeForm.fields" :key="item.id" :lg="6" :md="8">
+                <span class="detail-label">{{item.name}}</span><span class="detail-content">{{ item.value }}</span>
+              </a-col>
+            </a-row>
             <span v-else>无</span>
           </p>
         </s-table>
@@ -185,17 +181,6 @@
     getJobs
   } from '@/api/process/instance'
   import { ViewBpmnDesign } from '@/components/Activiti/Bpmn'
-
-  const _formColumns = [{
-    title: '字段名',
-    dataIndex: 'name',
-    key: 'name'
-  },
-    {
-      title: '字段值',
-      dataIndex: 'value',
-      key: 'value'
-    }]
   const _taskColumns = [
     {
       title: '序列',
@@ -396,7 +381,6 @@
         variableColumns: _variableColumns,
         subprocessColumns: _subprocessColumns,
         jobColumns: _jobColumns,
-        formColumns: _formColumns,
         /**
          * 任务
          */
@@ -504,7 +488,11 @@
 </script>
 
 <style lang="less" scoped>
-/deep/ .formTable{
-    max-width: 400px;
-}
+  /deep/ .detail-content {
+    width: 60%;
+  }
+
+  /deep/ .detail-label {
+    width: 40%;
+  }
 </style>

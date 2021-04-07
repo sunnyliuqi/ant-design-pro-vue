@@ -19,6 +19,18 @@ export default {
       type: [String, Function],
       default: 'key'
     },
+    expandedRowsChange: {
+      type: Function,
+      required: false,
+      default: function () {
+      }
+    },
+    expand: {
+      type: Function,
+      required: false,
+      default: function () {
+      }
+    },
     data: {
       type: Function,
       required: true
@@ -138,11 +150,11 @@ export default {
     loadData (pagination, filters, sorter) {
       this.localLoading = true
       const parameter = Object.assign({
-        pageNo: (pagination && pagination.current) ||
-          this.showPagination && this.localPagination.current || this.pageNum,
-        pageSize: (pagination && pagination.pageSize) ||
-          this.showPagination && this.localPagination.pageSize || this.pageSize
-      },
+          current: (pagination && pagination.current) ||
+            this.showPagination && this.localPagination.current || this.pageNum,
+          size: (pagination && pagination.pageSize) ||
+            this.showPagination && this.localPagination.pageSize || this.pageSize
+        },
       (sorter && sorter.field && {
         sortField: sorter.field
       }) || {},
@@ -158,14 +170,14 @@ export default {
       if ((typeof result === 'object' || typeof result === 'function') && typeof result.then === 'function') {
         result.then(r => {
           this.localPagination = this.showPagination && Object.assign({}, this.localPagination, {
-            current: r.pageNo, // 返回结果中的当前分页数
-            total: r.totalCount, // 返回结果中的总记录数
+            current: r.current, // 返回结果中的当前分页数
+            total: r.total, // 返回结果中的总记录数
             showSizeChanger: this.showSizeChanger,
             pageSize: (pagination && pagination.pageSize) ||
               this.localPagination.pageSize
           }) || false
           // 为防止删除数据后导致页面当前页面数据长度为 0 ,自动翻页到上一页
-          if (r.data.length === 0 && this.showPagination && this.localPagination.current > 1) {
+          if (this.showPagination && this.showPagination && this.localPagination.current > 1 && r.records.length === 0) {
             this.localPagination.current--
             this.loadData()
             return
@@ -180,7 +192,15 @@ export default {
           } catch (e) {
             this.localPagination = false
           }
-          this.localDataSource = r.data // 返回结果中的数组数据
+          if (r instanceof Array) {
+            this.localDataSource = r
+          } else {
+            this.localDataSource = r.records
+          }
+          // console.log('loadData -> this.localPagination', this.localPagination)
+          if (!['auto', true].includes(this.showPagination)) {
+            this.localPagination = false
+          }
           this.localLoading = false
         })
       }
@@ -256,7 +276,7 @@ export default {
 
       // 绘制 alert 组件
       return (
-        <a-alert showIcon={true} style="margin-bottom: 16px">
+        <a-alert showIcon={true} style="margin-bottom: 8px; margin-top: 8px;">
           <template slot="message">
             <span style="margin-right: 12px">已选择: <a style="font-weight: 600">{this.selectedRows.length}</a></span>
             {needTotalItems}
@@ -301,7 +321,7 @@ export default {
       return props[k]
     })
     const table = (
-      <a-table {...{ props, scopedSlots: { ...this.$scopedSlots } }} onChange={this.loadData} onExpand={ (expanded, record) => { this.$emit('expand', expanded, record) } }>
+      <a-table {...{ props, scopedSlots: { ...this.$scopedSlots } }} onChange={this.loadData} onExpand= {this.expand} onExpandedRowsChange = {this.expandedRowsChange} >
         { Object.keys(this.$slots).map(name => (<template slot={name}>{this.$slots[name]}</template>)) }
       </a-table>
     )

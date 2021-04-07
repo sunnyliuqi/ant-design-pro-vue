@@ -86,4 +86,4 @@ const article = (options) => {
   return builder(data)
 }
 
-Mock.mock(/\/list\/article/, 'get', article)
+// Mock.mock(/\/list\/article/, 'get', article)

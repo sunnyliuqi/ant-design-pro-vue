@@ -3,22 +3,21 @@ import { asyncRouterMap, constantRouterMap } from '@/config/router.config'
 /**
  * 过滤账户是否拥有某一个权限，并将菜单从加载列表移除
  *
- * @param permission
- * @param route
+ * @param menus 用户拥有的系统菜单
+ * @param route 本地路由配置
  * @returns {boolean}
  */
-function hasPermission (permission, route) {
-  if (route.meta && route.meta.permission) {
-    let flag = false
-    for (let i = 0, len = permission.length; i < len; i++) {
-      flag = route.meta.permission.includes(permission[i])
-      if (flag) {
-        return true
-      }
-    }
-    return false
+function hasPermission (menus, route) {
+  if (route.meta !== undefined && route.meta.static !== undefined && route.meta.static === true) {
+    return true
   }
-  return true
+  let hasPermiss = false
+  menus.forEach(menu => {
+    if (menu.url === route.path) {
+      hasPermiss = true
+    }
+  })
+  return hasPermiss
 }
 
 /**
@@ -37,17 +36,28 @@ function hasRole(roles, route) {
   }
 }
 
-function filterAsyncRouter (routerMap, roles) {
+function filterAsyncRouter (routerMap, menus) {
   const accessedRouters = routerMap.filter(route => {
-    if (hasPermission(roles.permissionList, route)) {
+    if (hasPermission(menus, route)) {
       if (route.children && route.children.length) {
-        route.children = filterAsyncRouter(route.children, roles)
+        route.children = filterAsyncRouter(route.children, menus)
       }
       return true
     }
     return false
   })
-  return accessedRouters
+  accessedRouters.forEach(route => {
+    menus.forEach(menu => {
+      if (menu.url === route.path) {
+        route.meta.sort = menu.sort
+        route.meta.title = menu.name
+      }
+    })
+  })
+  return accessedRouters.sort(function (a, b) {
+    return (b.meta.sort || 1) - (a.meta.sort || 1)
+  })
+  //  return routerMap
 }
 
 const permission = {
@@ -62,10 +72,10 @@ const permission = {
     }
   },
   actions: {
-    GenerateRoutes ({ commit }, data) {
+    GenerateDnyRoutes ({ commit }, data) {
       return new Promise(resolve => {
-        const { roles } = data
-        const accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
+        const { menus } = data
+        const accessedRouters = filterAsyncRouter(asyncRouterMap, menus)
         commit('SET_ROUTERS', accessedRouters)
         resolve()
       })

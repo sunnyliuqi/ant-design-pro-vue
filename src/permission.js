@@ -3,16 +3,15 @@ import store from './store'
 import storage from 'store'
 import NProgress from 'nprogress' // progress bar
 import '@/components/NProgress/nprogress.less' // progress bar custom style
-import notification from 'ant-design-vue/es/notification'
 import { setDocumentTitle, domTitle } from '@/utils/domUtil'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { i18nRender } from '@/locales'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const allowList = ['login', 'register', 'registerResult'] // no redirect allowList
+const whiteList = ['login', 'register', 'registerResult', '/404', '/500'] // no redirect whitelist
 const loginRoutePath = '/user/login'
-const defaultRoutePath = '/dashboard/workplace'
+const defaultRoutePath = '/'
 
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
@@ -24,21 +23,21 @@ router.beforeEach((to, from, next) => {
       NProgress.done()
     } else {
       // check login user.roles is null
-      if (store.getters.roles.length === 0) {
+      if (store.getters.serviceMenus === undefined) {
         // request login userInfo
         store
-          .dispatch('GetInfo')
+          .dispatch('GetMenus')
           .then(res => {
-            const roles = res.result && res.result.role
-            // generate dynamic router
-            store.dispatch('GenerateRoutes', { roles }).then(() => {
+            // console.log('当前用户拥有的菜单：' + JSON.stringify(res.result.menus))
+            // console.log('当前用户拥有的操作码：' + JSON.stringify(res.result.operationCodes))
+            const menus = res.result.menus
+            store.dispatch('GenerateDnyRoutes', { menus }).then(() => {
               // 根据roles权限生成可访问的路由表
               // 动态添加可访问路由表
               router.addRoutes(store.getters.addRouters)
-              // 请求带有 redirect 重定向时，登录自动重定向到该地址
               const redirect = decodeURIComponent(from.query.redirect || to.path)
               if (to.path === redirect) {
-                // set the replace: true so the navigation will not leave a history record
+                // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
                 next({ ...to, replace: true })
               } else {
                 // 跳转到目的路由
@@ -46,12 +45,18 @@ router.beforeEach((to, from, next) => {
               }
             })
           })
+          .then(() => {
+            if (Object.keys(store.getters.userInfo).length === 0) {
+              store
+                .dispatch('GetInfo')
+                .catch(() => {
+                  store.dispatch('Logout').then(() => {
+                    next({ path: loginRoutePath, query: { redirect: to.fullPath } })
+                  })
+                })
+            }
+          })
           .catch(() => {
-            notification.error({
-              message: '错误',
-              description: '请求用户信息失败，请重试'
-            })
-            // 失败时，获取用户信息失败时，调用登出，来清空历史保留信息
             store.dispatch('Logout').then(() => {
               next({ path: loginRoutePath, query: { redirect: to.fullPath } })
             })
@@ -61,7 +66,7 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else {
-    if (allowList.includes(to.name)) {
+    if (whiteList.includes(to.name) || whiteList.includes(to.fullPath)) {
       // 在免登录名单，直接进入
       next()
     } else {

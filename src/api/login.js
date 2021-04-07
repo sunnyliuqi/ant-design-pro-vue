@@ -1,17 +1,5 @@
-import request from '@/utils/request'
-
-const userApi = {
-  Login: '/auth/login',
-  Logout: '/auth/logout',
-  ForgePassword: '/auth/forge-password',
-  Register: '/auth/register',
-  twoStepCode: '/auth/2step-code',
-  SendSms: '/account/sms',
-  SendSmsErr: '/account/sms_err',
-  // get my info
-  UserInfo: '/user/info',
-  UserMenu: '/user/nav'
-}
+import path from './index'
+import { axios } from '@/utils/request'
 
 /**
  * login func
@@ -25,55 +13,66 @@ const userApi = {
  * @returns {*}
  */
 export function login (parameter) {
-  return request({
-    url: userApi.Login,
+  return axios({
+    url: path.sys + '/loginjwt',
     method: 'post',
-    data: parameter
+    contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
+    params: parameter
   })
 }
-
-export function getSmsCaptcha (parameter) {
-  return request({
-    url: userApi.SendSms,
-    method: 'post',
-    data: parameter
-  })
-}
-
+// 用户信息
 export function getInfo () {
-  return request({
-    url: userApi.UserInfo,
-    method: 'get',
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
+  return axios({
+    url: path.sys + '/token/user',
+    method: 'post'
   })
 }
-
-export function getCurrentUserNav () {
-  return request({
-    url: userApi.UserMenu,
-    method: 'get'
+// 用户菜单和操作码
+export function getMenus () {
+  return axios({
+    url: path.sys + '/token/user/menus',
+    method: 'post'
   })
 }
-
+// 用户退出
 export function logout () {
-  return request({
-    url: userApi.Logout,
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
+  return axios({
+    url: path.sys + '/logoutjwt',
+    method: 'post'
   })
 }
-
+// 更新密码
+export function updatePasswd (data) {
+  return axios({
+    url: path.sys + '/user/updatePassword',
+    method: 'post',
+    data: data
+  })
+}
+// 更新用户信息
+export function updateUserInfo (data) {
+  return axios({
+    url: path.sys + '/user/updateInfo',
+    method: 'put',
+    data: data
+  })
+}
+// 发送短信验证码
+export function getSmsCaptcha (parameter) {
+  return axios({
+    url: path.sys + '/validationcode/sms/create',
+    method: 'post',
+    data: parameter
+  })
+}
 /**
  * get user 2step code open?
  * @param parameter {*}
  */
 export function get2step (parameter) {
-  return request({
-    url: userApi.twoStepCode,
+  return axios({
+    // url: path.default + '/loginMobileJwt',
+    url: '/auth/2step-code',
     method: 'post',
     data: parameter
   })

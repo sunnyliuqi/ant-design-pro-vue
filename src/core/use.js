@@ -12,8 +12,14 @@ import MultiTab from '@/components/MultiTab'
 import PageLoading from '@/components/PageLoading'
 import PermissionHelper from '@/core/permission/permission'
 // import '@/components/use'
-import './directives/action'
-
+import uploader from 'vue-simple-uploader'
+// import './directives/action'
+import './directives/authorize'
+import UUID from 'vue-uuid'
+import draggable from 'vuedraggable'
+Vue.use(UUID)
+Vue.use(uploader)
+Vue.use(draggable)
 VueClipboard.config.autoSetContainer = true
 
 Vue.use(Antd)

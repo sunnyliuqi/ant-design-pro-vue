@@ -45,7 +45,8 @@ import {
   Descriptions,
   Space,
   message,
-  notification
+  notification,
+  TreeSelect, Tree, Cascader
 } from 'ant-design-vue'
 import Viser from 'viser-vue'
 
@@ -55,8 +56,14 @@ import Dialog from '@/components/Dialog'
 import MultiTab from '@/components/MultiTab'
 import PageLoading from '@/components/PageLoading'
 import PermissionHelper from '@/core/permission/permission'
-import './directives/action'
-
+import uploader from 'vue-simple-uploader'
+// import './directives/action'
+import './directives/authorize'
+import UUID from 'vue-uuid'
+import draggable from 'vuedraggable'
+Vue.use(UUID)
+Vue.use(uploader)
+Vue.use(draggable)
 Vue.use(ConfigProvider)
 Vue.use(Layout)
 Vue.use(Input)
@@ -99,6 +106,9 @@ Vue.use(Result)
 Vue.use(Statistic)
 Vue.use(Descriptions)
 Vue.use(Space)
+Vue.use(TreeSelect)
+Vue.use(Tree)
+Vue.use(Cascader)
 
 Vue.prototype.$confirm = Modal.confirm
 Vue.prototype.$message = message

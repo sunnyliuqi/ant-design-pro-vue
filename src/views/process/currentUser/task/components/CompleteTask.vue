@@ -107,9 +107,9 @@
     methods: {
       ...mapGetters(['userInfo']),
       getSelf () {
-        if (this.record && this.record.assignee) {
+        if (this.record && this.record.processInstanceStartUserId) {
           const currentUserInfo = this.userInfo()
-          if (currentUserInfo && currentUserInfo.username && currentUserInfo.username === this.record.assignee.id) {
+          if (currentUserInfo && currentUserInfo.username && currentUserInfo.username === this.record.processInstanceStartUserId) {
             return true
           }
         }

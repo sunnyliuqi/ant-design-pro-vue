@@ -105,7 +105,7 @@
           </span>
         </s-table>
       </a-tab-pane>
-      <a-tab-pane key="5" tab="子流程实例">
+      <!--<a-tab-pane key="5" tab="子流程实例">
         <s-table
           ref="subprocessTable"
           size="default"
@@ -147,7 +147,7 @@
             {{ formatDate(text) }}
           </span>
         </s-table>
-      </a-tab-pane>
+      </a-tab-pane>-->
     </a-tabs>
     <div
       :style="{

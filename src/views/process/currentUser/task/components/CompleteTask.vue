@@ -48,7 +48,7 @@
           </a-form-item>
         </a-col>
       </a-row>
-      <dynamic-button :form-info="formInfo" v-if="formInfo" :close-drawer="onClose" :call-back="handleSubmit"/>
+      <dynamic-button :is-self="getSelf()" :form-info="formInfo" v-if="formInfo" :close-drawer="onClose" :call-back="handleSubmit"/>
     </a-form>
   </a-drawer>
 </template>
@@ -57,6 +57,7 @@
   import { formatDate, duration, setActivitiFormDateFormat } from '@/utils/common'
   import DynamicForm from '@/components/Activiti/WorkFlow/DynamicForm'
   import DynamicButton from '@/components/Activiti/WorkFlow/DynamicButton'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'CompleteTask',
@@ -104,6 +105,16 @@
       }
     },
     methods: {
+      ...mapGetters(['userInfo']),
+      getSelf () {
+        if (this.record && this.record.assignee) {
+          const currentUserInfo = this.userInfo()
+          if (currentUserInfo && currentUserInfo.username && currentUserInfo.username === this.record.assignee.id) {
+            return true
+          }
+        }
+        return false
+      },
       handleSubmit (outcome) {
         this.formLoading = true
         this.form.validateFields((err, values) => {

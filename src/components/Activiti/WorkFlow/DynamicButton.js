@@ -9,6 +9,10 @@ export default {
       type: Boolean,
       default: false
     },
+    isSelf: {
+      type: Boolean,
+      default: false
+    },
     closeDrawer: {
       type: Function,
       default: undefined
@@ -33,7 +37,7 @@ export default {
       if (this.closeDrawer) {
         buttons.push(<a-button onClick={this.closeDrawer}>返回</a-button>)
       }
-      if (outcomes && outcomes.length > 0) {
+      if (outcomes && outcomes.length > 0 && this.isSelf === false) {
         outcomes.forEach(outcome => {
           buttons.push(this.getOutCome(outcome))
         })

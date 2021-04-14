@@ -40,7 +40,7 @@
         </a-form>
       </div>
 
-      <div class="table-operator">
+      <!--<div class="table-operator">
         <a-upload
           name="file"
           :showUploadList="false"
@@ -48,7 +48,7 @@
         >
           <a-button v-authorize:PROCESS_DEPOLY_UPLOAD :icon="fileLoading ? 'loading' : 'upload'">上传部署文件</a-button>
         </a-upload>
-      </div>
+      </div>-->
     </div>
     <s-table
       v-if="$authorize('PROCESS_DEPOLY_LIST')"

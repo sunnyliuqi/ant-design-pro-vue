@@ -39,6 +39,7 @@
     <edit
       ref="menuEdit"
       :title="title"
+      :menus="menus"
       :menu-tree-data="menuTreeData"
       :load-api="loadApi"
       :check-url="checkUrl"
@@ -48,6 +49,7 @@
       :save="save"
       :custom-width="1000"
       :refresh="refresh"
+      :get-sup-url="getSupUrl"
     />
   </a-card>
 </template>
@@ -72,6 +74,15 @@ const treeData = list => {
   })
 }
 const baseMenu = { id: '-1', name: '平台菜单', url: '', code: '-1', supId: '', title: '平台菜单', value: '-1' }
+
+const getMenus = (list) => {
+  const menus = []
+  list.forEach(item => {
+    menus.push(item)
+  })
+  return menus
+}
+
 export default {
   name: 'MenuList',
   components: {
@@ -80,6 +91,7 @@ export default {
   },
   data () {
     return {
+      menus: [],
       // 保存方法
       save: save,
       // 修改方法
@@ -112,6 +124,11 @@ export default {
           key: 'url'
         },
         {
+          title: '代理地址',
+          dataIndex: 'proxyUrl',
+          key: 'proxyUrl'
+        },
+        {
           title: '排序',
           dataIndex: 'sort',
           key: 'sort'
@@ -140,8 +157,9 @@ export default {
           .then(res => {
             if (res.code === 10000) {
               const result = res.result
-              treeData(result)
-              if (result && result.length > 0) {
+              if (result && result.length && result.length > 0) {
+                this.menus = getMenus(result)
+                treeData(result)
                 baseMenu.children = result
               }
               this.menuTreeData = [baseMenu]
@@ -158,6 +176,29 @@ export default {
   computed: {
   },
   methods: {
+    getSupUrl (id) {
+      if (!id) {
+        return '/'
+      }
+      const _menuTreeData = this.menuTreeData
+      let _url
+      function getUrl (id, menu) {
+        if (id === menu.id) {
+          _url = `${menu.url}/`
+        } else {
+          if (!_url && menu.children && menu.children.length && menu.children.length > 0) {
+            menu.children.forEach(m => {
+              getUrl(id, m)
+            })
+          }
+        }
+      }
+      _menuTreeData.forEach(m => { getUrl(id, m) })
+      if (!_url) {
+        _url = '/'
+      }
+      return _url
+    },
     /* 是否显示转换 */
     getShowFlagName (key) {
       let value = ''

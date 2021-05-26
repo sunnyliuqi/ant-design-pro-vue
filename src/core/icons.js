@@ -18,5 +18,6 @@ import select from '@/assets/icons/form-select.svg?inline'
 import datetime from '@/assets/icons/form-datetime.svg?inline'
 import date from '@/assets/icons/form-date.svg?inline'
 import outcomes from '@/assets/icons/outcomes-buttons.svg?inline'
+import dataAnalysis from '@/assets/icons/data-analysis.svg?inline'
 
-export { bxAnaalyse, process, caseStudy, input, textarea, number, radio, checkbox, select, datetime, date, outcomes }
+export { dataAnalysis, bxAnaalyse, process, caseStudy, input, textarea, number, radio, checkbox, select, datetime, date, outcomes }

@@ -395,15 +395,20 @@
       formatProxyUrl (proxyUrl, form) {
         const formProxyUrl = form.getFieldValue('proxyUrl')
         if (proxyUrl !== formProxyUrl) {
-          let _proxyUrl = proxyUrl.replace(/(https:\/\/|http:\/\/)?(.*?\.).*?\/(.*)/, '/$3')
-          if (_proxyUrl && _proxyUrl.length > 0) {
-            if (_proxyUrl.substr(0, 1) !== '/') {
-              _proxyUrl = `/${_proxyUrl}`
+          let _proxyUrl
+          if (proxyUrl.indexOf('http://') !== 0 && proxyUrl.indexOf('https://') !== 0) {
+            _proxyUrl = proxyUrl.replace(/(https:\/\/|http:\/\/)?(.*?\.).*?\/(.*)/, '/$3')
+            if (_proxyUrl && _proxyUrl.length > 0) {
+              if (_proxyUrl.substr(0, 1) !== '/') {
+                _proxyUrl = `/${_proxyUrl}`
+              }
             }
-            setTimeout(() => {
-              form.setFieldsValue({ proxyUrl: _proxyUrl })
-            }, 10)
+          } else {
+            _proxyUrl = proxyUrl
           }
+          setTimeout(() => {
+            form.setFieldsValue({ proxyUrl: _proxyUrl })
+          }, 10)
         }
       },
       /**

@@ -40,8 +40,7 @@
         const route = this.$route
         findProxyUrl({ url: route.path }).then((res) => {
           if (res.code === 10000) {
-            const pattern = /^http:\/\/|https:\/\//
-            if (pattern.test(res.result)) {
+            if (res.result && (res.result.indexOf('http://') === 0 || res.result.indexOf('https://') === 0)) {
               this.url = res.result
             } else {
             this.url = service.report + res.result

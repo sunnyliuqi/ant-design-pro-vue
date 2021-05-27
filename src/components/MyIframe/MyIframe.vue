@@ -5,19 +5,24 @@
 </template>
 
 <script>
+  import { findProxyUrl } from '@/api/report/load'
+  import { service } from '@/api/service'
   export default {
     name: 'MyIframe',
     props: {
-      url: {
-        Type: String,
-        default: ''
-      }
     },
     data () {
       return {
         contentWidth: 0,
-        contentHeight: 0
+        contentHeight: 0,
+        url: ''
       }
+    },
+    created () {
+      this.loadUrl()
+      this.$watch('$route', (val) => {
+        this.loadUrl()
+      })
     },
     mounted () {
       this.synSize()
@@ -28,6 +33,22 @@
       }
     },
     methods: {
+      /**
+       * 加载url
+       */
+      loadUrl () {
+        const route = this.$route
+        findProxyUrl({ url: route.path }).then((res) => {
+          if (res.code === 10000) {
+            const pattern = /^http:\/\/|https:\/\//
+            if (pattern.test(res.result)) {
+              this.url = res.result
+            } else {
+            this.url = service.report + res.result
+            }
+          }
+        })
+      },
       synSize () {
         const { clientWidth } = this.$refs.myIframe
         this.contentWidth = clientWidth

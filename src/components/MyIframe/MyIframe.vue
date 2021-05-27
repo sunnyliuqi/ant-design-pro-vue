@@ -43,7 +43,7 @@
             if (res.result && (res.result.indexOf('http://') === 0 || res.result.indexOf('https://') === 0)) {
               this.url = res.result
             } else {
-            this.url = service.report + res.result
+            this.url = process.env.VUE_APP_API_BASE_URL + service.report + res.result
             }
           }
         })

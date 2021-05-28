@@ -5,8 +5,7 @@
 </template>
 
 <script>
-  import { findProxyUrl } from '@/api/report/load'
-  import { service } from '@/api/service'
+  import { findProxyUrl, loadProxyUrl } from '@/api/report/load'
   export default {
     name: 'MyIframe',
     props: {
@@ -43,7 +42,7 @@
             if (res.result && (res.result.indexOf('http://') === 0 || res.result.indexOf('https://') === 0)) {
               this.url = res.result
             } else {
-            this.url = process.env.VUE_APP_API_BASE_URL + service.report + res.result
+            this.url = loadProxyUrl(res.result)
             }
           }
         })

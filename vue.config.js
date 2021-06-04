@@ -146,12 +146,15 @@ const vueConfig = {
        * 数据分析
        */
       '/api/report': {
-        target: 'http://10.110.1.11:62',
+        target: 'http://10.110.1.179:62',
         changeOrigin: true,
         pathRewrite: { '^/api': '' }
       },
+      /**
+       * 数据分析-第三方
+       */
       '/da': {
-        target: 'http://10.110.1.11:62',
+        target: 'http://10.110.1.179:62',
         changeOrigin: true,
         pathRewrite: { '^/da': '/report/da' }
       },

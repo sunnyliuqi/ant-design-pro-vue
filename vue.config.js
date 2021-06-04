@@ -122,12 +122,12 @@ const vueConfig = {
       },
       // 流程服务
       '/api/activiti': {
-        target: 'http://127.0.0.1:61',
+        target: 'http://10.110.1.179:61',
         changeOrigin: true,
         pathRewrite: { '^/api': '' }
       },
       '/activiti': {
-        target: 'http://127.0.0.1:61',
+        target: 'http://10.110.1.179:61',
         changeOrigin: true
       },
       // 系统服务
@@ -141,6 +141,19 @@ const vueConfig = {
         target: 'http://10.110.1.179:69',
         changeOrigin: true,
         pathRewrite: { '^/api': '' }
+      },
+      /**
+       * 数据分析
+       */
+      '/api/report': {
+        target: 'http://10.110.1.11:62',
+        changeOrigin: true,
+        pathRewrite: { '^/api': '' }
+      },
+      '/da': {
+        target: 'http://10.110.1.11:62',
+        changeOrigin: true,
+        pathRewrite: { '^/da': '/report/da' }
       },
       // '/api': {
       //   target: 'http://10.110.1.179:80',

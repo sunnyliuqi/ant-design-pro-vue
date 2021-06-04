@@ -396,13 +396,13 @@
         const formProxyUrl = form.getFieldValue('proxyUrl')
         if (proxyUrl !== formProxyUrl) {
           let _proxyUrl
-          if (proxyUrl.indexOf('http://') !== 0 && proxyUrl.indexOf('https://') !== 0) {
-            _proxyUrl = proxyUrl.replace(/(https:\/\/|http:\/\/)?(.*?\.).*?\/(.*)/, '/$3')
-            if (_proxyUrl && _proxyUrl.length > 0) {
-              if (_proxyUrl.substr(0, 1) !== '/') {
-                _proxyUrl = `/${_proxyUrl}`
+          if (proxyUrl.indexOf('http://') !== 0 && proxyUrl.indexOf('https://') !== 0 && proxyUrl.indexOf('/') !== 0) {
+            if (proxyUrl && proxyUrl.length > 0) {
+              if (proxyUrl.substr(0, 1) !== '/') {
+                _proxyUrl = `/${proxyUrl}`
               }
             }
+            _proxyUrl = _proxyUrl.replace(/.*?\/(.*)/, '/$1')
           } else {
             _proxyUrl = proxyUrl
           }
@@ -435,6 +435,8 @@
         array.forEach(item => {
           if (item.value === this.record.id || (item.supIds && item.supIds.split(',').includes(this.record.id))) {
             item.selectable = false
+          } else {
+            item.selectable = true
           }
           if (item.children && item.children.length > 0) {
             this.setDisSelectabled(item.children)

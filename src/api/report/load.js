@@ -20,16 +20,13 @@ export function findProxyUrl (data) {
  */
 export function loadProxyUrl (proxyUrl) {
   const pattern = /(.*)?\?(.*)/
-  let _proxyUrl
+  let _proxyUrl = { Authorization: storage.get(ACCESS_TOKEN) }
   let contextPath = proxyUrl
   if (pattern.test(proxyUrl)) {
     contextPath = proxyUrl.replace(pattern, '$1')
     const _params = proxyUrl.replace(pattern, '$2')
-    _proxyUrl = queryString.parse(_params)
-  } else {
-    _proxyUrl = {}
+    _proxyUrl = Object.assign(_proxyUrl, queryString.parse(_params))
   }
-  _proxyUrl.Authorization = storage.get(ACCESS_TOKEN)
-  const fullPath = process.env.VUE_APP_API_BASE_URL + path.report + contextPath + '?' + queryString.stringify(_proxyUrl)
+  const fullPath = process.env.VUE_APP_API_BASE_URL + path.report + contextPath + '?' + decodeURIComponent(queryString.stringify(_proxyUrl))
   return fullPath
 }

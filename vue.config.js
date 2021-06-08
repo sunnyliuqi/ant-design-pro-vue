@@ -115,7 +115,7 @@ const vueConfig = {
         pathRewrite: { '^/api': '' }
       },
       // demo服务
-      '/api/demo': {
+      /* '/api/demo': {
         target: 'http://10.110.1.179:67',
         changeOrigin: true,
         pathRewrite: { '^/api': '' }
@@ -142,27 +142,28 @@ const vueConfig = {
         changeOrigin: true,
         pathRewrite: { '^/api': '' }
       },
-      /**
+      /!**
        * 数据分析
-       */
+       *!/
       '/api/report': {
         target: 'http://10.110.1.179:62',
         changeOrigin: true,
         pathRewrite: { '^/api': '' }
-      },
+      }, */
       /**
        * 数据分析-第三方
        */
       '/da': {
-        target: 'http://10.110.1.179:62',
-        changeOrigin: true,
-        pathRewrite: { '^/da': '/report/da' }
+        target: 'http://10.110.1.179:80',
+        // target: 'http://10.110.1.179:62',
+        // pathRewrite: { '^/da': '/report/da' },
+        changeOrigin: true
       },
-      // '/api': {
-      //   target: 'http://10.110.1.179:80',
-      //   changeOrigin: true/*,
-      //   pathRewrite: { '^/api': '' } */
-      // },
+      '/api': {
+        target: 'http://10.110.1.179:80',
+        changeOrigin: true/*,
+        pathRewrite: { '^/api': '' } */
+      },
       // 文件回显需要在nginx 配置
       '/uploads': {
         target: 'http://10.110.1.179',

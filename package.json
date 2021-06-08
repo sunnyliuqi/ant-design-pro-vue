@@ -37,6 +37,7 @@
     "nprogress": "^0.2.0",
     "query-string": "^7.0.0",
     "store": "^2.0.12",
+    "three": "^0.129.0",
     "throttle-debounce": "^2.2.1",
     "viser-vue": "^2.4.6",
     "vue": "^2.6.10",

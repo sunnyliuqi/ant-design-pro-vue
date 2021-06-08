@@ -15,7 +15,7 @@
   import { WebGLRenderer } from 'three/src/renderers/WebGLRenderer'
   const DEFAULT_SECONDARY_COLOR = '#223151'
   export default {
-    name: 'BackGround',
+    name: 'Background',
     data () {
       return { removeListeners: null }
     },

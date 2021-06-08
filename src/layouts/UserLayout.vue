@@ -1,6 +1,6 @@
 <template>
   <div id="userLayout" :class="['user-layout-wrapper', isMobile && 'mobile']">
-    <back-ground />
+    <background />
     <div class="container">
       <div class="top">
         <div class="header">
@@ -32,10 +32,10 @@
 
 <script>
 import { deviceMixin } from '@/store/device-mixin'
-import BackGround from '@/components/BackGround'
+import Background from '@/components/Background'
 export default {
   name: 'UserLayout',
-  components: { BackGround },
+  components: { Background },
   mixins: [deviceMixin],
   mounted () {
     document.body.classList.add('userLayout')

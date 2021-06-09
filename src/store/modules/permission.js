@@ -1,4 +1,5 @@
 import { asyncRouterMap, constantRouterMap, reportRootTemplate, reportComponentTemplate } from '@/config/router.config'
+import cloneDeep from 'lodash.clonedeep'
 /**
  * 过滤账户是否拥有某一个权限，并将菜单从加载列表移除
  *
@@ -97,7 +98,7 @@ const permission = {
     GenerateDnyRoutes ({ commit }, data) {
       return new Promise(resolve => {
         const { menus } = data
-        const accessedRouters = filterAsyncRouter(addReportRoutes(asyncRouterMap, menus), menus)
+        const accessedRouters = filterAsyncRouter(addReportRoutes(cloneDeep(asyncRouterMap), menus), menus)
         commit('SET_ROUTERS', accessedRouters)
         resolve()
       })

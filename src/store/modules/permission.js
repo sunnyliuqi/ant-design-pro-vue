@@ -75,7 +75,8 @@ function addReportRoutes (asyncRouterMap, menus) {
         return Object.assign({}, reportComponentTemplate, reportMenu)
       })
       reportRootTemplate.children = reportRouterMap
-      asyncRouterMap[0].children.push(reportRootTemplate)
+      const noReportRoutes = asyncRouterMap[0].children && asyncRouterMap[0].children.length > 0 && asyncRouterMap[0].children.filter(r => r.path !== '/report')
+      asyncRouterMap[0].children = [...noReportRoutes, reportRootTemplate]
     }
   }
   return asyncRouterMap

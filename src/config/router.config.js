@@ -1,9 +1,10 @@
 // eslint-disable-next-line
 import { UserLayout } from '@/layouts'
 import { dynRouterMap } from './dynRouter.config'
-
+import { reportComponent, reportRoot } from './report.config'
+export const reportRootTemplate = reportRoot
+export const reportComponentTemplate = reportComponent
 export const asyncRouterMap = dynRouterMap
-
 /**
  * 基础路由
  * @type { *[] }

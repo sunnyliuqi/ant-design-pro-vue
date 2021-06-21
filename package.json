@@ -1,6 +1,6 @@
 {
-  "name": "vue-front-admin-pro",
-  "version": "3.0.0",
+  "name": "vue-front-admin",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "serve": "concurrently \"vue-cli-service serve\" \"node --inspect ./scripts/generateCode/generateCodeService.js\" ",
@@ -35,7 +35,9 @@
     "mockjs2": "1.0.8",
     "moment": "^2.24.0",
     "nprogress": "^0.2.0",
+    "query-string": "^7.0.0",
     "store": "^2.0.12",
+    "three": "^0.129.0",
     "throttle-debounce": "^2.2.1",
     "viser-vue": "^2.4.6",
     "vue": "^2.6.10",

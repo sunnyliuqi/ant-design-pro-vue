@@ -1,5 +1,6 @@
 <template>
   <div id="userLayout" :class="['user-layout-wrapper', isMobile && 'mobile']">
+    <background />
     <div class="container">
       <div class="top">
         <div class="header">
@@ -22,7 +23,7 @@
           <a href="_self">条款</a>-->
         </div>
         <div class="copyright">
-          Copyright &copy; 2021 simpo
+          Copyright &copy; 2021 辛普科技
         </div>
       </div>
     </div>
@@ -31,9 +32,10 @@
 
 <script>
 import { deviceMixin } from '@/store/device-mixin'
-
+import Background from '@/components/Background'
 export default {
   name: 'UserLayout',
+  components: { Background },
   mixins: [deviceMixin],
   mounted () {
     document.body.classList.add('userLayout')
@@ -46,76 +48,37 @@ export default {
 
 <style lang="less" scoped>
 #userLayout.user-layout-wrapper {
-    height: 100%;
-
-    &.mobile {
-      .container {
-        .main {
-          max-width: 368px;
-          width: 98%;
-        }
+  &.mobile {
+    .container {
+      .main {
+        max-width: 368px;
+        width: 98%;
       }
     }
-
+  }
+    height: 100%;
     .container {
-      width: 100%;
-      min-height: 100%;
-      background: #f0f2f5 url(~@/assets/background.svg) no-repeat 50%;
-      background-size: 100%;
-      padding: 110px 0 144px;
-      position: relative;
-
-      a {
-        text-decoration: none;
-      }
-
-      .top {
-        text-align: center;
-
-        .header {
-          height: 44px;
-          line-height: 44px;
-
-          .badge {
-            position: absolute;
-            display: inline-block;
-            line-height: 1;
-            vertical-align: middle;
-            margin-left: -12px;
-            margin-top: -10px;
-            opacity: 0.8;
-          }
-
-          .logo {
-            height: 44px;
-            vertical-align: top;
-            margin-right: 16px;
-            border-style: none;
-          }
-
-          .title {
-            font-size: 33px;
-            color: rgba(0, 0, 0, .85);
-            font-family: Avenir, 'Helvetica Neue', Arial, Helvetica, sans-serif;
-            font-weight: 600;
-            position: relative;
-            top: 2px;
-          }
-        }
-        .desc {
-          font-size: 14px;
-          color: rgba(0, 0, 0, 0.45);
-          margin-top: 12px;
-          margin-bottom: 40px;
-        }
-      }
-
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
       .main {
         min-width: 260px;
         width: 368px;
         margin: 0 auto;
       }
-
+      .title{
+        font-size: 33px;
+        color: white;
+        font-family: Avenir, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        font-weight: 600;
+      }
       .footer {
         position: absolute;
         width: 100%;
@@ -128,7 +91,6 @@ export default {
           margin-bottom: 8px;
           font-size: 14px;
           a {
-            color: rgba(0, 0, 0, 0.45);
             transition: all 0.3s;
             &:not(:last-child) {
               margin-right: 40px;
@@ -136,7 +98,6 @@ export default {
           }
         }
         .copyright {
-          color: rgba(0, 0, 0, 0.45);
           font-size: 14px;
         }
       }

@@ -1,5 +1,5 @@
-import { asyncRouterMap, constantRouterMap } from '@/config/router.config'
-
+import { asyncRouterMap, constantRouterMap, reportRootTemplate, reportComponentTemplate } from '@/config/router.config'
+import cloneDeep from 'lodash.clonedeep'
 /**
  * 过滤账户是否拥有某一个权限，并将菜单从加载列表移除
  *
@@ -60,6 +60,29 @@ function filterAsyncRouter (routerMap, menus) {
   //  return routerMap
 }
 
+/**
+ * 添加数据报表路由
+ * @param asyncRouterMap
+ * @param menus
+ * @returns {*}
+ */
+function addReportRoutes (asyncRouterMap, menus) {
+  if (menus && menus.length && menus.length > 0) {
+    const reportMenus = menus.filter(m => m.url.indexOf('/report/') !== -1)
+    if (reportMenus && reportMenus.length && reportMenus.length > 0) {
+    //  存在报表菜单
+      const reportRouterMap = reportMenus.map(r => {
+        const reportMenu = { path: r.url, name: r.url, meta: { title: r.name, keepAlive: true } }
+        return Object.assign({}, reportComponentTemplate, reportMenu)
+      })
+      reportRootTemplate.children = reportRouterMap
+      const noReportRoutes = asyncRouterMap[0].children && asyncRouterMap[0].children.length > 0 && asyncRouterMap[0].children.filter(r => r.path !== '/report')
+      asyncRouterMap[0].children = [...noReportRoutes, reportRootTemplate]
+    }
+  }
+  return asyncRouterMap
+}
+
 const permission = {
   state: {
     routers: constantRouterMap,
@@ -75,7 +98,7 @@ const permission = {
     GenerateDnyRoutes ({ commit }, data) {
       return new Promise(resolve => {
         const { menus } = data
-        const accessedRouters = filterAsyncRouter(asyncRouterMap, menus)
+        const accessedRouters = filterAsyncRouter(addReportRoutes(cloneDeep(asyncRouterMap), menus), menus)
         commit('SET_ROUTERS', accessedRouters)
         resolve()
       })

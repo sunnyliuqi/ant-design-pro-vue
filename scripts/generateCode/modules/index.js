@@ -1275,7 +1275,11 @@ function replaceError (string) {
     .replace(/children:/g, '\'children\':')
     .replace(/keepAlive:/g, '\'keepAlive\':')
     .replace(/hidden:/g, '\'hidden\':')
+    .replace(/sort:/g, '\'sort\':')
+    .replace(/(icon):\s'(.+?)',/g, '"@$1": "$2@",')
+    .replace(/(icon):\s'(.+?)'/g, '"&$1": "$2&"')
     .replace(/(icon):\s(.+?),/g, '"#$1": "$2#",')
+    .replace(/(icon):\s(.+)/g, '"%$1": "$2%"')
     .replace(/\(\) =>.+?\)/g, ($1) => {
       return ('"' + $1 + '"').replace(/'/g, '##')
     }).replace(/'/g, '"')
@@ -1298,7 +1302,11 @@ function reReplaceError (string) {
     .replace(/"children":/g, 'children:')
     .replace(/"keepAlive":/g, 'keepAlive:')
     .replace(/"hidden":/g, 'hidden:')
+    .replace(/"sort":/g, 'sort:')
+    .replace(/"@(icon)":\s?"(.*?)@",/g, '$1: \'$2\',')
+    .replace(/"&(icon)":\s?"(.*?)&"/g, '$1: \'$2\'')
     .replace(/"#(icon)":\s?"(.*?)#",/g, '$1: $2,')
+    .replace(/"%(icon)":\s?"(.*?)%"/g, '$1: $2')
     .replace(/"\(\) =>.*?\)"/g, ($1) => {
       return $1.substring(1, ($1.length - 1)).replace(/##/g, '\'')
     })

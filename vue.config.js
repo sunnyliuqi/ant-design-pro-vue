@@ -138,7 +138,7 @@ const vueConfig = {
       },
       // 文件上传服务
       '/api/upload': {
-        target: 'http://10.110.1.179:69',
+        target: 'http://10.110.1.179:63',
         changeOrigin: true,
         pathRewrite: { '^/api': '' }
       },

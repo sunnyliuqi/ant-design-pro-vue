@@ -238,7 +238,7 @@ function updateApiService (param) {
     if (err) console.error(JSON.stringify(err))
     // 拿到服务配置
     const prefix = 'export const service ='
-    const serviceConfigObj = JSON.parse(data.replace(prefix, '').replace(/(\w+):\s*'(.+)'/g, '"$1":"$2"'))
+    const serviceConfigObj = JSON.parse(data.replace(prefix, '').replace(/(\w+):\s*'(.+?)'/g, '"$1":"$2"'))
     const serviceInfo = param.serviceName.split(/:|：/)
     if (!serviceInfo || serviceInfo.length < 2) {
       console.error('服务格式错误：' + param.serviceName)
@@ -252,7 +252,7 @@ function updateApiService (param) {
       if (err) console.error(JSON.stringify(err))
       //  格式化代码
       formatJsonCode(filePath)
-      // 代码规范修复
+      // 代码规范修
       formatCode(filePath)
     })
   })
